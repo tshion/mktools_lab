@@ -1,0 +1,21 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Android Gradle Plugin
+        classpath "com.android.tools.build:gradle:7.0.4"
+
+        // DOKKA
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.6.10"
+
+        // Kotlin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
