@@ -1,5 +1,5 @@
 import XCTest
-@testable import main
+@testable import mktools_ios
 
 final class HelloWorldTests: XCTestCase {
     func testExample() throws {
