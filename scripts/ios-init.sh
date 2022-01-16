@@ -20,4 +20,4 @@ if ! type "mint" > /dev/null; then
 fi
 
 # Mintfile から依存関係を復元
-mint run bootstrap
+mint bootstrap

@@ -12,5 +12,4 @@ fi
 
 
 # コードフォーマットの実行
-mint run mint run swiftformat "$1/Sources" --verbose
-mint run mint run swiftformat "$1/Tests" --verbose
+mint run mint run swift-format format --in-place --parallel --recursive $1
