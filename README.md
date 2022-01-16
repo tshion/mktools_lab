@@ -8,14 +8,26 @@
 
 
 ## 開発環境の準備
-コマンド or ツール | 必須 or 任意 | 備考
---- | :---: | ---
-```make``` | 任意 | [Makefile](./Makefile) の内容が使えるようになる
-Visual Studio Code | 任意 | [tasks.json](./.vscode/tasks.json) の内容が使えるようになる
-Xcode | 任意 | iOS 用ライブラリの開発時に役立つかも
+### Android
+Android Studio を利用して開発してください。
+
+### iOS
+下記が使える状態で```make ios-init``` を実行してください。
+
+* ```bash``` or ```zsh```
+* ```git```
+* ```make```
+* ```swift```
+
+開発作業はコマンドラインでのビルドがベースのため、[Makefile](./Makefile) 内の定義を適宜利用してみてください。
+
+エディター | 備考
+--- | ---
+Visual Studio Code | [tasks.json](./.vscode/tasks.json) 内にあるタスクが利用できます
+Xcode | Build のPre Action 等を設定していないので、適宜コマンドを実行してください
 
 
 ## 開発ルール
 ### ライブラリバージョン
-セマンティックバージョニングに従う。
-Swift Package の都合上、Git タグは数字とピリオドのみで命名する。
+セマンティックバージョニングに従います。
+Swift Package の都合上、Git タグは数字とピリオドのみで命名してください。
