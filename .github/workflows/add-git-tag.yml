@@ -1,0 +1,13 @@
+name: Add Git Tag
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  add_git_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sh scripts/git-add-tag.sh
