@@ -53,10 +53,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                artifact javadocJar {
-                    classifier = 'javadoc'
-                    extension = 'jar'
-                }
+                artifact javadocJar
                 artifact sourcesJar
 
                 artifactId = 'mktools_android'
