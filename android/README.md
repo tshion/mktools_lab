@@ -1,6 +1,6 @@
 # mktools_android
-## インストール方法 [![Release](https://jitpack.io/v/tshion/mktools_lab.svg)](https://jitpack.io/#tshion/mktools_lab)
-[JitPack](https://jitpack.io/) からインストールできます。
+## 導入方法 [![Release](https://jitpack.io/v/tshion/mktools_lab.svg)](https://jitpack.io/#tshion/mktools_lab)
+[JitPack](https://jitpack.io/) 経由で導入出来ます。
 
 Android Gradle Plugin のバージョンが7.x 以上の場合は、
 ルートのsettings.gradle に下記を記述してください。
@@ -21,7 +21,7 @@ dependencyResolutionManagement {
 ``` gradle
 dependencies {
     ...
-    implementation 'com.github.tshion:mktools_lab:main-SNAPSHOT' // <- Add Line
+    implementation 'com.github.tshion:mktools_lab:(tag name)' // <- Add Line
     ...
 }
 ```

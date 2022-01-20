@@ -2,7 +2,7 @@ name: Add Git Tag
 
 on:
   schedule:
-    - cron: '0 19 * * *'
+    - cron: '0 19 * * *' # 4am JST
   workflow_dispatch:
 
 jobs:
