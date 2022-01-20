@@ -4,6 +4,7 @@
 パス | 概要
 --- | ---
 [OkHttpHeaderByNameExtension](./OkHttpHeaderByNameExtension.kt) | HTTP ヘッダー項目をメソッド名をそれぞれ用意することで安全に利用できたらいいな
+[OkHttpHeaderByTypeExtension](./OkHttpHeaderByTypeExtension.kt) | HTTP ヘッダー項目をenum 定義を用意することで安全に利用できたらいいな
 
 
 [OkHttp]: https://square.github.io/okhttp/
