@@ -1,7 +1,14 @@
 plugins {
+    // Android Library
     id 'com.android.library'
+
+    // Kotlin Android
     id 'kotlin-android'
+
+    // Maven Publish
     id 'maven-publish'
+
+    // Dokka
     id 'org.jetbrains.dokka'
 }
 
