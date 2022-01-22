@@ -11,6 +11,11 @@ namespace HttpStatusCodeGenerator
         public string Code { get; private set; }
 
         /// <summary>
+        /// MDN に記載があるかどうか
+        /// </summary>
+        public string HasMdn { get; private set; }
+
+        /// <summary>
         /// ステータス名
         /// </summary>
         public string Name { get; private set; }
@@ -34,6 +39,7 @@ namespace HttpStatusCodeGenerator
 
         public CsvEntity(
             string code,
+            string hasMdn,
             string name,
             string note,
             string url1,
@@ -41,6 +47,7 @@ namespace HttpStatusCodeGenerator
         )
         {
             Code = code;
+            HasMdn = hasMdn;
             Name = name;
             Note = note;
             Url1 = url1;
