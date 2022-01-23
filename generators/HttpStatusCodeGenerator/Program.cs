@@ -51,7 +51,7 @@ try
                 .Select(link => $"        ///     <item><see href=\"{link.Url}\">{link.Title}</see></item>");
 
             var warning = !string.IsNullOrWhiteSpace(target.Warning)
-                ? $"[ObsoleteAttribute(\"{target.Warning}\")]{Environment.NewLine}"
+                ? $"[ObsoleteAttribute(\"{target.Warning}\")]{Environment.NewLine}        "
                 : "";
 
             var words = new List<string>();
@@ -75,7 +75,7 @@ try
         }
 
         var rootFile = File.ReadAllText(item.RootPath);
-        rootFile = rootFile.Replace("%%ITEMS%%", string.Join(Environment.NewLine, itemList));
+        rootFile = rootFile.Replace("%%ITEMS%%", string.Join($"{Environment.NewLine}{Environment.NewLine}", itemList));
         if (data.Any(x => !string.IsNullOrWhiteSpace(x.Warning)))
         {
             rootFile = $"using System;{Environment.NewLine}{Environment.NewLine}{rootFile}";
