@@ -6,6 +6,11 @@ namespace HttpStatusCodeGenerator
     internal class CsvEntity
     {
         /// <summary>
+        /// 注意書き
+        /// </summary>
+        public string Caution { get; private set; }
+
+        /// <summary>
         /// ステータスコード
         /// </summary>
         public string Code { get; private set; }
@@ -38,6 +43,7 @@ namespace HttpStatusCodeGenerator
 
 
         public CsvEntity(
+            string caution,
             string code,
             string hasMdn,
             string name,
@@ -46,6 +52,7 @@ namespace HttpStatusCodeGenerator
             string url2
         )
         {
+            Caution = caution;
             Code = code;
             HasMdn = hasMdn;
             Name = name;

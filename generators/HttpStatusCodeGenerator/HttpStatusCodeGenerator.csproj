@@ -8,9 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="Data\HttpStatusCode.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="HttpStatusCode.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>
