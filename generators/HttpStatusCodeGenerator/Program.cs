@@ -1,5 +1,6 @@
 // See https://aka.ms/new-console-template for more information
 using HttpStatusCodeGenerator;
+using System.Collections.Immutable;
 
 try
 {
@@ -11,34 +12,25 @@ try
     var csvLines = await File.ReadAllLinesAsync(dataPaths.SourcePath);
     if (csvLines.Length < 2)
     {
-        Console.WriteLine("Finish: Enough Data");
+        Console.WriteLine("Finish: Not enough.");
         return;
     }
-    var csvHeaders = csvLines[0].Split(",");
-    var csvIndexCaution = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.Caution), StringComparison.OrdinalIgnoreCase));
-    var csvIndexCode = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.Code), StringComparison.OrdinalIgnoreCase));
-    var csvIndexHasMdn = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.HasMdn), StringComparison.OrdinalIgnoreCase));
-    var csvIndexName = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.Name), StringComparison.OrdinalIgnoreCase));
-    var csvIndexNote = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.Note), StringComparison.OrdinalIgnoreCase));
-    var csvIndexUrl1 = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.Url1), StringComparison.OrdinalIgnoreCase));
-    var csvIndexUrl2 = Array.FindIndex(csvHeaders, x => x.Equals(nameof(CsvEntity.Url2), StringComparison.OrdinalIgnoreCase));
-    var queryCsvBody = csvLines[1..^0]
-        .Select(line => line.Split(","))
-        .Where(tokens => tokens.Any(x => !string.IsNullOrWhiteSpace(x)));
+    var queryCsvBody = CsvEntity.GetFormatQuery(csvLines);
+
+
+    // 置換文字列の辞書作成
+    var dicLines = await File.ReadAllLinesAsync(dataPaths.DictionaryPath);
+    var dicReplace = 1 < dicLines.Length
+        ? dicLines[1..^0]
+            .Select(line => line.Split(","))
+            .Where(tokens => 2 <= tokens.Length && tokens.All(x => !string.IsNullOrWhiteSpace(x)))
+            .ToImmutableDictionary(tokens => tokens[0], tokens => tokens[1])
+        : ImmutableDictionary<string, string>.Empty;
 
 
     // データの解析
     var data = queryCsvBody
-        .Select(tokens => new CsvEntity(
-            caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
-            code: tokens.ElementAtOrDefault(csvIndexCode) ?? "",
-            hasMdn: tokens.ElementAtOrDefault(csvIndexHasMdn) ?? "",
-            name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
-            note: tokens.ElementAtOrDefault(csvIndexNote) ?? "",
-            url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
-            url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? ""
-        ))
-        .Select(item => CodeEntity.Parse(item))
+        .Select(item => CodeEntity.ParseOrNull(item, dicReplace))
         .Where(item => item != null)
         .ToList();
 

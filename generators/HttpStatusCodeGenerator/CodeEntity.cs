@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
 namespace HttpStatusCodeGenerator
@@ -8,9 +9,14 @@ namespace HttpStatusCodeGenerator
     internal class CodeEntity
     {
         /// <summary>
-        /// データの変換
+        /// インスタンス生成
         /// </summary>
-        public static CodeEntity? Parse(CsvEntity target)
+        /// <param name="target">変換元データ</param>
+        /// <param name="wordReplace">単語変換データ</param>
+        public static CodeEntity? ParseOrNull(
+            CsvEntity target,
+            ImmutableDictionary<string, string> wordReplace
+        )
         {
             if (!int.TryParse(target.Code, out var code))
             {
@@ -22,8 +28,13 @@ namespace HttpStatusCodeGenerator
             }
 
 
-            // TODO: Name の分析
-
+            // キー名の分析
+            var replaced = target.Name;
+            foreach (var (key, value) in wordReplace)
+            {
+                replaced = replaced.Replace(key, value);
+            }
+            var nameTokens = replaced.Split(' ', '-');
 
 
             // リンクの解析
@@ -31,7 +42,7 @@ namespace HttpStatusCodeGenerator
             if (hasMdn)
             {
                 links.Add(new LinkEntity(
-                    title: "MDN",
+                    title: "MDN Web Docs",
                     url: $"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{code}"
                 ));
             }
@@ -50,46 +61,54 @@ namespace HttpStatusCodeGenerator
 
             var suffix = !string.IsNullOrEmpty(target.Note) ? $"({target.Note})" : "";
             return new CodeEntity(
-                commentLinks: links,
-                commentTitle: $"{code} {target.Name}{suffix}",
-                typeKey: $"",
-                typeValue: code
+                links: links.ToImmutableArray(),
+                memberNameTokens: nameTokens.ToImmutableArray(),
+                memberValue: code,
+                title: $"{code} {target.Name}{suffix}",
+                warning: target.Caution
             );
         }
 
 
         /// <summary>
-        /// コメント欄のリンク一覧
+        /// ドキュメントへのリンク一覧
         /// </summary>
-        public List<LinkEntity> CommentLinks { get; private set; }
+        public ImmutableArray<LinkEntity> Links { get; private set; }
 
         /// <summary>
-        /// コメントタイトル
+        /// メンバー名向けの単語分解された一覧
         /// </summary>
-        public string CommentTitle { get; private set; }
+        public ImmutableArray<string> MemberNameTokens { get; private set; }
 
         /// <summary>
-        /// 定数定義時のキー名
+        /// メンバーの値
         /// </summary>
-        public string TypeKey { get; private set; }
+        public int MemberValue { get; private set; }
 
         /// <summary>
-        /// 定数定義時の値
+        /// ドキュメントタイトル
         /// </summary>
-        public int TypeValue { get; private set; }
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// 警告事項
+        /// </summary>
+        public string Warning { get; private set; }
 
 
         private CodeEntity(
-            List<LinkEntity> commentLinks,
-            string commentTitle,
-            string typeKey,
-            int typeValue
+            ImmutableArray<LinkEntity> links,
+            ImmutableArray<string> memberNameTokens,
+            int memberValue,
+            string title,
+            string warning
         )
         {
-            CommentLinks = commentLinks;
-            CommentTitle = commentTitle;
-            TypeKey = typeKey;
-            TypeValue = typeValue;
+            Links = links;
+            MemberNameTokens = memberNameTokens;
+            MemberValue = memberValue;
+            Title = title;
+            Warning = warning;
         }
     }
 }
