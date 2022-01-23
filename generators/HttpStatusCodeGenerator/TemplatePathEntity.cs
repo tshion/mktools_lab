@@ -16,16 +16,26 @@ namespace HttpStatusCodeGenerator
         )
         {
             var candidate = new TemplatePathEntity(basePath, fileExtension);
-            return File.Exists(candidate.RootPath)
+            return File.Exists(candidate.ItemPath) && File.Exists(candidate.RootPath)
                 ? candidate
                 : null;
         }
 
 
         /// <summary>
+        /// 各項目のファイルパス
+        /// </summary>
+        public string ItemPath { get; private set; }
+
+        /// <summary>
         /// 土台になるファイルのパス
         /// </summary>
         public string RootPath { get; private set; }
+
+        /// <summary>
+        /// 出力先のファイルパス
+        /// </summary>
+        public string OutputPath { get; private set; }
 
 
         private TemplatePathEntity(
@@ -34,7 +44,9 @@ namespace HttpStatusCodeGenerator
         )
         {
             var dirName = "Templates";
+            ItemPath = Path.Combine(basePath, dirName, $"HttpStatusCode.item.template.{fileExtension}");
             RootPath = Path.Combine(basePath, dirName, $"HttpStatusCode.base.template.{fileExtension}");
+            OutputPath = Path.Combine(basePath, $"HttpStatusCode.{fileExtension}");
         }
     }
 }

@@ -43,38 +43,44 @@ try
         .ToList();
     foreach (var item in templatePaths)
     {
-        var target = data.First();
-
-        var links = target.Links
-            .Select(link => $"        ///     <item><see href=\"{link.Url}\">{link.Title}</see></item>");
-
-        var hasWarning = !string.IsNullOrWhiteSpace(target.Warning);
-        var warning = hasWarning
-            ? $"[ObsoleteAttribute(\"{target.Warning}\")]{Environment.NewLine}"
-            : "";
-
-        var words = new List<string>();
-        for (int i = 0; i < target.MemberWords.Length; i++)
+        var itemFile = File.ReadAllText(item.ItemPath);
+        var itemList = new List<string>();
+        foreach (var target in data)
         {
-            var word = target.MemberWords[i];
-            words.Add(
-                i == 0 && word.Length < 2
-                    ? word.ToUpper()
-                    : $"{char.ToUpper(word[0])}{word[1..]}"
+            var links = target.Links
+                .Select(link => $"        ///     <item><see href=\"{link.Url}\">{link.Title}</see></item>");
+
+            var warning = !string.IsNullOrWhiteSpace(target.Warning)
+                ? $"[ObsoleteAttribute(\"{target.Warning}\")]{Environment.NewLine}"
+                : "";
+
+            var words = new List<string>();
+            for (int i = 0; i < target.MemberWords.Length; i++)
+            {
+                var word = target.MemberWords[i];
+                words.Add(
+                    i == 0 && word.Length < 2
+                        ? word.ToUpper()
+                        : $"{char.ToUpper(word[0])}{word[1..]}"
+                );
+            }
+
+            itemList.Add($"{itemFile}"
+                .Replace("%%DOCS_LINKS%%", string.Join(Environment.NewLine, links))
+                .Replace("%%DOCS_TITLE%%", target.Title)
+                .Replace("%%MEMBER_NAME%%", string.Join("", words))
+                .Replace("%%MEMBER_VALUE%%", target.MemberValue.ToString())
+                .Replace("%%WARNING%%", warning)
             );
         }
 
-        var result = File.ReadAllText(item.RootPath)
-            .Replace("%%DOCS_LINKS%%", string.Join(Environment.NewLine, links))
-            .Replace("%%DOCS_TITLE%%", target.Title)
-            .Replace("%%MEMBER_NAME%%", string.Join("", words))
-            .Replace("%%MEMBER_VALUE%%", target.MemberValue.ToString())
-            .Replace("%%WARNING%%", warning);
-        if (hasWarning)
+        var rootFile = File.ReadAllText(item.RootPath);
+        rootFile = rootFile.Replace("%%ITEMS%%", string.Join(Environment.NewLine, itemList));
+        if (data.Any(x => !string.IsNullOrWhiteSpace(x.Warning)))
         {
-            result = $"using System;{Environment.NewLine}{Environment.NewLine}{result}";
+            rootFile = $"using System;{Environment.NewLine}{Environment.NewLine}{rootFile}";
         }
-        var a = result;
+        await File.WriteAllTextAsync(item.OutputPath, rootFile);
     }
 
 
