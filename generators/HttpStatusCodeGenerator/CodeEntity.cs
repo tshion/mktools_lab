@@ -62,8 +62,8 @@ namespace HttpStatusCodeGenerator
             var suffix = !string.IsNullOrEmpty(target.Note) ? $"({target.Note})" : "";
             return new CodeEntity(
                 links: links.ToImmutableArray(),
-                memberNameTokens: nameTokens.ToImmutableArray(),
                 memberValue: code,
+                memberWords: nameTokens.ToImmutableArray(),
                 title: $"{code} {target.Name}{suffix}",
                 warning: target.Caution
             );
@@ -76,14 +76,14 @@ namespace HttpStatusCodeGenerator
         public ImmutableArray<LinkEntity> Links { get; private set; }
 
         /// <summary>
-        /// メンバー名向けの単語分解された一覧
-        /// </summary>
-        public ImmutableArray<string> MemberNameTokens { get; private set; }
-
-        /// <summary>
         /// メンバーの値
         /// </summary>
         public int MemberValue { get; private set; }
+
+        /// <summary>
+        /// メンバー名向けの単語一覧
+        /// </summary>
+        public ImmutableArray<string> MemberWords { get; private set; }
 
         /// <summary>
         /// ドキュメントタイトル
@@ -98,15 +98,15 @@ namespace HttpStatusCodeGenerator
 
         private CodeEntity(
             ImmutableArray<LinkEntity> links,
-            ImmutableArray<string> memberNameTokens,
             int memberValue,
+            ImmutableArray<string> memberWords,
             string title,
             string warning
         )
         {
             Links = links;
-            MemberNameTokens = memberNameTokens;
             MemberValue = memberValue;
+            MemberWords = memberWords;
             Title = title;
             Warning = warning;
         }

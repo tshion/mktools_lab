@@ -8,14 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Templates\HttpStatusCode.base.template.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Data\HttpStatusCode.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Data\ReplaceDictionary.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="HttpStatusCode.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Templates\HttpStatusCode.base.template.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
