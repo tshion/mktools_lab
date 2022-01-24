@@ -36,6 +36,15 @@ try
         .ToList();
 
 
+    // 出力先のディレクトリ再作成
+    var outputBasePath = Path.Combine(basePath, "DataOutput");
+    if (Directory.Exists(outputBasePath))
+    {
+        Directory.Delete(outputBasePath, true);
+    }
+    Directory.CreateDirectory(outputBasePath);
+
+
     // コード生成
     var templatePaths = new[] { "cs" }
         .Select(ext => TemplatePathEntity.ParseOrNull(basePath, ext))
@@ -80,7 +89,7 @@ try
         {
             rootFile = $"using System;{Environment.NewLine}{Environment.NewLine}{rootFile}";
         }
-        await File.WriteAllTextAsync(item.OutputPath, rootFile);
+        await File.WriteAllTextAsync(Path.Combine(outputBasePath, item.OutputFilename), rootFile);
     }
 
 

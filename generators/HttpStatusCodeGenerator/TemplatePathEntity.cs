@@ -33,9 +33,9 @@ namespace HttpStatusCodeGenerator
         public string RootPath { get; private set; }
 
         /// <summary>
-        /// 出力先のファイルパス
+        /// 出力するファイル名
         /// </summary>
-        public string OutputPath { get; private set; }
+        public string OutputFilename { get; private set; }
 
 
         private TemplatePathEntity(
@@ -46,7 +46,7 @@ namespace HttpStatusCodeGenerator
             var dirName = "Templates";
             ItemPath = Path.Combine(basePath, dirName, $"HttpStatusCode.item.template.{fileExtension}");
             RootPath = Path.Combine(basePath, dirName, $"HttpStatusCode.base.template.{fileExtension}");
-            OutputPath = Path.Combine(basePath, $"HttpStatusCode.{fileExtension}");
+            OutputFilename = $"HttpStatusCode.{fileExtension}";
         }
     }
 }
