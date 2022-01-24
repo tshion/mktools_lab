@@ -7,7 +7,6 @@ try
     Console.WriteLine("Start");
     var basePath = Directory.GetCurrentDirectory();
     var dataBasePath = Path.Combine(basePath, "Data");
-    var dataPaths = DataPathEntity.Parse(basePath);
 
 
     // CSV の読み込み
@@ -20,18 +19,15 @@ try
 
 
     // 置換文字列の辞書作成
-    var dicLines = await File.ReadAllLinesAsync(dataPaths.DictionaryPath);
-    var dicReplace = 1 < dicLines.Length
-        ? dicLines[1..^0]
-            .Select(line => line.Split(","))
-            .Where(tokens => 2 <= tokens.Length && tokens.All(x => !string.IsNullOrWhiteSpace(x)))
-            .ToImmutableDictionary(tokens => tokens[0], tokens => tokens[1])
+    var queryRenameWords = WordEntity.GetDataQueryOrNull(Path.Combine(dataBasePath, "ReplaceDictionary.csv"));
+    ImmutableDictionary<string, string> renameWords = queryRenameWords != null
+        ? queryRenameWords.ToImmutableDictionary(item => item.Target, item => item.Rename)
         : ImmutableDictionary<string, string>.Empty;
 
 
     // データの解析
     var data = queryCsvBody
-        .Select(item => CodeEntity.ParseOrNull(item, dicReplace))
+        .Select(item => CodeEntity.ParseOrNull(item, renameWords))
         .Where(item => item != null)
         .ToList();
 
