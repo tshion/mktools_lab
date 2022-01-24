@@ -6,17 +6,17 @@ try
 {
     Console.WriteLine("Start");
     var basePath = Directory.GetCurrentDirectory();
+    var dataBasePath = Path.Combine(basePath, "Data");
     var dataPaths = DataPathEntity.Parse(basePath);
 
 
     // CSV の読み込み
-    var csvLines = await File.ReadAllLinesAsync(dataPaths.SourcePath);
-    if (csvLines.Length < 2)
+    var queryCsvBody = CsvEntity.GetDataQueryOrNull(Path.Combine(dataBasePath, "HttpStatusCode.csv"));
+    if (queryCsvBody == null)
     {
         Console.WriteLine("Finish: Not enough.");
         return;
     }
-    var queryCsvBody = CsvEntity.GetFormatQuery(csvLines);
 
 
     // 置換文字列の辞書作成

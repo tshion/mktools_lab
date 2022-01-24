@@ -13,8 +13,7 @@ namespace HttpStatusCodeGenerator
         public static DataPathEntity Parse(string basePath)
         {
             var candidate = new DataPathEntity(basePath);
-            if (File.Exists(candidate.DictionaryPath)
-                && File.Exists(candidate.SourcePath))
+            if (File.Exists(candidate.DictionaryPath))
             {
                 return candidate;
             }
@@ -30,17 +29,11 @@ namespace HttpStatusCodeGenerator
         /// </summary>
         public string DictionaryPath { get; private set; }
 
-        /// <summary>
-        /// 取り込みデータのパス
-        /// </summary>
-        public string SourcePath { get; private set; }
-
 
         private DataPathEntity(string basePath)
         {
             var dirName = "Data";
             DictionaryPath = Path.Combine(basePath, dirName, "ReplaceDictionary.csv");
-            SourcePath = Path.Combine(basePath, dirName, "HttpStatusCode.csv");
         }
     }
 }
