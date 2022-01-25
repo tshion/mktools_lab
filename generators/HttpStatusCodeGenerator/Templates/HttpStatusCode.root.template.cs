@@ -1,4 +1,4 @@
-namespace (Your Namespace)
+namespace YourNamespace
 {
     /// <summary>
     /// HTTP Status Code
