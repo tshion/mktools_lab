@@ -12,7 +12,7 @@ namespace HttpStatusCodeGenerator
         /// </summary>
         /// <param name="actionFormatLinks">ドキュメント内リンクの書式整形アクション</param>
         /// <param name="actionFormatName">メンバー名の書式整形アクション</param>
-        /// <param name="actionFormaWarning">警告文の書式整形アクション</param>
+        /// <param name="actionFormatWarning">警告文の書式整形アクション</param>
         /// <param name="actionGenerated">生成後の書式整形アクション</param>
         /// <param name="indentSize">インデントサイズ</param>
         /// <param name="templateItemPath">各項目のテンプレートファイルパス</param>
@@ -27,7 +27,7 @@ namespace HttpStatusCodeGenerator
         public static EnumCodeGenerator? LoadOrNull(
             in Func<ContentEntity, string, string>? actionFormatLinks,
             in Func<ContentEntity, string, string>? actionFormatName,
-            in Func<ContentEntity, string, string>? actionFormaWarning,
+            in Func<ContentEntity, string, string>? actionFormatWarning,
             in Func<string, ImmutableList<ContentEntity>, string, string>? actionGenerated,
             int indentSize,
             string templateItemPath,
@@ -41,7 +41,7 @@ namespace HttpStatusCodeGenerator
             return new EnumCodeGenerator(
                 actionFormatLinks: actionFormatLinks,
                 actionFormatName: actionFormatName,
-                actionFormaWarning: actionFormaWarning,
+                actionFormatWarning: actionFormatWarning,
                 actionGenerated: actionGenerated,
                 formatItem: File.ReadAllText(templateItemPath),
                 formatRoot: File.ReadAllText(templateRootPath),
@@ -63,7 +63,7 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// 警告文の書式整形アクション
         /// </summary>
-        private readonly Func<ContentEntity, string, string>? actionFormaWarning;
+        private readonly Func<ContentEntity, string, string>? actionFormatWarning;
 
         /// <summary>
         /// 生成後の書式整形アクション
@@ -89,7 +89,7 @@ namespace HttpStatusCodeGenerator
         private EnumCodeGenerator(
             in Func<ContentEntity, string, string>? actionFormatLinks,
             in Func<ContentEntity, string, string>? actionFormatName,
-            in Func<ContentEntity, string, string>? actionFormaWarning,
+            in Func<ContentEntity, string, string>? actionFormatWarning,
             in Func<string, ImmutableList<ContentEntity>, string, string>? actionGenerated,
             string formatItem,
             string formatRoot,
@@ -98,7 +98,7 @@ namespace HttpStatusCodeGenerator
         {
             this.actionFormatLinks = actionFormatLinks;
             this.actionFormatName = actionFormatName;
-            this.actionFormaWarning = actionFormaWarning;
+            this.actionFormatWarning = actionFormatWarning;
             this.actionGenerated = actionGenerated;
             this.formatItem = formatItem;
             this.formatRoot = formatRoot;
@@ -117,7 +117,7 @@ namespace HttpStatusCodeGenerator
                 memberName: actionFormatName?.Invoke(item, indent) ?? "",
                 memberValue: item.MemberValue,
                 title: item.Title,
-                warning: actionFormaWarning?.Invoke(item, indent) ?? item.Warning
+                warning: actionFormatWarning?.Invoke(item, indent) ?? item.Warning
             ));
 
             string candidate = GetTextRoot(string.Join($"{Environment.NewLine}{Environment.NewLine}", items));

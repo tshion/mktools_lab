@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Templates\HttpStatusCode.base.template.cs" />
     <Compile Remove="Templates\HttpStatusCode.item.template.cs" />
+    <Compile Remove="Templates\HttpStatusCode.root.template.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Templates\HttpStatusCode.base.template.cs">
+    <None Include="Templates\HttpStatusCode.root.template.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Templates\HttpStatusCode.item.template.cs">

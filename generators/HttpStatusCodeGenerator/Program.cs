@@ -28,7 +28,7 @@ try
                 }
                 return builder.ToString();
             },
-            actionFormaWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
+            actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
                 ? $"[Obsolete(\"{item.Warning}\")]{Environment.NewLine}{indent}{indent}"
                 : "",
             actionGenerated: (candidate, list, indent) => list.Any(item => !string.IsNullOrWhiteSpace(item.Warning))
