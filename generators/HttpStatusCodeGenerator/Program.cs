@@ -36,7 +36,7 @@ try
                 : candidate,
             indentSize: 4,
             templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
-            templateRootPath: Path.Combine(templateBasePath, "HttpStatusCode.base.template.cs")
+            templateRootPath: Path.Combine(templateBasePath, "HttpStatusCode.root.template.cs")
         ),
     }
     .Where(pair => pair.Value != null)
