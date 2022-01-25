@@ -28,6 +28,20 @@ try
             templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
             templateRootPath: Path.Combine(templateBasePath, "HttpStatusCode.root.template.cs")
         ),
+        ["kt"] = EnumCodeGenerator.LoadOrNull(
+            actionFormatLinks: (item, indent) => string.Join(
+                Environment.NewLine,
+                item.Links.Select(x => $"{indent} * * [{x.Key}]({x.Value})")
+            ),
+            actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
+                ? $"@Deprecated(\"{item.Warning}\"){Environment.NewLine}{indent}"
+                : "",
+            actionGenerated: null,
+            indentSize: 4,
+            memberNameType: NameType.Snake,
+            templateItemPath: Path.Combine(templateBasePath, "item.template.kt"),
+            templateRootPath: Path.Combine(templateBasePath, "root.template.kt")
+        ),
     }
     .Where(pair => pair.Value != null)
     .ToImmutableDictionary(pair => pair.Key, pair => pair.Value!);
