@@ -1,7 +1,6 @@
 // See https://aka.ms/new-console-template for more information
 using HttpStatusCodeGenerator;
 using System.Collections.Immutable;
-using System.Text;
 
 try
 {
@@ -18,16 +17,6 @@ try
                 Environment.NewLine,
                 item.Links.Select(x => $"{indent}{indent}/// {indent}<item><see href=\"{x.Value}\">{x.Key}</see></item>")
             ),
-            actionFormatName: (item, indent) =>
-            {
-                StringBuilder builder = new();
-                for (int i = 0; i < item.MemberWords.Length; i++)
-                {
-                    string word = item.MemberWords[i];
-                    builder.Append(i == 0 && word.Length < 2 ? word.ToUpper() : $"{char.ToUpper(word[0])}{word[1..]}");
-                }
-                return builder.ToString();
-            },
             actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
                 ? $"[Obsolete(\"{item.Warning}\")]{Environment.NewLine}{indent}{indent}"
                 : "",
@@ -35,6 +24,7 @@ try
                 ? $"using System;{Environment.NewLine}{Environment.NewLine}{candidate}"
                 : candidate,
             indentSize: 4,
+            memberNameType: NameType.Pascal,
             templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
             templateRootPath: Path.Combine(templateBasePath, "HttpStatusCode.root.template.cs")
         ),

@@ -11,10 +11,10 @@ namespace HttpStatusCodeGenerator
         /// インスタンス生成
         /// </summary>
         /// <param name="actionFormatLinks">ドキュメント内リンクの書式整形アクション</param>
-        /// <param name="actionFormatName">メンバー名の書式整形アクション</param>
         /// <param name="actionFormatWarning">警告文の書式整形アクション</param>
         /// <param name="actionGenerated">生成後の書式整形アクション</param>
         /// <param name="indentSize">インデントサイズ</param>
+        /// <param name="memberNameType">メンバー名の命名形式</param>
         /// <param name="templateItemPath">各項目のテンプレートファイルパス</param>
         /// <param name="templateRootPath">基礎部分のテンプレートファイルパス</param>
         /// <returns>
@@ -26,10 +26,10 @@ namespace HttpStatusCodeGenerator
         /// </returns>
         public static EnumCodeGenerator? LoadOrNull(
             in Func<ContentEntity, string, string>? actionFormatLinks,
-            in Func<ContentEntity, string, string>? actionFormatName,
             in Func<ContentEntity, string, string>? actionFormatWarning,
             in Func<string, ImmutableList<ContentEntity>, string, string>? actionGenerated,
             int indentSize,
+            NameType memberNameType,
             string templateItemPath,
             string templateRootPath
         )
@@ -40,7 +40,7 @@ namespace HttpStatusCodeGenerator
 
             return new EnumCodeGenerator(
                 actionFormatLinks: actionFormatLinks,
-                actionFormatName: actionFormatName,
+                actionFormatName: memberNameType.GetFormatterOrNull(),
                 actionFormatWarning: actionFormatWarning,
                 actionGenerated: actionGenerated,
                 formatItem: File.ReadAllText(templateItemPath),
