@@ -6,21 +6,42 @@ using System.Text;
 try
 {
     Console.WriteLine("Start");
-    var basePath = Directory.GetCurrentDirectory();
-    var dataBasePath = Path.Combine(basePath, "Data");
+    string basePath = Directory.GetCurrentDirectory();
 
 
-    // テンプレートファイルの読み込み
-    List<TemplateEntity> templates = new[] { "cs" }
-        .Select(ext => TemplateEntity.LoadOrNull(
-            basePath: Path.Combine(basePath, "Templates"),
-            fileExtension: ext,
-            indent: 4
-        ))
-        .Where(item => item != null)
-        .Select(item => item!)
-        .ToList();
-    if (!templates.Any())
+    // コード生成器の作成
+    string templateBasePath = Path.Combine(basePath, "Templates");
+    ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<string, EnumCodeGenerator?>()
+    {
+        ["cs"] = EnumCodeGenerator.LoadOrNull(
+            actionFormatLinks: (item, indent) => string.Join(
+                Environment.NewLine,
+                item.Links.Select(x => $"{indent}{indent}/// {indent}<item><see href=\"{x.Value}\">{x.Key}</see></item>")
+            ),
+            actionFormatName: (item, indent) =>
+            {
+                StringBuilder builder = new();
+                for (int i = 0; i < item.MemberWords.Length; i++)
+                {
+                    string word = item.MemberWords[i];
+                    builder.Append(i == 0 && word.Length < 2 ? word.ToUpper() : $"{char.ToUpper(word[0])}{word[1..]}");
+                }
+                return builder.ToString();
+            },
+            actionFormaWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
+                ? $"[Obsolete(\"{item.Warning}\")]{Environment.NewLine}{indent}{indent}"
+                : "",
+            actionGenerated: (candidate, list, indent) => list.Any(item => !string.IsNullOrWhiteSpace(item.Warning))
+                ? $"using System;{Environment.NewLine}{Environment.NewLine}{candidate}"
+                : candidate,
+            indentSize: 4,
+            templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
+            templateRootPath: Path.Combine(templateBasePath, "HttpStatusCode.base.template.cs")
+        ),
+    }
+    .Where(pair => pair.Value != null)
+    .ToImmutableDictionary(pair => pair.Key, pair => pair.Value!);
+    if (!generators.Any())
     {
         Console.WriteLine("Finish: None targets.");
         return;
@@ -28,6 +49,7 @@ try
 
 
     // CSV の読み込み
+    string dataBasePath = Path.Combine(basePath, "Data");
     var queryCsvBody = CsvEntity.GetDataQueryOrNull(Path.Combine(dataBasePath, "HttpStatusCode.csv"));
     if (queryCsvBody == null)
     {
@@ -44,15 +66,15 @@ try
 
 
     // データの解析
-    List<ContentEntity> data = queryCsvBody
+    ImmutableList<ContentEntity> data = queryCsvBody
         .Select(item => ContentEntity.Parse(item, renameWords))
         .Where(item => item != null)
         .Select(item => item!)
-        .ToList();
+        .ToImmutableList();
 
 
     // 出力先のディレクトリ再作成
-    var outputBasePath = Path.Combine(basePath, "DataOutput");
+    string outputBasePath = Path.Combine(basePath, "DataOutput");
     if (Directory.Exists(outputBasePath))
     {
         Directory.Delete(outputBasePath, true);
@@ -61,49 +83,11 @@ try
 
 
     // コード生成
-    foreach (var template in templates)
+    foreach (var (ext, generator) in generators)
     {
-        List<string> items = new();
-        var shouldAddImport = false;
-        foreach (ContentEntity item in data)
-        {
-            // TODO: 各言語固有設定の分離
-            var links = item.Links
-                .Select(link => $"{template.Indent}{template.Indent}///{template.Indent}<item><see href=\"{link.Value}\">{link.Key}</see></item>");
-
-            string? warning = null;
-            if (!string.IsNullOrWhiteSpace(item.Warning))
-            {
-                shouldAddImport = true;
-                warning = $"[ObsoleteAttribute(\"{item.Warning}\")]{Environment.NewLine}{template.Indent}{template.Indent}";
-            }
-
-            StringBuilder builder = new();
-            for (int i = 0; i < item.MemberWords.Length; i++)
-            {
-                string word = item.MemberWords[i];
-                builder.Append(i == 0 && word.Length < 2
-                    ? word.ToUpper()
-                    : $"{char.ToUpper(word[0])}{word[1..]}"
-                );
-            }
-
-            items.Add(template.GetItemText(
-                linkText: string.Join(Environment.NewLine, links),
-                memberName: builder.ToString(),
-                memberValue: $"{item.MemberValue}",
-                title: item.Title,
-                warning: warning ?? ""
-            ));
-        }
-
-
-        string header = shouldAddImport
-            ? $"using System;{Environment.NewLine}{Environment.NewLine}"
-            : "";
         File.WriteAllText(
-            Path.Combine(outputBasePath, template.OutputFilename),
-            $"{header}{template.GetText(string.Join($"{Environment.NewLine}{Environment.NewLine}", items))}"
+            Path.Combine(outputBasePath, $"HttpStatusCode.{ext}"),
+            generator.Generate(data)
         );
     }
 

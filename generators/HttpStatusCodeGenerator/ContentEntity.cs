@@ -49,7 +49,7 @@ namespace HttpStatusCodeGenerator
 
             // インスタンス生成
             return new ContentEntity(
-                links: links.ToImmutableDictionary(),
+                links: links.OrderBy(item => item.Key).ToImmutableDictionary(),
                 memberValue: $"{from.Code}",
                 memberWords: nameWords.ToImmutableArray(),
                 title: $"{from.Code} {from.Name}{suffix}",
