@@ -44,9 +44,10 @@ try
 
 
     // データの解析
-    var data = queryCsvBody
-        .Select(item => CodeEntity.ParseOrNull(item, renameWords))
+    List<ContentEntity> data = queryCsvBody
+        .Select(item => ContentEntity.Parse(item, renameWords))
         .Where(item => item != null)
+        .Select(item => item!)
         .ToList();
 
 
@@ -64,17 +65,11 @@ try
     {
         List<string> items = new();
         var shouldAddImport = false;
-        foreach (var item in data)
+        foreach (ContentEntity item in data)
         {
-            // TODO: null 伝搬の見直し
-            if (item == null)
-            {
-                continue;
-            }
-
             // TODO: 各言語固有設定の分離
             var links = item.Links
-                .Select(link => $"{template.Indent}{template.Indent}///{template.Indent}<item><see href=\"{link.Url}\">{link.Title}</see></item>");
+                .Select(link => $"{template.Indent}{template.Indent}///{template.Indent}<item><see href=\"{link.Value}\">{link.Key}</see></item>");
 
             string? warning = null;
             if (!string.IsNullOrWhiteSpace(item.Warning))

@@ -42,15 +42,23 @@ namespace HttpStatusCodeGenerator
             return csvLines[1..^0]
                 .Select(line => line.Split(","))
                 .Where(tokens => csvHeaders.Length <= tokens.Length && tokens.Any(x => !string.IsNullOrWhiteSpace(x)))
-                .Select(tokens => new CsvEntity(
-                    caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
-                    code: tokens.ElementAtOrDefault(csvIndexCode) ?? "",
-                    hasMdn: tokens.ElementAtOrDefault(csvIndexHasMdn) ?? "",
-                    name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
-                    note: tokens.ElementAtOrDefault(csvIndexNote) ?? "",
-                    url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
-                    url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? ""
-                ));
+                .Select(tokens =>
+                {
+                    if (!int.TryParse(tokens.ElementAtOrDefault(csvIndexCode), out var code)) { return null; }
+                    if (!bool.TryParse(tokens.ElementAtOrDefault(csvIndexHasMdn), out var hasMdn)) { return null; }
+
+                    return new CsvEntity(
+                        caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
+                        code: code,
+                        hasMdn: hasMdn,
+                        name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
+                        note: tokens.ElementAtOrDefault(csvIndexNote) ?? "",
+                        url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
+                        url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? ""
+                    );
+                })
+                .Where(item => item != null)
+                .Select(item => item!);
         }
 
 
@@ -62,12 +70,12 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// ステータスコード
         /// </summary>
-        public string Code { get; private set; }
+        public int Code { get; private set; }
 
         /// <summary>
         /// MDN に記載があるかどうか
         /// </summary>
-        public string HasMdn { get; private set; }
+        public bool HasMdn { get; private set; }
 
         /// <summary>
         /// ステータス名
@@ -92,8 +100,8 @@ namespace HttpStatusCodeGenerator
 
         private CsvEntity(
             string caution,
-            string code,
-            string hasMdn,
+            int code,
+            bool hasMdn,
             string name,
             string note,
             string url1,
