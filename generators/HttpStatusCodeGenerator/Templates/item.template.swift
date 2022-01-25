@@ -1,0 +1,1 @@
+    case %%MEMBER_NAME%% = %%MEMBER_VALUE%%

@@ -42,6 +42,15 @@ try
             templateItemPath: Path.Combine(templateBasePath, "item.template.kt"),
             templateRootPath: Path.Combine(templateBasePath, "root.template.kt")
         ),
+        ["swift"] = EnumCodeGenerator.LoadOrNull(
+            actionFormatLinks: null,
+            actionFormatWarning: null,
+            actionGenerated: null,
+            indentSize: 4,
+            memberNameType: NameType.Camel,
+            templateItemPath: Path.Combine(templateBasePath, "item.template.swift"),
+            templateRootPath: Path.Combine(templateBasePath, "root.template.swift")
+        ),
     }
     .Where(pair => pair.Value != null)
     .ToImmutableDictionary(pair => pair.Key, pair => pair.Value!);
