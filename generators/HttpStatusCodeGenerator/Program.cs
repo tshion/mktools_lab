@@ -43,8 +43,13 @@ try
             templateRootPath: Path.Combine(templateBasePath, "root.template.kt")
         ),
         ["swift"] = EnumCodeGenerator.LoadOrNull(
-            actionFormatLinks: null,
-            actionFormatWarning: null,
+            actionFormatLinks: (item, indent) => string.Join(
+               Environment.NewLine,
+               item.Links.Select(x => $"{indent}   {indent}- [{x.Key}]({x.Value})")
+            ),
+            actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
+                ? $"{Environment.NewLine}{Environment.NewLine}{indent} - Warning: {item.Warning}"
+                : "",
             actionGenerated: null,
             indentSize: 4,
             memberNameType: NameType.Camel,
