@@ -22,6 +22,7 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
         actionGenerated: (candidate, list, indent) => list.Any(item => !string.IsNullOrWhiteSpace(item.Warning))
             ? $"using System;{Environment.NewLine}{Environment.NewLine}{candidate}"
             : candidate,
+        defaultValue: KeyValuePair.Create("undefined", "0"),
         indentSize: 4,
         memberNameType: NameType.Pascal,
         templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
@@ -35,6 +36,7 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
         actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
             ? $"@Deprecated(\"{item.Warning}\"){Environment.NewLine}{indent}"
             : "",
+        defaultValue: null,
         actionGenerated: null,
         indentSize: 4,
         memberNameType: NameType.Snake,
@@ -50,6 +52,7 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
             ? $"{Environment.NewLine}{Environment.NewLine}{indent} - Warning: {item.Warning}"
             : "",
         actionGenerated: null,
+        defaultValue: KeyValuePair.Create("undefined", "0"),
         indentSize: 4,
         memberNameType: NameType.Camel,
         templateItemPath: Path.Combine(templateBasePath, "item.template.swift"),

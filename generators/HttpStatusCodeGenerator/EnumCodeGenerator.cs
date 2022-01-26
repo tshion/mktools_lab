@@ -13,6 +13,7 @@ namespace HttpStatusCodeGenerator
         /// <param name="actionFormatLinks">ドキュメント内リンクの書式整形アクション</param>
         /// <param name="actionFormatWarning">警告文の書式整形アクション</param>
         /// <param name="actionGenerated">生成後の書式整形アクション</param>
+        /// <param name="defaultValue">既定値</param>
         /// <param name="indentSize">インデントサイズ</param>
         /// <param name="memberNameType">メンバー名の命名形式</param>
         /// <param name="templateItemPath">各項目のテンプレートファイルパス</param>
@@ -28,6 +29,7 @@ namespace HttpStatusCodeGenerator
             in Func<EnumCodeEntity, string, string>? actionFormatLinks,
             in Func<EnumCodeEntity, string, string>? actionFormatWarning,
             in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated,
+            KeyValuePair<string, string>? defaultValue,
             int indentSize,
             NameType memberNameType,
             string templateItemPath,
@@ -43,6 +45,7 @@ namespace HttpStatusCodeGenerator
                 actionFormatName: memberNameType.GetFormatterOrNull(),
                 actionFormatWarning: actionFormatWarning,
                 actionGenerated: actionGenerated,
+                defaultValue: defaultValue,
                 formatItem: File.ReadAllText(templateItemPath),
                 formatRoot: File.ReadAllText(templateRootPath),
                 indentSize: indentSize
@@ -71,6 +74,11 @@ namespace HttpStatusCodeGenerator
         private readonly Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated;
 
         /// <summary>
+        /// 既定値
+        /// </summary>
+        private readonly KeyValuePair<string, string>? defaultValue;
+
+        /// <summary>
         /// 各項目の書式
         /// </summary>
         private readonly string formatItem;
@@ -91,6 +99,7 @@ namespace HttpStatusCodeGenerator
             in Func<EnumCodeEntity, string, string>? actionFormatName,
             in Func<EnumCodeEntity, string, string>? actionFormatWarning,
             in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated,
+            KeyValuePair<string, string>? defaultValue,
             string formatItem,
             string formatRoot,
             int indentSize
@@ -100,6 +109,7 @@ namespace HttpStatusCodeGenerator
             this.actionFormatName = actionFormatName;
             this.actionFormatWarning = actionFormatWarning;
             this.actionGenerated = actionGenerated;
+            this.defaultValue = defaultValue;
             this.formatItem = formatItem;
             this.formatRoot = formatRoot;
             indent = new(' ', indentSize);
@@ -112,7 +122,20 @@ namespace HttpStatusCodeGenerator
         /// <param name="target">展開するデータ</param>
         public string Generate(in ImmutableList<EnumCodeEntity> target)
         {
-            IEnumerable<string> items = target.Select(item => GetTextItem(
+            List<EnumCodeEntity> source = new();
+            if (defaultValue != null)
+            {
+                var pair = defaultValue.Value;
+                source.Add(new EnumCodeEntity(
+                    links: ImmutableArray<KeyValuePair<string, string>>.Empty,
+                    memberValue: pair.Value,
+                    memberWords: ImmutableArray.Create(pair.Key),
+                    title: "This is default value.",
+                    warning: "Please use another."
+                ));
+            }
+            source.AddRange(target);
+            var items = source.Select(item => GetTextItem(
                 linkText: actionFormatLinks?.Invoke(item, indent) ?? "",
                 memberName: actionFormatName?.Invoke(item, indent) ?? "",
                 memberValue: item.MemberValue,
