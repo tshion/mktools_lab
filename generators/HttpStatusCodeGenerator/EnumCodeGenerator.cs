@@ -10,14 +10,14 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// インスタンス生成
         /// </summary>
-        /// <param name="actionFormatLinks">ドキュメント内リンクの書式整形アクション</param>
-        /// <param name="actionFormatWarning">警告文の書式整形アクション</param>
-        /// <param name="actionGenerated">生成後の書式整形アクション</param>
-        /// <param name="defaultValue">既定値</param>
         /// <param name="indentSize">インデントサイズ</param>
         /// <param name="memberNameType">メンバー名の命名形式</param>
         /// <param name="templateItemPath">各項目のテンプレートファイルパス</param>
         /// <param name="templateRootPath">基礎部分のテンプレートファイルパス</param>
+        /// <param name="actionFormatLinks">ドキュメント内リンクの書式整形アクション</param>
+        /// <param name="actionFormatWarning">警告文の書式整形アクション</param>
+        /// <param name="actionGenerated">生成後の書式整形アクション</param>
+        /// <param name="defaultValue">既定値</param>
         /// <returns>
         /// <list type="bullet">
         ///     <item>ファイルが存在しない場合はnull</item>
@@ -26,14 +26,14 @@ namespace HttpStatusCodeGenerator
         /// </list>
         /// </returns>
         public static EnumCodeGenerator? LoadOrNull(
-            in Func<EnumCodeEntity, string, string>? actionFormatLinks,
-            in Func<EnumCodeEntity, string, string>? actionFormatWarning,
-            in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated,
-            KeyValuePair<string, string>? defaultValue,
             int indentSize,
             NameType memberNameType,
             string templateItemPath,
-            string templateRootPath
+            string templateRootPath,
+            in Func<EnumCodeEntity, string, string>? actionFormatLinks = null,
+            in Func<EnumCodeEntity, string, string>? actionFormatWarning = null,
+            in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated = null,
+            KeyValuePair<string, string>? defaultValue = null
         )
         {
             if (indentSize < 0) { return null; }
