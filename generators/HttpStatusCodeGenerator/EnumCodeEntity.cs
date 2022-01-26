@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-
 namespace HttpStatusCodeGenerator
 {
     /// <summary>
@@ -10,7 +8,7 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// ドキュメント内のリンク一覧
         /// </summary>
-        public ImmutableArray<KeyValuePair<string, string>> Links { get; private set; }
+        public IEnumerable<KeyValuePair<string, string>> Links { get; private set; }
 
         /// <summary>
         /// メンバーの値
@@ -20,7 +18,7 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// メンバー名向けの単語一覧
         /// </summary>
-        public ImmutableArray<string> MemberWords { get; private set; }
+        public IEnumerable<string> MemberWords { get; private set; }
 
         /// <summary>
         /// ドキュメントタイトル
@@ -34,9 +32,9 @@ namespace HttpStatusCodeGenerator
 
 
         public EnumCodeEntity(
-            in ImmutableArray<KeyValuePair<string, string>> links,
+            in IEnumerable<KeyValuePair<string, string>> links,
             string memberValue,
-            in ImmutableArray<string> memberWords,
+            in IEnumerable<string> memberWords,
             string title,
             string warning
         )

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
 namespace HttpStatusCodeGenerator
@@ -13,7 +12,7 @@ namespace HttpStatusCodeGenerator
         /// <returns>列挙型コードデータ</returns>
         public static EnumCodeEntity Compile(
             in CsvEntity from,
-            in ImmutableDictionary<string, string> replaceWords
+            in IReadOnlyDictionary<string, string> replaceWords
         )
         {
             // リンクの解析
@@ -50,9 +49,9 @@ namespace HttpStatusCodeGenerator
 
             // インスタンス生成
             return new EnumCodeEntity(
-                links: queryLinks.ToImmutableArray(),
+                links: queryLinks,
                 memberValue: $"{from.Code}",
-                memberWords: nameWords.ToImmutableArray(),
+                memberWords: nameWords,
                 title: $"{from.Code} {from.Name}{suffix}",
                 warning: from.Caution
             );

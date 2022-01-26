@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-
 namespace HttpStatusCodeGenerator
 {
     /// <summary>
@@ -32,8 +30,8 @@ namespace HttpStatusCodeGenerator
             string templateRootPath,
             in Func<EnumCodeEntity, string, string>? actionFormatLinks = null,
             in Func<EnumCodeEntity, string, string>? actionFormatWarning = null,
-            in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated = null,
-            KeyValuePair<string, string>? defaultValue = null
+            in Func<string, IEnumerable<EnumCodeEntity>, string, string>? actionGenerated = null,
+            EnumCodeEntity? defaultValue = null
         )
         {
             if (indentSize < 0) { return null; }
@@ -71,12 +69,12 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// 生成後の書式整形アクション
         /// </summary>
-        private readonly Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated;
+        private readonly Func<string, IEnumerable<EnumCodeEntity>, string, string>? actionGenerated;
 
         /// <summary>
         /// 既定値
         /// </summary>
-        private readonly KeyValuePair<string, string>? defaultValue;
+        private readonly EnumCodeEntity? defaultValue;
 
         /// <summary>
         /// 各項目の書式
@@ -98,8 +96,8 @@ namespace HttpStatusCodeGenerator
             in Func<EnumCodeEntity, string, string>? actionFormatLinks,
             in Func<EnumCodeEntity, string, string>? actionFormatName,
             in Func<EnumCodeEntity, string, string>? actionFormatWarning,
-            in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated,
-            KeyValuePair<string, string>? defaultValue,
+            in Func<string, IEnumerable<EnumCodeEntity>, string, string>? actionGenerated,
+            EnumCodeEntity? defaultValue,
             string formatItem,
             string formatRoot,
             int indentSize
@@ -120,19 +118,12 @@ namespace HttpStatusCodeGenerator
         /// 列挙型のコード生成
         /// </summary>
         /// <param name="target">展開するデータ</param>
-        public string Generate(in ImmutableList<EnumCodeEntity> target)
+        public string Generate(in IEnumerable<EnumCodeEntity> target)
         {
             List<EnumCodeEntity> source = new();
             if (defaultValue != null)
             {
-                var pair = defaultValue.Value;
-                source.Add(new EnumCodeEntity(
-                    links: ImmutableArray<KeyValuePair<string, string>>.Empty,
-                    memberValue: pair.Value,
-                    memberWords: ImmutableArray.Create(pair.Key),
-                    title: "This is default value.",
-                    warning: "Please use another."
-                ));
+                source.Add(defaultValue);
             }
             source.AddRange(target);
             var items = source.Select(item => GetTextItem(

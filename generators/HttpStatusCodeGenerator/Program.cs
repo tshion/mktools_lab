@@ -22,7 +22,13 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
         actionGenerated: (candidate, list, indent) => list.Any(item => !string.IsNullOrWhiteSpace(item.Warning))
             ? $"using System;{Environment.NewLine}{Environment.NewLine}{candidate}"
             : candidate,
-        defaultValue: KeyValuePair.Create("undefined", "0"),
+        defaultValue: new EnumCodeEntity(
+            links: Enumerable.Empty<KeyValuePair<string, string>>(),
+            memberValue: "0",
+            memberWords: new[] { "undefined" },
+            title: "This is default value.",
+            warning: "Please use another."
+        ),
         indentSize: 4,
         memberNameType: NameType.Pascal,
         templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
@@ -49,7 +55,13 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
         actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
             ? $"{Environment.NewLine}{Environment.NewLine}{indent} - Warning: {item.Warning}"
             : "",
-        defaultValue: KeyValuePair.Create("undefined", "0"),
+        defaultValue: new EnumCodeEntity(
+            links: Enumerable.Empty<KeyValuePair<string, string>>(),
+            memberValue: "0",
+            memberWords: new[] { "undefined" },
+            title: "This is default value.",
+            warning: "Please use another."
+        ),
         indentSize: 4,
         memberNameType: NameType.Camel,
         templateItemPath: Path.Combine(templateBasePath, "item.template.swift"),
@@ -88,6 +100,11 @@ ImmutableList<EnumCodeEntity> data = queryCsvBody
     .Where(item => item != null)
     .Select(item => item!)
     .ToImmutableList();
+if (!data.Any())
+{
+    Console.WriteLine("Finish: Not enough.");
+    return;
+}
 
 
 // 出力先のディレクトリ再作成

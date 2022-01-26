@@ -20,10 +20,11 @@ namespace HttpStatusCodeGenerator
         {
             NameType.Camel => (item, indent) =>
             {
+                var words = item.MemberWords.ToArray();
                 StringBuilder builder = new();
-                for (int i = 0; i < item.MemberWords.Length; i++)
+                for (int i = 0; i < words.Length; i++)
                 {
-                    string word = item.MemberWords[i];
+                    string word = words[i];
                     builder.Append(i == 0 ? word.ToLower() : $"{char.ToUpper(word[0])}{word[1..]}");
                 }
                 return builder.ToString();
@@ -31,10 +32,11 @@ namespace HttpStatusCodeGenerator
             ,
             NameType.Pascal => (item, indent) =>
             {
+                var words = item.MemberWords.ToArray();
                 StringBuilder builder = new();
-                for (int i = 0; i < item.MemberWords.Length; i++)
+                for (int i = 0; i < words.Length; i++)
                 {
-                    string word = item.MemberWords[i];
+                    string word = words[i];
                     builder.Append(i == 0 && word.Length < 2 ? word.ToUpper() : $"{char.ToUpper(word[0])}{word[1..]}");
                 }
                 return builder.ToString();
