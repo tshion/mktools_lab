@@ -32,6 +32,8 @@ namespace HttpStatusCodeGenerator
             if (csvIndexHasMdn < 0) { return null; }
             var csvIndexName = Array.FindIndex(csvHeaders, x => x.Equals(nameof(Name), StringComparison.OrdinalIgnoreCase));
             if (csvIndexName < 0) { return null; }
+            var csvIndexNameOld = Array.FindIndex(csvHeaders, x => x.Equals("OldName", StringComparison.OrdinalIgnoreCase));
+            if (csvIndexNameOld < 0) { return null; }
             var csvIndexNote = Array.FindIndex(csvHeaders, x => x.Equals(nameof(Note), StringComparison.OrdinalIgnoreCase));
             if (csvIndexNote < 0) { return null; }
             var csvIndexUrl1 = Array.FindIndex(csvHeaders, x => x.Equals(nameof(Url1), StringComparison.OrdinalIgnoreCase));
@@ -52,6 +54,7 @@ namespace HttpStatusCodeGenerator
                         code: code,
                         hasMdn: hasMdn,
                         name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
+                        nameOld: tokens.ElementAtOrDefault(csvIndexNameOld) ?? "",
                         note: tokens.ElementAtOrDefault(csvIndexNote) ?? "",
                         url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
                         url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? ""
@@ -83,6 +86,11 @@ namespace HttpStatusCodeGenerator
         public string Name { get; private set; }
 
         /// <summary>
+        /// 旧ステータス名
+        /// </summary>
+        public string NameOld { get; private set; }
+
+        /// <summary>
         /// 注釈
         /// </summary>
         public string Note { get; private set; }
@@ -103,6 +111,7 @@ namespace HttpStatusCodeGenerator
             int code,
             bool hasMdn,
             string name,
+            string nameOld,
             string note,
             string url1,
             string url2
@@ -112,6 +121,7 @@ namespace HttpStatusCodeGenerator
             Code = code;
             HasMdn = hasMdn;
             Name = name;
+            NameOld = nameOld;
             Note = note;
             Url1 = url1;
             Url2 = url2;
