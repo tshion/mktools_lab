@@ -25,9 +25,9 @@ namespace HttpStatusCodeGenerator
         /// </list>
         /// </returns>
         public static EnumCodeGenerator? LoadOrNull(
-            in Func<ContentEntity, string, string>? actionFormatLinks,
-            in Func<ContentEntity, string, string>? actionFormatWarning,
-            in Func<string, ImmutableList<ContentEntity>, string, string>? actionGenerated,
+            in Func<EnumCodeEntity, string, string>? actionFormatLinks,
+            in Func<EnumCodeEntity, string, string>? actionFormatWarning,
+            in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated,
             int indentSize,
             NameType memberNameType,
             string templateItemPath,
@@ -53,22 +53,22 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// ドキュメント内リンクの書式整形アクション
         /// </summary>
-        private readonly Func<ContentEntity, string, string>? actionFormatLinks;
+        private readonly Func<EnumCodeEntity, string, string>? actionFormatLinks;
 
         /// <summary>
         /// メンバー名の書式整形アクション
         /// </summary>
-        private readonly Func<ContentEntity, string, string>? actionFormatName;
+        private readonly Func<EnumCodeEntity, string, string>? actionFormatName;
 
         /// <summary>
         /// 警告文の書式整形アクション
         /// </summary>
-        private readonly Func<ContentEntity, string, string>? actionFormatWarning;
+        private readonly Func<EnumCodeEntity, string, string>? actionFormatWarning;
 
         /// <summary>
         /// 生成後の書式整形アクション
         /// </summary>
-        private readonly Func<string, ImmutableList<ContentEntity>, string, string>? actionGenerated;
+        private readonly Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated;
 
         /// <summary>
         /// 各項目の書式
@@ -87,10 +87,10 @@ namespace HttpStatusCodeGenerator
 
 
         private EnumCodeGenerator(
-            in Func<ContentEntity, string, string>? actionFormatLinks,
-            in Func<ContentEntity, string, string>? actionFormatName,
-            in Func<ContentEntity, string, string>? actionFormatWarning,
-            in Func<string, ImmutableList<ContentEntity>, string, string>? actionGenerated,
+            in Func<EnumCodeEntity, string, string>? actionFormatLinks,
+            in Func<EnumCodeEntity, string, string>? actionFormatName,
+            in Func<EnumCodeEntity, string, string>? actionFormatWarning,
+            in Func<string, ImmutableList<EnumCodeEntity>, string, string>? actionGenerated,
             string formatItem,
             string formatRoot,
             int indentSize
@@ -110,7 +110,7 @@ namespace HttpStatusCodeGenerator
         /// 列挙型のコード生成
         /// </summary>
         /// <param name="target">展開するデータ</param>
-        public string Generate(in ImmutableList<ContentEntity> target)
+        public string Generate(in ImmutableList<EnumCodeEntity> target)
         {
             IEnumerable<string> items = target.Select(item => GetTextItem(
                 linkText: actionFormatLinks?.Invoke(item, indent) ?? "",

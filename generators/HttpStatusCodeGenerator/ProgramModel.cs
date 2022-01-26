@@ -3,17 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace HttpStatusCodeGenerator
 {
-    /// <summary>
-    /// 各言語に展開する内容
-    /// </summary>
-    internal class ContentEntity
+    internal class ProgramModel
     {
         /// <summary>
-        /// インスタンス生成
+        /// データ変換
         /// </summary>
-        /// <param name="from">変換元データ</param>
+        /// <param name="from">CSV データ</param>
         /// <param name="replaceWords">単語変換データ</param>
-        public static ContentEntity Parse(
+        /// <returns>列挙型コードデータ</returns>
+        public static EnumCodeEntity Compile(
             in CsvEntity from,
             in ImmutableDictionary<string, string> replaceWords
         )
@@ -51,55 +49,13 @@ namespace HttpStatusCodeGenerator
             string suffix = !string.IsNullOrEmpty(from.Note) ? $"({from.Note})" : "";
 
             // インスタンス生成
-            return new ContentEntity(
+            return new EnumCodeEntity(
                 links: queryLinks.ToImmutableArray(),
                 memberValue: $"{from.Code}",
                 memberWords: nameWords.ToImmutableArray(),
                 title: $"{from.Code} {from.Name}{suffix}",
                 warning: from.Caution
             );
-        }
-
-
-        /// <summary>
-        /// ドキュメント内のリンク一覧
-        /// </summary>
-        public ImmutableArray<KeyValuePair<string, string>> Links { get; private set; }
-
-        /// <summary>
-        /// メンバーの値
-        /// </summary>
-        public string MemberValue { get; private set; }
-
-        /// <summary>
-        /// メンバー名向けの単語一覧
-        /// </summary>
-        public ImmutableArray<string> MemberWords { get; private set; }
-
-        /// <summary>
-        /// ドキュメントタイトル
-        /// </summary>
-        public string Title { get; private set; }
-
-        /// <summary>
-        /// 警告事項
-        /// </summary>
-        public string Warning { get; private set; }
-
-
-        private ContentEntity(
-            in ImmutableArray<KeyValuePair<string, string>> links,
-            string memberValue,
-            in ImmutableArray<string> memberWords,
-            string title,
-            string warning
-        )
-        {
-            Links = links;
-            MemberValue = memberValue;
-            MemberWords = memberWords;
-            Title = title;
-            Warning = warning;
         }
     }
 }

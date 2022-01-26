@@ -14,7 +14,7 @@ namespace HttpStatusCodeGenerator
         ///     <item>それ以外はインスタンス</item>
         /// </list>
         /// </returns>
-        public static Func<ContentEntity, string, string>? GetFormatterOrNull(
+        public static Func<EnumCodeEntity, string, string>? GetFormatterOrNull(
             this NameType nameType
         ) => nameType switch
         {
