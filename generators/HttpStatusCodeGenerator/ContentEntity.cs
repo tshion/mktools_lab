@@ -19,12 +19,12 @@ namespace HttpStatusCodeGenerator
         )
         {
             // リンクの解析
-            Dictionary<string, string> links = new();
+            Dictionary<string, string> tmpLinks = new();
             if (from.HasMdn)
             {
-                links.TryAdd(
-                    "MDN Web Docs",
-                    $"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{from.Code}"
+                tmpLinks.TryAdd(
+                    $"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{from.Code}",
+                    "MDN Web Docs"
                 );
             }
             foreach (var url in new[] { from.Url1, from.Url2 })
@@ -32,9 +32,12 @@ namespace HttpStatusCodeGenerator
                 var result = Regex.Match(url, @"(rfc\d{4,})");
                 if (result.Success)
                 {
-                    links.TryAdd(result.Groups[1].Value.ToUpper(), url);
+                    tmpLinks.TryAdd(url, result.Groups[1].Value.ToUpper());
                 }
             }
+            IOrderedEnumerable<KeyValuePair<string, string>> queryLinks = tmpLinks
+                .Select(item => KeyValuePair.Create(item.Value, item.Key))
+                .OrderBy(item => item.Key);
 
             // キー名の解析
             string replaced = from.Name;
@@ -49,7 +52,7 @@ namespace HttpStatusCodeGenerator
 
             // インスタンス生成
             return new ContentEntity(
-                links: links.OrderBy(item => item.Key).ToImmutableDictionary(),
+                links: queryLinks.ToImmutableArray(),
                 memberValue: $"{from.Code}",
                 memberWords: nameWords.ToImmutableArray(),
                 title: $"{from.Code} {from.Name}{suffix}",
@@ -61,7 +64,7 @@ namespace HttpStatusCodeGenerator
         /// <summary>
         /// ドキュメント内のリンク一覧
         /// </summary>
-        public ImmutableDictionary<string, string> Links { get; private set; }
+        public ImmutableArray<KeyValuePair<string, string>> Links { get; private set; }
 
         /// <summary>
         /// メンバーの値
@@ -85,7 +88,7 @@ namespace HttpStatusCodeGenerator
 
 
         private ContentEntity(
-            in ImmutableDictionary<string, string> links,
+            in ImmutableArray<KeyValuePair<string, string>> links,
             string memberValue,
             in ImmutableArray<string> memberWords,
             string title,
