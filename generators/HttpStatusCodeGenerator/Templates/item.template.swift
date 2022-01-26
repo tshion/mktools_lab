@@ -1,7 +1,2 @@
-    /**
-     %%DOCS_TITLE%%
-
-     - SeeAlso:
-%%DOCS_LINKS%%%%WARNING%%
-     */
+%%MEMBER_DOCS%%
     case %%MEMBER_NAME%% = %%MEMBER_VALUE%%

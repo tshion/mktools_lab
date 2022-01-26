@@ -26,6 +26,11 @@ namespace HttpStatusCodeGenerator
         public string Title { get; private set; }
 
         /// <summary>
+        /// ドキュメントタイトル後のテキスト
+        /// </summary>
+        public string TitleSuffix { get; private set; }
+
+        /// <summary>
         /// 警告事項
         /// </summary>
         public string Warning { get; private set; }
@@ -36,6 +41,7 @@ namespace HttpStatusCodeGenerator
             string memberValue,
             in IEnumerable<string> memberWords,
             string title,
+            string titleSuffix,
             string warning
         )
         {
@@ -43,6 +49,7 @@ namespace HttpStatusCodeGenerator
             MemberValue = memberValue;
             MemberWords = memberWords;
             Title = title;
+            TitleSuffix = titleSuffix;
             Warning = warning;
         }
     }

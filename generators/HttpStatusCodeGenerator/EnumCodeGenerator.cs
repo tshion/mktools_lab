@@ -12,8 +12,8 @@ namespace HttpStatusCodeGenerator
         /// <param name="memberNameType">メンバー名の命名形式</param>
         /// <param name="templateItemPath">各項目のテンプレートファイルパス</param>
         /// <param name="templateRootPath">基礎部分のテンプレートファイルパス</param>
-        /// <param name="actionFormatLinks">ドキュメント内リンクの書式整形アクション</param>
-        /// <param name="actionFormatWarning">警告文の書式整形アクション</param>
+        /// <param name="actionFormatDocs">ドキュメントの書式整形アクション</param>
+        /// <param name="actionFormatPrefix">メンバー名の前に挿入する書式整形アクション</param>
         /// <param name="actionGenerated">生成後の書式整形アクション</param>
         /// <param name="defaultValue">既定値</param>
         /// <returns>
@@ -28,8 +28,8 @@ namespace HttpStatusCodeGenerator
             NameType memberNameType,
             string templateItemPath,
             string templateRootPath,
-            in Func<EnumCodeEntity, string, string>? actionFormatLinks = null,
-            in Func<EnumCodeEntity, string, string>? actionFormatWarning = null,
+            in Func<EnumCodeEntity, string, string>? actionFormatDocs = null,
+            in Func<EnumCodeEntity, string, string>? actionFormatPrefix = null,
             in Func<string, IEnumerable<EnumCodeEntity>, string, string>? actionGenerated = null,
             EnumCodeEntity? defaultValue = null
         )
@@ -39,9 +39,9 @@ namespace HttpStatusCodeGenerator
             if (!File.Exists(templateRootPath)) { return null; }
 
             return new EnumCodeGenerator(
-                actionFormatLinks: actionFormatLinks,
+                actionFormatDocs: actionFormatDocs,
                 actionFormatName: memberNameType.GetFormatterOrNull(),
-                actionFormatWarning: actionFormatWarning,
+                actionFormatPrefix: actionFormatPrefix,
                 actionGenerated: actionGenerated,
                 defaultValue: defaultValue,
                 formatItem: File.ReadAllText(templateItemPath),
@@ -52,9 +52,9 @@ namespace HttpStatusCodeGenerator
 
 
         /// <summary>
-        /// ドキュメント内リンクの書式整形アクション
+        /// ドキュメントの書式整形アクション
         /// </summary>
-        private readonly Func<EnumCodeEntity, string, string>? actionFormatLinks;
+        private readonly Func<EnumCodeEntity, string, string>? actionFormatDocs;
 
         /// <summary>
         /// メンバー名の書式整形アクション
@@ -62,9 +62,9 @@ namespace HttpStatusCodeGenerator
         private readonly Func<EnumCodeEntity, string, string>? actionFormatName;
 
         /// <summary>
-        /// 警告文の書式整形アクション
+        /// メンバー名の前に挿入する書式整形アクション
         /// </summary>
-        private readonly Func<EnumCodeEntity, string, string>? actionFormatWarning;
+        private readonly Func<EnumCodeEntity, string, string>? actionFormatPrefix;
 
         /// <summary>
         /// 生成後の書式整形アクション
@@ -93,9 +93,9 @@ namespace HttpStatusCodeGenerator
 
 
         private EnumCodeGenerator(
-            in Func<EnumCodeEntity, string, string>? actionFormatLinks,
+            in Func<EnumCodeEntity, string, string>? actionFormatDocs,
             in Func<EnumCodeEntity, string, string>? actionFormatName,
-            in Func<EnumCodeEntity, string, string>? actionFormatWarning,
+            in Func<EnumCodeEntity, string, string>? actionFormatPrefix,
             in Func<string, IEnumerable<EnumCodeEntity>, string, string>? actionGenerated,
             EnumCodeEntity? defaultValue,
             string formatItem,
@@ -103,9 +103,9 @@ namespace HttpStatusCodeGenerator
             int indentSize
         )
         {
-            this.actionFormatLinks = actionFormatLinks;
+            this.actionFormatDocs = actionFormatDocs;
             this.actionFormatName = actionFormatName;
-            this.actionFormatWarning = actionFormatWarning;
+            this.actionFormatPrefix = actionFormatPrefix;
             this.actionGenerated = actionGenerated;
             this.defaultValue = defaultValue;
             this.formatItem = formatItem;
@@ -127,11 +127,10 @@ namespace HttpStatusCodeGenerator
             }
             source.AddRange(target);
             var items = source.Select(item => GetTextItem(
-                linkText: actionFormatLinks?.Invoke(item, indent) ?? "",
+                memberDocs: actionFormatDocs?.Invoke(item, indent) ?? "",
                 memberName: actionFormatName?.Invoke(item, indent) ?? "",
-                memberValue: item.MemberValue,
-                title: item.Title,
-                warning: actionFormatWarning?.Invoke(item, indent) ?? item.Warning
+                memberPrefix: actionFormatPrefix?.Invoke(item, indent) ?? "",
+                memberValue: item.MemberValue
             ));
 
             string candidate = GetTextRoot(string.Join($"{Environment.NewLine}{Environment.NewLine}", items));
@@ -141,17 +140,15 @@ namespace HttpStatusCodeGenerator
         }
 
         private string GetTextItem(
-            string linkText,
+            string memberDocs,
             string memberName,
-            string memberValue,
-            string title,
-            string warning
+            string memberPrefix,
+            string memberValue
         ) => $"{formatItem}"
-            .Replace("%%DOCS_LINKS%%", linkText)
-            .Replace("%%DOCS_TITLE%%", title)
+            .Replace("%%MEMBER_DOCS%%", memberDocs)
             .Replace("%%MEMBER_NAME%%", memberName)
-            .Replace("%%MEMBER_VALUE%%", memberValue)
-            .Replace("%%WARNING%%", warning);
+            .Replace("%%MEMBER_PREFIX%%", memberPrefix)
+            .Replace("%%MEMBER_VALUE%%", memberValue);
 
         private string GetTextRoot(
             string items

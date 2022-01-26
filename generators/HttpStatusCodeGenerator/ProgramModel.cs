@@ -45,14 +45,16 @@ namespace HttpStatusCodeGenerator
             string[] nameWords = replaced.Split(' ', '-');
 
             // ドキュメント内容の解析
-            string suffix = !string.IsNullOrEmpty(from.Note) ? $"({from.Note})" : "";
+            string note = !string.IsNullOrEmpty(from.Note) ? $"({from.Note})" : "";
+            string suffix = !string.IsNullOrWhiteSpace(from.NameOld) ? $"(HTTP 1.0: {from.NameOld})" : "";
 
             // インスタンス生成
             return new EnumCodeEntity(
                 links: queryLinks,
                 memberValue: $"{from.Code}",
                 memberWords: nameWords,
-                title: $"{from.Code} {from.Name}{suffix}",
+                title: $"{from.Code} {from.Name}{note}",
+                titleSuffix: suffix,
                 warning: from.Caution
             );
         }

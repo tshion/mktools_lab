@@ -1,6 +1,2 @@
-    /**
-     * %%DOCS_TITLE%%
-     *
-%%DOCS_LINKS%%
-     */
-     %%WARNING%%%%MEMBER_NAME%%(%%MEMBER_VALUE%%),
+%%MEMBER_DOCS%%
+%%MEMBER_PREFIX%%%%MEMBER_NAME%%(%%MEMBER_VALUE%%),

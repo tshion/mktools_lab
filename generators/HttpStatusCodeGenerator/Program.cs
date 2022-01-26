@@ -1,6 +1,7 @@
 // See https://aka.ms/new-console-template for more information
 using HttpStatusCodeGenerator;
 using System.Collections.Immutable;
+using System.Text;
 
 
 Console.WriteLine("Start");
@@ -12,13 +13,45 @@ string templateBasePath = Path.Combine(basePath, "Templates");
 ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<string, EnumCodeGenerator?>()
 {
     ["cs"] = EnumCodeGenerator.LoadOrNull(
-        actionFormatLinks: (item, indent) => string.Join(
-            Environment.NewLine,
-            item.Links.Select(x => $"{indent}{indent}/// {indent}<item><see href=\"{x.Value}\">{x.Key}</see></item>")
-        ),
-        actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
-            ? $"[Obsolete(\"{item.Warning}\")]{Environment.NewLine}{indent}{indent}"
-            : "",
+        actionFormatDocs: (item, indent) =>
+        {
+            string prefix = $"{indent}{indent}/// ";
+            StringBuilder builder = new();
+            if (!string.IsNullOrWhiteSpace(item.Title))
+            {
+                builder.AppendLine($"{prefix}<summary>");
+                builder.AppendLine($"{prefix}{item.Title}");
+                if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
+                {
+                    builder.AppendLine($"{prefix}{item.TitleSuffix}");
+                }
+                builder.Append($"{prefix}</summary>");
+            }
+            if (item.Links.Any())
+            {
+                builder.AppendLine("");
+                builder.AppendLine($"{prefix}<remarks>");
+                builder.AppendLine($"{prefix}{indent}<list type=\"bullet\">");
+                foreach (var (title, url) in item.Links)
+                {
+                    builder.AppendLine($"{prefix}{indent}{indent}<item><see href=\"{url}\">{title}</see></item>");
+                }
+                builder.AppendLine($"{prefix}{indent}</list>");
+                builder.Append($"{prefix}</remarks>");
+            }
+            return builder.ToString();
+        },
+        actionFormatPrefix: (item, indent) =>
+        {
+            string prefix = $"{indent}{indent}";
+            StringBuilder builder = new();
+            if (!string.IsNullOrWhiteSpace(item.Warning))
+            {
+                builder.AppendLine($"{prefix}[Obsolete(\"{item.Warning}\")]");
+            }
+            builder.Append(prefix);
+            return builder.ToString();
+        },
         actionGenerated: (candidate, list, indent) => list.Any(item => !string.IsNullOrWhiteSpace(item.Warning))
             ? $"using System;{Environment.NewLine}{Environment.NewLine}{candidate}"
             : candidate,
@@ -27,41 +60,100 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
             memberValue: "0",
             memberWords: new[] { "undefined" },
             title: "This is default value.",
+            titleSuffix: "",
             warning: "Please use another."
         ),
         indentSize: 4,
         memberNameType: NameType.Pascal,
-        templateItemPath: Path.Combine(templateBasePath, "HttpStatusCode.item.template.cs"),
-        templateRootPath: Path.Combine(templateBasePath, "HttpStatusCode.root.template.cs")
+        templateItemPath: Path.Combine(templateBasePath, "item.template.cs"),
+        templateRootPath: Path.Combine(templateBasePath, "root.template.cs")
     ),
     ["kt"] = EnumCodeGenerator.LoadOrNull(
-        actionFormatLinks: (item, indent) => string.Join(
-            Environment.NewLine,
-            item.Links.Select(x => $"{indent} * * [{x.Key}]({x.Value})")
-        ),
-        actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
-            ? $"@Deprecated(\"{item.Warning}\"){Environment.NewLine}{indent}"
-            : "",
+        actionFormatDocs: (item, indent) =>
+        {
+            string prefix = $"{indent} * ";
+            string start = $"{indent}/**";
+            StringBuilder builder = new();
+            if (!string.IsNullOrWhiteSpace(item.Title))
+            {
+                builder.AppendLine(start);
+                builder.AppendLine($"{prefix}{item.Title}");
+                if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
+                {
+                    builder.AppendLine($"{prefix}{item.TitleSuffix}");
+                }
+            }
+            if (item.Links.Any())
+            {
+                builder.AppendLine(builder.Length < 1 ? start : prefix);
+                foreach (var (title, url) in item.Links)
+                {
+                    builder.AppendLine($"{prefix}* [{title}]({url})");
+                }
+            }
+            if (0 < builder.Length)
+            {
+                builder.Append($"{indent} */");
+            }
+            return builder.ToString();
+        },
+        actionFormatPrefix: (item, indent) =>
+        {
+            string prefix = $"{indent}";
+            StringBuilder builder = new();
+            if (!string.IsNullOrWhiteSpace(item.Warning))
+            {
+                builder.AppendLine($"{prefix}@Deprecated(\"{item.Warning}\")");
+            }
+            builder.Append(prefix);
+            return builder.ToString();
+        },
         indentSize: 4,
         memberNameType: NameType.Snake,
         templateItemPath: Path.Combine(templateBasePath, "item.template.kt"),
         templateRootPath: Path.Combine(templateBasePath, "root.template.kt")
     ),
     ["swift"] = EnumCodeGenerator.LoadOrNull(
-        actionFormatLinks: (item, indent) => string.Join(
-           Environment.NewLine,
-           item.Links.Select(x => $"{indent}   {indent}- [{x.Key}]({x.Value})")
-        ),
-        actionFormatWarning: (item, indent) => !string.IsNullOrWhiteSpace(item.Warning)
-            ? $"{Environment.NewLine}{Environment.NewLine}{indent} - Warning: {item.Warning}"
-            : "",
-        defaultValue: new EnumCodeEntity(
-            links: Enumerable.Empty<KeyValuePair<string, string>>(),
-            memberValue: "0",
-            memberWords: new[] { "undefined" },
-            title: "This is default value.",
-            warning: "Please use another."
-        ),
+        actionFormatDocs: (item, indent) =>
+        {
+            string prefix = $"{indent}/// ";
+            StringBuilder builder = new();
+            if (!string.IsNullOrWhiteSpace(item.Title))
+            {
+                builder.AppendLine(prefix);
+                builder.AppendLine($"{prefix}{item.Title}");
+                if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
+                {
+                    builder.AppendLine($"{prefix}{item.TitleSuffix}");
+                }
+            }
+            if (item.Links.Any())
+            {
+                if (0 < builder.Length)
+                {
+                    builder.AppendLine(prefix);
+                }
+                builder.AppendLine($"{prefix}- SeeAlso:");
+                foreach (var (title, url) in item.Links)
+                {
+                    builder.AppendLine($"{prefix}  - [{title}]({url})");
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(item.Warning))
+            {
+                if (0 < builder.Length)
+                {
+                    builder.AppendLine(prefix);
+                }
+                builder.AppendLine($"{prefix}- Warning:");
+                builder.AppendLine($"{prefix}{item.Warning}");
+            }
+            if (0 < builder.Length)
+            {
+                builder.Append(prefix);
+            }
+            return builder.ToString();
+        },
         indentSize: 4,
         memberNameType: NameType.Camel,
         templateItemPath: Path.Combine(templateBasePath, "item.template.swift"),
