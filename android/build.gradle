@@ -1,7 +1,14 @@
 plugins {
+    // Android Library
     id 'com.android.library'
+
+    // Kotlin Android
     id 'kotlin-android'
+
+    // Maven Publish
     id 'maven-publish'
+
+    // Dokka
     id 'org.jetbrains.dokka'
 }
 
@@ -40,7 +47,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.core:core-ktx:1.7.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+    testImplementation 'androidx.test.ext:junit-ktx:1.1.3'
     implementation 'com.google.android.material:material:1.5.0'
 
     // JUnit
@@ -53,10 +61,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                artifact javadocJar {
-                    classifier = 'javadoc'
-                    extension = 'jar'
-                }
+                artifact javadocJar
                 artifact sourcesJar
 
                 artifactId = 'mktools_android'
