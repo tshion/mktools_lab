@@ -4,6 +4,7 @@
 対象の実行環境 | ライブラリ名 | 備考
 --- | --- | ---
 [Android](./android) | mktools_android | Android 用ライブラリの試作環境
+([HttpStatusCodeGenerator](./generators/HttpStatusCodeGenerator)) | (なし) | HttpStatusCode 定義のコード生成
 [iOS](./ios) | mktools_ios | iOS 用ライブラリの試作環境
 
 

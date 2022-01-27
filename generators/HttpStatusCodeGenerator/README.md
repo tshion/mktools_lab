@@ -1,0 +1,2 @@
+# HttpStatusCodeGenerator
+各言語向けにHttpStatusCode 定義のコード生成をするためのプロジェクト。
