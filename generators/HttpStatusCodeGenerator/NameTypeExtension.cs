@@ -27,7 +27,13 @@ namespace HttpStatusCodeGenerator
                     string word = words[i];
                     builder.Append(i == 0 ? word.ToLower() : $"{char.ToUpper(word[0])}{word[1..]}");
                 }
-                return builder.ToString();
+                string candidate = builder.ToString();
+                // FIXME: 言語の予約語に該当する場合の対応
+                if (candidate == "continue")
+                {
+                    candidate = $"`{candidate}`";
+                }
+                return candidate;
             }
             ,
             NameType.Pascal => (item, indent) =>
