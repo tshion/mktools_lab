@@ -116,11 +116,12 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
     ["swift"] = EnumCodeGenerator.LoadOrNull(
         actionFormatDocs: (item, indent) =>
         {
-            string prefix = $"{indent}/// ";
+            string prefix = $"{indent} ";
+            string start = $"{indent}/**";
             StringBuilder builder = new();
             if (!string.IsNullOrWhiteSpace(item.Title))
             {
-                builder.AppendLine(prefix);
+                builder.AppendLine(start);
                 builder.AppendLine($"{prefix}{item.Title}");
                 if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
                 {
@@ -129,10 +130,7 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
             }
             if (item.Links.Any())
             {
-                if (0 < builder.Length)
-                {
-                    builder.AppendLine(prefix);
-                }
+                builder.AppendLine(builder.Length < 1 ? start : prefix);
                 builder.AppendLine($"{prefix}- SeeAlso:");
                 foreach (var (title, url) in item.Links)
                 {
@@ -141,16 +139,13 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
             }
             if (!string.IsNullOrWhiteSpace(item.Warning))
             {
-                if (0 < builder.Length)
-                {
-                    builder.AppendLine(prefix);
-                }
+                builder.AppendLine(builder.Length < 1 ? start : prefix);
                 builder.AppendLine($"{prefix}- Warning:");
                 builder.AppendLine($"{prefix}{item.Warning}");
             }
             if (0 < builder.Length)
             {
-                builder.Append(prefix);
+                builder.Append($"{indent}*/");
             }
             return builder.ToString();
         },
