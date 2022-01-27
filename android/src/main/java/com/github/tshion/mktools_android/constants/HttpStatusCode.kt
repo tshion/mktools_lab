@@ -3,7 +3,7 @@ package com.github.tshion.mktools_android.constants
 /**
  * HTTP Status Code
  */
-enum class HttpStatusCode(value: Int) {
+enum class HttpStatusCode(val value: Int) {
 
     /**
      * 100 Continue

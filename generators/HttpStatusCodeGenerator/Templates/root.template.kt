@@ -3,7 +3,7 @@ package your.package
 /**
  * HTTP Status Code
  */
-enum class HttpStatusCode(value: Int) {
+enum class HttpStatusCode(val value: Int) {
 
 %%ITEMS%%
     ;
