@@ -5,7 +5,7 @@ public enum HttpStatusCode : Int {
 
     /**
      100 Continue
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/100)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.1.1)
@@ -15,7 +15,7 @@ public enum HttpStatusCode : Int {
 
     /**
      101 Switching Protocols
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/101)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.1.2)
@@ -25,7 +25,7 @@ public enum HttpStatusCode : Int {
 
     /**
      102 Processing(WebDAV)
-     
+
      - SeeAlso:
        - [RFC2518](https://datatracker.ietf.org/doc/html/rfc2518#section-10.1)
     */
@@ -33,7 +33,7 @@ public enum HttpStatusCode : Int {
 
     /**
      103 Early Hints
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103)
        - [RFC8297](https://datatracker.ietf.org/doc/html/rfc8297#section-2)
@@ -42,7 +42,7 @@ public enum HttpStatusCode : Int {
 
     /**
      200 OK
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.1)
@@ -52,7 +52,7 @@ public enum HttpStatusCode : Int {
 
     /**
      201 Created
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.2)
@@ -62,7 +62,7 @@ public enum HttpStatusCode : Int {
 
     /**
      202 Accepted
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/202)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.3)
@@ -72,7 +72,7 @@ public enum HttpStatusCode : Int {
 
     /**
      203 Non-Authoritative Information
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/203)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.4)
@@ -82,7 +82,7 @@ public enum HttpStatusCode : Int {
 
     /**
      204 No Content
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.5)
@@ -92,7 +92,7 @@ public enum HttpStatusCode : Int {
 
     /**
      205 Reset Content
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/205)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.6)
@@ -102,7 +102,7 @@ public enum HttpStatusCode : Int {
 
     /**
      206 Partial Content
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/206)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.2.7)
@@ -112,7 +112,7 @@ public enum HttpStatusCode : Int {
 
     /**
      207 Multi-Status(WebDAV)
-     
+
      - SeeAlso:
        - [RFC2518](https://datatracker.ietf.org/doc/html/rfc2518#section-10.2)
        - [RFC4918](https://datatracker.ietf.org/doc/html/rfc4918#section-11.1)
@@ -121,7 +121,7 @@ public enum HttpStatusCode : Int {
 
     /**
      208 Already Reported(WebDAV)
-     
+
      - SeeAlso:
        - [RFC5842](https://datatracker.ietf.org/doc/html/rfc5842#section-7.1)
     */
@@ -129,7 +129,7 @@ public enum HttpStatusCode : Int {
 
     /**
      226 IM Used(HTTP Delta encoding)
-     
+
      - SeeAlso:
        - [RFC3229](https://datatracker.ietf.org/doc/html/rfc3229#section-10.4.1)
     */
@@ -137,7 +137,7 @@ public enum HttpStatusCode : Int {
 
     /**
      300 Multiple Choice
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/300)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.1)
@@ -147,7 +147,7 @@ public enum HttpStatusCode : Int {
 
     /**
      301 Moved Permanently
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.2)
@@ -158,7 +158,7 @@ public enum HttpStatusCode : Int {
     /**
      302 Found
      (HTTP 1.0: Moved Temporarily)
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.3)
@@ -168,7 +168,7 @@ public enum HttpStatusCode : Int {
 
     /**
      303 See Other
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.4)
@@ -178,7 +178,7 @@ public enum HttpStatusCode : Int {
 
     /**
      304 Not Modified
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.5)
@@ -188,11 +188,11 @@ public enum HttpStatusCode : Int {
 
     /**
      305 Use Proxy
-     
+
      - SeeAlso:
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.6)
        - [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6.4.5)
-     
+
      - Warning:
      It has been deprecated due to security concerns regarding in-band configuration of a proxy.
     */
@@ -200,10 +200,10 @@ public enum HttpStatusCode : Int {
 
     /**
      306 unused
-     
+
      - SeeAlso:
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.7)
-     
+
      - Warning:
      This response code is no longer used; it is just reserved.
     */
@@ -211,7 +211,7 @@ public enum HttpStatusCode : Int {
 
     /**
      307 Temporary Redirect
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.3.8)
@@ -221,7 +221,7 @@ public enum HttpStatusCode : Int {
 
     /**
      308 Permanent Redirect
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/308)
        - [RFC7238](https://datatracker.ietf.org/doc/html/rfc7238)
@@ -231,7 +231,7 @@ public enum HttpStatusCode : Int {
 
     /**
      400 Bad Request
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1)
@@ -241,7 +241,7 @@ public enum HttpStatusCode : Int {
 
     /**
      401 Unauthorized
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.2)
@@ -251,12 +251,12 @@ public enum HttpStatusCode : Int {
 
     /**
      402 Payment Required
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.3)
        - [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.2)
-     
+
      - Warning:
      This response code is reserved for future use.
     */
@@ -264,7 +264,7 @@ public enum HttpStatusCode : Int {
 
     /**
      403 Forbidden
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.4)
@@ -274,7 +274,7 @@ public enum HttpStatusCode : Int {
 
     /**
      404 Not Found
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5)
@@ -284,7 +284,7 @@ public enum HttpStatusCode : Int {
 
     /**
      405 Method Not Allowed
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/405)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.6)
@@ -294,7 +294,7 @@ public enum HttpStatusCode : Int {
 
     /**
      406 Not Acceptable
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.7)
@@ -304,7 +304,7 @@ public enum HttpStatusCode : Int {
 
     /**
      407 Proxy Authentication Required
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/407)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.8)
@@ -314,7 +314,7 @@ public enum HttpStatusCode : Int {
 
     /**
      408 Request Timeout
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.9)
@@ -324,7 +324,7 @@ public enum HttpStatusCode : Int {
 
     /**
      409 Conflict
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.10)
@@ -334,7 +334,7 @@ public enum HttpStatusCode : Int {
 
     /**
      410 Gone
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/410)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.11)
@@ -344,7 +344,7 @@ public enum HttpStatusCode : Int {
 
     /**
      411 Length Required
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/411)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.12)
@@ -354,7 +354,7 @@ public enum HttpStatusCode : Int {
 
     /**
      412 Precondition Failed
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.13)
@@ -365,7 +365,7 @@ public enum HttpStatusCode : Int {
     /**
      413 Payload Too Large
      (HTTP 1.0: Request Entity Too Large)
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413)
        - [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.11)
@@ -375,7 +375,7 @@ public enum HttpStatusCode : Int {
     /**
      414 URI Too Long
      (HTTP 1.0: Request-URI Too Long)
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/414)
        - [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.12)
@@ -384,7 +384,7 @@ public enum HttpStatusCode : Int {
 
     /**
      415 Unsupported Media Type
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/415)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.16)
@@ -394,7 +394,7 @@ public enum HttpStatusCode : Int {
 
     /**
      416 Range Not Satisfiable
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/416)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.17)
@@ -404,7 +404,7 @@ public enum HttpStatusCode : Int {
 
     /**
      417 Expectation Failed
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/417)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.18)
@@ -414,7 +414,7 @@ public enum HttpStatusCode : Int {
 
     /**
      418 I'm a teapot
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418)
        - [RFC2324](https://datatracker.ietf.org/doc/html/rfc2324#section-2.3.2)
@@ -424,7 +424,7 @@ public enum HttpStatusCode : Int {
 
     /**
      421 Misdirected Request
-     
+
      - SeeAlso:
        - [RFC7540](https://datatracker.ietf.org/doc/html/rfc7540#section-9.1.2)
        - [RFC7838](https://datatracker.ietf.org/doc/html/rfc7838#section-6)
@@ -433,7 +433,7 @@ public enum HttpStatusCode : Int {
 
     /**
      422 Unprocessable Entity(WebDAV)
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422)
        - [RFC2518](https://datatracker.ietf.org/doc/html/rfc2518#section-10.3)
@@ -443,7 +443,7 @@ public enum HttpStatusCode : Int {
 
     /**
      423 Locked(WebDAV)
-     
+
      - SeeAlso:
        - [RFC2518](https://datatracker.ietf.org/doc/html/rfc2518#section-10.4)
        - [RFC4918](https://datatracker.ietf.org/doc/html/rfc4918#section-11.3)
@@ -452,7 +452,7 @@ public enum HttpStatusCode : Int {
 
     /**
      424 Failed Dependency(WebDAV)
-     
+
      - SeeAlso:
        - [RFC2518](https://datatracker.ietf.org/doc/html/rfc2518#section-10.5)
        - [RFC4918](https://datatracker.ietf.org/doc/html/rfc4918#section-11.4)
@@ -461,11 +461,11 @@ public enum HttpStatusCode : Int {
 
     /**
      425 Too Early
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/425)
        - [RFC8470](https://datatracker.ietf.org/doc/html/rfc8470#section-5.2)
-     
+
      - Warning:
      This is an experimental technology.
     */
@@ -473,7 +473,7 @@ public enum HttpStatusCode : Int {
 
     /**
      426 Upgrade Required
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/426)
        - [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.15)
@@ -482,7 +482,7 @@ public enum HttpStatusCode : Int {
 
     /**
      428 Precondition Required
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/428)
        - [RFC6585](https://datatracker.ietf.org/doc/html/rfc6585#section-3)
@@ -491,7 +491,7 @@ public enum HttpStatusCode : Int {
 
     /**
      429 Too Many Requests
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429)
        - [RFC6585](https://datatracker.ietf.org/doc/html/rfc6585#section-4)
@@ -500,7 +500,7 @@ public enum HttpStatusCode : Int {
 
     /**
      431 Request Header Fields Too Large
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/431)
        - [RFC6585](https://datatracker.ietf.org/doc/html/rfc6585#section-5)
@@ -509,7 +509,7 @@ public enum HttpStatusCode : Int {
 
     /**
      451 Unavailable For Legal Reasons
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451)
        - [RFC7725](https://datatracker.ietf.org/doc/html/rfc7725#section-3)
@@ -518,7 +518,7 @@ public enum HttpStatusCode : Int {
 
     /**
      500 Internal Server Error
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.1)
@@ -528,7 +528,7 @@ public enum HttpStatusCode : Int {
 
     /**
      501 Not Implemented
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/501)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.2)
@@ -538,7 +538,7 @@ public enum HttpStatusCode : Int {
 
     /**
      502 Bad Gateway
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.3)
@@ -548,7 +548,7 @@ public enum HttpStatusCode : Int {
 
     /**
      503 Service Unavailable
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.4)
@@ -558,7 +558,7 @@ public enum HttpStatusCode : Int {
 
     /**
      504 Gateway Timeout
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.5)
@@ -568,7 +568,7 @@ public enum HttpStatusCode : Int {
 
     /**
      505 HTTP Version Not Supported
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505)
        - [RFC2616](https://datatracker.ietf.org/doc/html/rfc2616#section-10.5.6)
@@ -578,7 +578,7 @@ public enum HttpStatusCode : Int {
 
     /**
      506 Variant Also Negotiates
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/506)
        - [RFC2295](https://datatracker.ietf.org/doc/html/rfc2295#section-8.1)
@@ -587,7 +587,7 @@ public enum HttpStatusCode : Int {
 
     /**
      507 Insufficient Storage(WebDAV)
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/507)
        - [RFC4918](https://datatracker.ietf.org/doc/html/rfc4918#section-11.5)
@@ -596,7 +596,7 @@ public enum HttpStatusCode : Int {
 
     /**
      508 Loop Detected(WebDAV)
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508)
        - [RFC5842](https://datatracker.ietf.org/doc/html/rfc5842#section-7.2)
@@ -605,7 +605,7 @@ public enum HttpStatusCode : Int {
 
     /**
      510 Not Extended
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/510)
        - [RFC2774](https://datatracker.ietf.org/doc/html/rfc2774#section-7)
@@ -614,7 +614,7 @@ public enum HttpStatusCode : Int {
 
     /**
      511 Network Authentication Required
-     
+
      - SeeAlso:
        - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511)
        - [RFC6585](https://datatracker.ietf.org/doc/html/rfc6585#section-6)
