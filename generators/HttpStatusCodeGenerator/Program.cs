@@ -130,22 +130,21 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
             }
             if (item.Links.Any())
             {
-                builder.AppendLine(builder.Length < 1 ? start : prefix);
+                builder.AppendLine(builder.Length < 1 ? start : "");
                 builder.AppendLine($"{prefix}- SeeAlso:");
                 foreach (var (title, url) in item.Links)
                 {
-                    builder.AppendLine($"{prefix}  - [{title}]({url})");
+                    builder.AppendLine($"{prefix} - [{title}]({url})");
                 }
             }
             if (!string.IsNullOrWhiteSpace(item.Warning))
             {
-                builder.AppendLine(builder.Length < 1 ? start : prefix);
-                builder.AppendLine($"{prefix}- Warning:");
-                builder.AppendLine($"{prefix}{item.Warning}");
+                builder.AppendLine(builder.Length < 1 ? start : "");
+                builder.AppendLine($"{prefix}- Warning: {item.Warning}");
             }
             if (0 < builder.Length)
             {
-                builder.Append($"{indent}*/");
+                builder.Append($"{indent} */");
             }
             return builder.ToString();
         },
