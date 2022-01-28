@@ -9,42 +9,43 @@ import kotlin.system.measureNanoTime
  */
 class EnumIntSampleBenchmark {
 
+    private val testData = arrayOf(97, 105, 113, 122)
+    private val testRange = 0..1000
+
+
+    private fun test(name: String, target: (num: Int) -> Unit) {
+        measureNanoTime {
+            for (count in testRange) {
+                for (item in testData) {
+                    target.invoke(item)
+                }
+            }
+        }.also { println("$name: $it[ns]") }
+    }
+
+
     @Test
-    fun test() {
+    fun test_parseByCacheArray() = test("parseByCacheArray") {
+        EnumIntSample.parseByCacheArray(it)
+    }
 
-        val testData = arrayOf(97, 105, 113, 122)
-        val testRange = 0..1000
+    @Test
+    fun test_parseByCacheMap() = test("parseByCacheMap") {
+        EnumIntSample.parseByCacheMap(it)
+    }
 
-        measureNanoTime {
-            for (count in testRange) {
-                for (item in testData) {
-                    EnumIntSample.parseCandidate1(item)
-                }
-            }
-        }.also { println("candidate1: $it[ns]") }
+//    @Test
+//    fun test_parseByCacheSparseArray() = test("parseByCacheSparseArray") {
+//        EnumIntSample.parseByCacheSparseArray(it)
+//    }
 
-        measureNanoTime {
-            for (count in testRange) {
-                for (item in testData) {
-                    EnumIntSample.parseCandidate2(item)
-                }
-            }
-        }.also { println("candidate2: $it[ns]") }
+    @Test
+    fun test_parseByValuesAndSingle() = test("parseByValuesAndSingle") {
+        EnumIntSample.parseByValuesAndSingle(it)
+    }
 
-        measureNanoTime {
-            for (count in testRange) {
-                for (item in testData) {
-                    EnumIntSample.parseCandidate3(item)
-                }
-            }
-        }.also { println("candidate3: $it[ns]") }
-
-        measureNanoTime {
-            for (count in testRange) {
-                for (item in testData) {
-                    EnumIntSample.parseCandidate4(item)
-                }
-            }
-        }.also { println("candidate4: $it[ns]") }
+    @Test
+    fun test_parseByWhen() = test("parseByWhen") {
+        EnumIntSample.parseByWhen(it)
     }
 }
