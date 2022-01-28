@@ -1,7 +1,7 @@
 /**
  Http Status Code
  */
-enum HttpStatusCode : Int {
+public enum HttpStatusCode : Int {
 
     /**
      100 Continue
