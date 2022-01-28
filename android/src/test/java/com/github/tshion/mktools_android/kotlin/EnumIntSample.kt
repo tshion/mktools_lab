@@ -1,6 +1,9 @@
-package com.github.tshion.mktools_android
+package com.github.tshion.mktools_android.kotlin
 
-enum class EnumSample(val value: Int) {
+/**
+ * Int 型のプロパティを持ったEnum サンプル
+ */
+enum class EnumIntSample(val value: Int) {
 
     A(97),
     B(98),
@@ -39,12 +42,12 @@ enum class EnumSample(val value: Int) {
 //        }
 
         @JvmStatic
-        fun parseCandidate1(value: Int): EnumSample {
+        fun parseCandidate1(value: Int): EnumIntSample {
             return values().single { it.value == value }
         }
 
         @JvmStatic
-        fun parseCandidate2(value: Int): EnumSample {
+        fun parseCandidate2(value: Int): EnumIntSample {
             return when (value) {
                 97 -> A
                 98 -> B
@@ -82,7 +85,7 @@ enum class EnumSample(val value: Int) {
         )
 
         @JvmStatic
-        fun parseCandidate3(value: Int): EnumSample {
+        fun parseCandidate3(value: Int): EnumIntSample {
             return tmp1.single { it.value == value }
         }
 
@@ -116,7 +119,7 @@ enum class EnumSample(val value: Int) {
         )
 
         @JvmStatic
-        fun parseCandidate4(value: Int): EnumSample {
+        fun parseCandidate4(value: Int): EnumIntSample {
             return tmp2[value]!!
         }
     }

@@ -1,13 +1,13 @@
-package com.github.tshion.mktools_android
+package com.github.tshion.mktools_android.kotlin
 
 import org.junit.Test
 
 import kotlin.system.measureNanoTime
 
 /**
- * Enum の変換テスト
+ * Int 型のプロパティを持ったEnum サンプルのベンチマークテスト
  */
-class EnumSampleUnitTest {
+class EnumIntSampleBenchmark {
 
     @Test
     fun test() {
@@ -18,7 +18,7 @@ class EnumSampleUnitTest {
         measureNanoTime {
             for (count in testRange) {
                 for (item in testData) {
-                    EnumSample.parseCandidate1(item)
+                    EnumIntSample.parseCandidate1(item)
                 }
             }
         }.also { println("candidate1: $it[ns]") }
@@ -26,7 +26,7 @@ class EnumSampleUnitTest {
         measureNanoTime {
             for (count in testRange) {
                 for (item in testData) {
-                    EnumSample.parseCandidate2(item)
+                    EnumIntSample.parseCandidate2(item)
                 }
             }
         }.also { println("candidate2: $it[ns]") }
@@ -34,7 +34,7 @@ class EnumSampleUnitTest {
         measureNanoTime {
             for (count in testRange) {
                 for (item in testData) {
-                    EnumSample.parseCandidate3(item)
+                    EnumIntSample.parseCandidate3(item)
                 }
             }
         }.also { println("candidate3: $it[ns]") }
@@ -42,7 +42,7 @@ class EnumSampleUnitTest {
         measureNanoTime {
             for (count in testRange) {
                 for (item in testData) {
-                    EnumSample.parseCandidate4(item)
+                    EnumIntSample.parseCandidate4(item)
                 }
             }
         }.also { println("candidate4: $it[ns]") }
