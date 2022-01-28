@@ -116,37 +116,36 @@ ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<strin
     ["swift"] = EnumCodeGenerator.LoadOrNull(
         actionFormatDocs: (item, indent) =>
         {
-            string prefix = $"{indent} ";
-            string start = $"{indent}/**";
-            StringBuilder builder = new();
+            string prefix = $"{indent}/// ";
+            List<string> candidate = new();
             if (!string.IsNullOrWhiteSpace(item.Title))
             {
-                builder.AppendLine(start);
-                builder.AppendLine($"{prefix}{item.Title}");
+                candidate.Add($"{prefix}{item.Title}");
                 if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
                 {
-                    builder.AppendLine($"{prefix}{item.TitleSuffix}");
+                    candidate.Add($"{prefix}{item.TitleSuffix}");
                 }
             }
             if (item.Links.Any())
             {
-                builder.AppendLine(builder.Length < 1 ? start : "");
-                builder.AppendLine($"{prefix}- SeeAlso:");
+                if (candidate.Any())
+                {
+                    candidate.Add(prefix.TrimEnd());
+                }
                 foreach (var (title, url) in item.Links)
                 {
-                    builder.AppendLine($"{prefix} - [{title}]({url})");
+                    candidate.Add($"{prefix}* [{title}]({url})");
                 }
             }
             if (!string.IsNullOrWhiteSpace(item.Warning))
             {
-                builder.AppendLine(builder.Length < 1 ? start : "");
-                builder.AppendLine($"{prefix}- Warning: {item.Warning}");
+                if (candidate.Any())
+                {
+                    candidate.Add(prefix.TrimEnd());
+                }
+                candidate.Add($"{prefix}- Warning: {item.Warning}");
             }
-            if (0 < builder.Length)
-            {
-                builder.Append($"{indent} */");
-            }
-            return builder.ToString();
+            return string.Join(Environment.NewLine, candidate);
         },
         indentSize: 4,
         memberNameType: NameType.Camel,
