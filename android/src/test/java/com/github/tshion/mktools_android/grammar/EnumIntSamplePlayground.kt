@@ -10,14 +10,10 @@ import kotlin.system.measureNanoTime
  */
 class EnumIntSamplePlayground {
 
-    private val testData = arrayOf(97, 105, 113, 122)
-    private val testRange = 0..1000
-
-
     private fun benchmark(name: String, target: (num: Int) -> Unit) {
         measureNanoTime {
-            for (count in testRange) {
-                for (item in testData) {
+            for (count in 0..1000) {
+                for (item in arrayOf(97, 105, 113, 122)) {
                     target.invoke(item)
                 }
             }
