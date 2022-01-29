@@ -30,8 +30,6 @@ Content-Type,,TRUE,https://datatracker.ietf.org/doc/html/rfc7233#section-4.1,htt
 Cross-Origin-Embedder-Policy,,TRUE,https://html.spec.whatwg.org/multipage/origin.html#coep,,
 Cross-Origin-Opener-Policy,,TRUE,https://html.spec.whatwg.org/multipage/origin.html#the-coop-headers,,
 Cross-Origin-Resource-Policy,,TRUE,https://fetch.spec.whatwg.org/#cross-origin-resource-policy-header,,
-Content-Security-Policy,,TRUE,https://w3c.github.io/webappsec-csp/#csp-header,,
-Content-Security-Policy-Report-Only,,TRUE,https://www.w3.org/TR/CSP2/,https://w3c.github.io/webappsec-csp/,
 Date,,TRUE,https://datatracker.ietf.org/doc/html/rfc7231#section-7.1.1.2,,
 Digest,,TRUE,https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-digest-headers-05#section-3,,
 ETag,,TRUE,https://datatracker.ietf.org/doc/html/rfc7232#section-2.3,,
