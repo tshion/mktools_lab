@@ -1,6 +1,7 @@
 package com.github.tshion.mktools_android.grammar
 
 import org.junit.Assert.assertNull
+import org.junit.Ignore
 import org.junit.Test
 
 import kotlin.system.measureNanoTime
@@ -8,6 +9,7 @@ import kotlin.system.measureNanoTime
 /**
  * Int 型のプロパティを持ったEnum サンプルの挙動確認
  */
+@Ignore("挙動確認用のため")
 class EnumIntSamplePlayground {
 
     private fun benchmark(name: String, target: (num: Int) -> Unit) {
