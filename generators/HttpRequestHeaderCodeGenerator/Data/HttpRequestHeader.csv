@@ -51,7 +51,7 @@ Proxy-Authorization,,TRUE,https://datatracker.ietf.org/doc/html/rfc7235#section-
 Push-Policy,?,FALSE,https://datatracker.ietf.org/doc/html/draft-ruellan-http-accept-push-policy-00#section-3.2,,
 Range,,TRUE,https://datatracker.ietf.org/doc/html/rfc7233#section-3.1,,
 Referer,,TRUE,https://datatracker.ietf.org/doc/html/rfc7231#section-5.5.2,,
-Report-To                                                                                                                           ,?,FALSE,?,,
+Report-To,?,FALSE,?,,
 RTT,This is an experimental technology,TRUE,https://wicg.github.io/netinfo/#rtt-request-header-field,,
 Save-Data,This is an experimental technology,TRUE,https://wicg.github.io/savedata/#save-data-request-header-field,,
 Sec-CH-UA,This is an experimental technology,TRUE,https://wicg.github.io/ua-client-hints/#sec-ch-ua,,
