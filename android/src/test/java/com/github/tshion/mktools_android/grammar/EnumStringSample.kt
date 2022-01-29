@@ -116,6 +116,22 @@ enum class EnumStringSample(val value: String) {
 //        }
 
 
+        private val cacheValues = EnumStringSample.values()
+
+        @JvmStatic
+        fun parseByCacheValues(value: String): EnumStringSample {
+            return cacheValues.single { it.value == value }
+        }
+
+
+        private val cacheValuesToMap = EnumStringSample.values().associateBy { it.value }
+
+        @JvmStatic
+        fun parseByCacheValuesToMap(value: String): EnumStringSample {
+            return cacheValuesToMap[value]!!
+        }
+
+
         @JvmStatic
         fun parseByValuesAndSingle(value: String): EnumStringSample {
             return values().single { it.value == value }

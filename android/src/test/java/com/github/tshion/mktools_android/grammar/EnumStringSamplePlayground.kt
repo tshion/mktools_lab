@@ -37,6 +37,16 @@ class EnumStringSamplePlayground {
 //    }
 
     @Test
+    fun test_benchmark_parseByCacheValues() = benchmark("parseByCacheValues") {
+        EnumStringSample.parseByCacheValues(it)
+    }
+
+    @Test
+    fun test_benchmark_parseByCacheValuesToMap() = benchmark("parseByCacheValuesToMap") {
+        EnumStringSample.parseByCacheValuesToMap(it)
+    }
+
+    @Test
     fun test_benchmark_parseByValuesAndSingle() = benchmark("parseByValuesAndSingle") {
         EnumStringSample.parseByValuesAndSingle(it)
     }
