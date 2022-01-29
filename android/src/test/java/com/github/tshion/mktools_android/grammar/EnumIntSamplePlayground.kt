@@ -1,19 +1,19 @@
-package com.github.tshion.mktools_android.kotlin
+package com.github.tshion.mktools_android.grammar
 
 import org.junit.Test
 
 import kotlin.system.measureNanoTime
 
 /**
- * Int 型のプロパティを持ったEnum サンプルのベンチマークテスト
+ * Int 型のプロパティを持ったEnum サンプルの挙動確認
  */
-class EnumIntSampleBenchmark {
+class EnumIntSamplePlayground {
 
     private val testData = arrayOf(97, 105, 113, 122)
     private val testRange = 0..1000
 
 
-    private fun test(name: String, target: (num: Int) -> Unit) {
+    private fun benchmark(name: String, target: (num: Int) -> Unit) {
         measureNanoTime {
             for (count in testRange) {
                 for (item in testData) {
@@ -25,27 +25,27 @@ class EnumIntSampleBenchmark {
 
 
     @Test
-    fun test_parseByCacheArray() = test("parseByCacheArray") {
+    fun test_benchmark_parseByCacheArray() = benchmark("parseByCacheArray") {
         EnumIntSample.parseByCacheArray(it)
     }
 
     @Test
-    fun test_parseByCacheMap() = test("parseByCacheMap") {
+    fun test_benchmark_parseByCacheMap() = benchmark("parseByCacheMap") {
         EnumIntSample.parseByCacheMap(it)
     }
 
 //    @Test
-//    fun test_parseByCacheSparseArray() = test("parseByCacheSparseArray") {
+//    fun test_benchmark_parseByCacheSparseArray() = benchmark("parseByCacheSparseArray") {
 //        EnumIntSample.parseByCacheSparseArray(it)
 //    }
 
     @Test
-    fun test_parseByValuesAndSingle() = test("parseByValuesAndSingle") {
+    fun test_benchmark_parseByValuesAndSingle() = benchmark("parseByValuesAndSingle") {
         EnumIntSample.parseByValuesAndSingle(it)
     }
 
     @Test
-    fun test_parseByWhen() = test("parseByWhen") {
+    fun test_benchmark_parseByWhen() = benchmark("parseByWhen") {
         EnumIntSample.parseByWhen(it)
     }
 }

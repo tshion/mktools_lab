@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.kotlin
+package com.github.tshion.mktools_android.grammar
 
 /**
  * Int 型のプロパティを持ったEnum サンプル
