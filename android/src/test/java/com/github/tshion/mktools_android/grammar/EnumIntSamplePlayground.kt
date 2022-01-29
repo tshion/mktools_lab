@@ -1,5 +1,6 @@
 package com.github.tshion.mktools_android.grammar
 
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 import kotlin.system.measureNanoTime
@@ -47,5 +48,11 @@ class EnumIntSamplePlayground {
     @Test
     fun test_benchmark_parseByWhen() = benchmark("parseByWhen") {
         EnumIntSample.parseByWhen(it)
+    }
+
+    @Test
+    fun test_default_value_java() {
+        val javaClass = EnumHadClass()
+        assertNull(javaClass.typeInt)
     }
 }
