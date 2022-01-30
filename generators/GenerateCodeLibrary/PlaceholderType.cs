@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 namespace GenerateCodeLibrary
 {
     /// <summary>
-    /// プレースホルダーの種類の定義
+    /// プレースホルダーの種類
     /// </summary>
     public enum PlaceholderType
     {

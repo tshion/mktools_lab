@@ -10,8 +10,8 @@ namespace GenerateCodeLibraryTest
         public void Test_Class()
         {
             var target = new SampleClass();
-            Assert.IsNotNull(target.type);
-            Assert.AreEqual(PlaceholderType.Undefined, target.type);
+            Assert.IsNotNull(target.Type);
+            Assert.AreEqual(PlaceholderType.Undefined, target.Type);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace GenerateCodeLibraryTest
 
         private class SampleClass
         {
-            public PlaceholderType type { get; set; }
+            public PlaceholderType Type { get; set; }
         }
     }
 }
