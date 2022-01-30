@@ -13,9 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpStatusCodeGenerator", "generators\HttpStatusCodeGenerator\HttpStatusCodeGenerator.csproj", "{BD585FF0-FB32-46F1-80FB-EDE0352573F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpRequestHeaderCodeGenerator", "generators\HttpRequestHeaderCodeGenerator\HttpRequestHeaderCodeGenerator.csproj", "{1CF0E8D3-B475-40C7-896B-D8D251206D5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpRequestHeaderCodeGenerator", "generators\HttpRequestHeaderCodeGenerator\HttpRequestHeaderCodeGenerator.csproj", "{1CF0E8D3-B475-40C7-896B-D8D251206D5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpResponseHeaderCodeGenerator", "generators\HttpResponseHeaderCodeGenerator\HttpResponseHeaderCodeGenerator.csproj", "{3BE83200-37F5-4617-8E11-F4617617417E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpResponseHeaderCodeGenerator", "generators\HttpResponseHeaderCodeGenerator\HttpResponseHeaderCodeGenerator.csproj", "{3BE83200-37F5-4617-8E11-F4617617417E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateCodeLibrary", "generators\GenerateCodeLibrary\GenerateCodeLibrary.csproj", "{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{3BE83200-37F5-4617-8E11-F4617617417E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BE83200-37F5-4617-8E11-F4617617417E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BE83200-37F5-4617-8E11-F4617617417E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
