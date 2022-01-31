@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace GenerateCodeLibraryTest
 {
-    public class NamingStyleUnitTests
+    internal class NamingStyleUnitTests
     {
         private readonly IReadOnlyList<string> words1 = new[]
         {

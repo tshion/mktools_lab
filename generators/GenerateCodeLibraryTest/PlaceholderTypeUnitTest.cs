@@ -4,7 +4,7 @@ using System;
 
 namespace GenerateCodeLibraryTest
 {
-    public class PlaceholderTypeUnitTests
+    internal class PlaceholderTypeUnitTests
     {
         [Test]
         public void Test_Class()
