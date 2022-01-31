@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace GenerateCodeLibrary
 {
     /// <summary>
@@ -46,7 +48,6 @@ namespace GenerateCodeLibrary
             int startPosition = 0
         )
         {
-            // TODO: Indent の取り扱い
             int i = startPosition;
             while (i < lines.Count())
             {
@@ -62,14 +63,12 @@ namespace GenerateCodeLibrary
                 }
                 else if (line.Contains(PlaceholderType.RepeatBegin.ToName()))
                 {
-                    var index = line.IndexOf(PlaceholderType.RepeatBegin.ToName());
-                    string indent = line.Remove(index);
-
                     List<SyntaxEntity> children = new();
                     var nextPosition = Parse(children, lines, true, i + 1);
                     accumulator.Add(new SyntaxEntity(
-                        Body: indent,
+                        Body: "",
                         Children: children,
+                        Indent: "",
                         Placeholders: Enumerable.Empty<PlaceholderType>()
                     ));
 
@@ -109,13 +108,25 @@ namespace GenerateCodeLibrary
                 }
 
                 accumulator.Add(new SyntaxEntity(
-                    Body: line.ReplaceLineEndings("").TrimEnd(),
+                    Body: line.ReplaceLineEndings("").Trim(),
                     Children: Enumerable.Empty<SyntaxEntity>(),
+                    Indent: PickIndent(line),
                     Placeholders: placeholders
                 ));
                 i++;
             }
             return i;
+        }
+
+        /// <summary>
+        /// インデントの抜き出し
+        /// </summary>
+        /// <param name="target">対象文字列</param>
+        /// <returns>見つからない場合は空文字</returns>
+        private string PickIndent(string target)
+        {
+            Match result = Regex.Match(target, @"^(\s*)\S.*$");
+            return result.Success ? result.Groups[1].Value : "";
         }
     }
 }
