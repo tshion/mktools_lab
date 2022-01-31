@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace GenerateCodeLibraryTest
 {
-    public class CodeNameStyleUnitTests
+    public class NamingStyleUnitTests
     {
         private readonly IReadOnlyList<string> words1 = new[]
         {
@@ -27,37 +27,37 @@ namespace GenerateCodeLibraryTest
         {
             var target = new SampleClass();
             Assert.IsNotNull(target.Type);
-            Assert.AreEqual(CodeNameStyle.Undefined, target.Type);
+            Assert.AreEqual(NamingStyle.Undefined, target.Type);
 
-            Assert.AreEqual("", CodeNameStyle.Undefined.Format(words1));
-            Assert.AreEqual("", CodeNameStyle.Undefined.Format(words2));
+            Assert.AreEqual("", NamingStyle.Undefined.Format(words1));
+            Assert.AreEqual("", NamingStyle.Undefined.Format(words2));
         }
 
         [Test]
         public void Test_Camel()
         {
-            Assert.AreEqual("aBC", CodeNameStyle.Camel.Format(words1));
-            Assert.AreEqual("aaaBbbCcc", CodeNameStyle.Camel.Format(words2));
+            Assert.AreEqual("aBC", NamingStyle.Camel.Format(words1));
+            Assert.AreEqual("aaaBbbCcc", NamingStyle.Camel.Format(words2));
         }
 
         [Test]
         public void Test_Pascal()
         {
-            Assert.AreEqual("ABC", CodeNameStyle.Pascal.Format(words1));
-            Assert.AreEqual("AaaBbbCcc", CodeNameStyle.Pascal.Format(words2));
+            Assert.AreEqual("ABC", NamingStyle.Pascal.Format(words1));
+            Assert.AreEqual("AaaBbbCcc", NamingStyle.Pascal.Format(words2));
         }
 
         [Test]
         public void Test_Snake()
         {
-            Assert.AreEqual("A_B_C", CodeNameStyle.Snake.Format(words1));
-            Assert.AreEqual("AAA_BBB_CCC", CodeNameStyle.Snake.Format(words2));
+            Assert.AreEqual("A_B_C", NamingStyle.Snake.Format(words1));
+            Assert.AreEqual("AAA_BBB_CCC", NamingStyle.Snake.Format(words2));
         }
 
 
         private class SampleClass
         {
-            public CodeNameStyle Type { get; set; }
+            public NamingStyle Type { get; set; }
         }
     }
 }
