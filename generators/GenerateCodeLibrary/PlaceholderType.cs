@@ -1,11 +1,14 @@
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("GenerateCodeLibraryTest")]
 
 namespace GenerateCodeLibrary
 {
     /// <summary>
     /// プレースホルダーの種類
     /// </summary>
-    public enum PlaceholderType
+    internal enum PlaceholderType
     {
         /// <summary>
         /// 未割当
@@ -63,7 +66,7 @@ namespace GenerateCodeLibrary
     /// <summary>
     /// プレースホルダーの種類に関連する拡張機能
     /// </summary>
-    public static class PlaceholderTypeExtensions
+    internal static class PlaceholderTypeExtensions
     {
         /// <summary>
         /// プレースホルダー名の一覧
