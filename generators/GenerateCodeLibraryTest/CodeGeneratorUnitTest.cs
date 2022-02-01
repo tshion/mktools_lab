@@ -11,7 +11,7 @@ namespace GenerateCodeLibraryTest
         private const string template = @"package your.package
 
 %%CLASS_DOCS%%
-internal enum class %%CLASS_NAME%%(val value: %%PROPERTY_TYPE%%) {
+internal enum class %%CLASS_NAME%%(val value: %%CLASS_TYPE_BASE%%) {
 
     %%REPEAT_BEGIN%%
     %%PROPERTY_DOCS%%
@@ -27,7 +27,7 @@ internal enum class %%CLASS_NAME%%(val value: %%PROPERTY_TYPE%%) {
          * Returns the element matching the given value.
          */
         @JvmStatic
-        fun parse(value: %%PROPERTY_TYPE%%) = tryParse(value).let { (canParse, result) ->
+        fun parse(value: %%CLASS_TYPE_BASE%%) = tryParse(value).let { (canParse, result) ->
             if (!canParse) {
                 throw NoSuchElementException()
             } else {
@@ -39,10 +39,10 @@ internal enum class %%CLASS_NAME%%(val value: %%PROPERTY_TYPE%%) {
          * Returns the element matching the given value or null.
          */
         @JvmStatic
-        fun parseOrNull(value: %%PROPERTY_TYPE%%) = tryParse(value).second
+        fun parseOrNull(value: %%CLASS_TYPE_BASE%%) = tryParse(value).second
 
         @JvmStatic
-        private fun tryParse(value: %%PROPERTY_TYPE%%) = when (value) {
+        private fun tryParse(value: %%CLASS_TYPE_BASE%%) = when (value) {
             %%REPEAT_BEGIN%%
             %%PROPERTY_VALUE%% -> true to %%PROPERTY_NAME%%
             %%REPEAT_END%%

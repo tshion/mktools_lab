@@ -27,6 +27,11 @@ namespace GenerateCodeLibrary
         ClassName,
 
         /// <summary>
+        /// クラスが継承している型
+        /// </summary>
+        ClassTypeBase,
+
+        /// <summary>
         /// プロパティのドキュメントコメント
         /// </summary>
         PropertyDocs,
@@ -75,6 +80,7 @@ namespace GenerateCodeLibrary
         {
             PlaceholderType.ClassDocs,
             PlaceholderType.ClassName,
+            PlaceholderType.ClassTypeBase,
             PlaceholderType.PropertyDocs,
             PlaceholderType.PropertyName,
             PlaceholderType.PropertyPrefix,
@@ -94,6 +100,7 @@ namespace GenerateCodeLibrary
         {
             PlaceholderType.ClassDocs => "%%CLASS_DOCS%%",
             PlaceholderType.ClassName => "%%CLASS_NAME%%",
+            PlaceholderType.ClassTypeBase => "%%CLASS_TYPE_BASE%%",
             PlaceholderType.PropertyDocs => "%%PROPERTY_DOCS%%",
             PlaceholderType.PropertyName => "%%PROPERTY_NAME%%",
             PlaceholderType.PropertyPrefix => "%%PROPERTY_PREFIX%%",
