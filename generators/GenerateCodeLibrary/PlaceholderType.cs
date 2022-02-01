@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GenerateCodeLibraryTest")]
@@ -74,9 +73,9 @@ namespace GenerateCodeLibrary
     internal static class PlaceholderTypeExtensions
     {
         /// <summary>
-        /// プレースホルダー名の一覧
+        /// (有効な)プレースホルダーの一覧
         /// </summary>
-        public static IReadOnlyList<string> Names { get; } = new[]
+        public static IEnumerable<PlaceholderType> Members { get; } = new[]
         {
             PlaceholderType.ClassDocs,
             PlaceholderType.ClassName,
@@ -88,8 +87,13 @@ namespace GenerateCodeLibrary
             PlaceholderType.PropertyValue,
             PlaceholderType.RepeatBegin,
             PlaceholderType.RepeatEnd,
-        }.Select(item => item.ToName()).ToImmutableList();
+        };
 
+        /// <summary>
+        /// プレースホルダー名の一覧
+        /// </summary>
+        public static IEnumerable<string> Names { get; } = Members
+            .Select(item => item.ToName());
 
         /// <summary>
         /// プレースホルダー名に変換

@@ -1,6 +1,7 @@
 using GenerateCodeLibrary;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace GenerateCodeLibraryTest
 {
@@ -20,7 +21,7 @@ namespace GenerateCodeLibraryTest
             var target = PlaceholderTypeExtensions.Names;
             Assert.AreEqual(
                  Enum.GetNames<PlaceholderType>().Length - 1,
-                 target.Count
+                 target.Count()
             );
         }
 

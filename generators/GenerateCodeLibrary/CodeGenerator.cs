@@ -34,7 +34,7 @@ namespace GenerateCodeLibrary
 
 
         /// <summary>
-        /// テンプレート文字列の解析
+        /// テンプレート文字列の解析(副作用あり)
         /// </summary>
         /// <param name="accumulator">解析結果の集積場所</param>
         /// <param name="lines">解析対象データ</param>
@@ -76,42 +76,12 @@ namespace GenerateCodeLibrary
                     continue;
                 }
 
-
-                List<PlaceholderType> placeholders = new();
-                if (line.Contains(PlaceholderType.ClassDocs.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.ClassDocs);
-                }
-                if (line.Contains(PlaceholderType.ClassName.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.ClassName);
-                }
-                if (line.Contains(PlaceholderType.PropertyDocs.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.PropertyDocs);
-                }
-                if (line.Contains(PlaceholderType.PropertyName.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.PropertyName);
-                }
-                if (line.Contains(PlaceholderType.PropertyPrefix.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.PropertyPrefix);
-                }
-                if (line.Contains(PlaceholderType.PropertyType.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.PropertyType);
-                }
-                if (line.Contains(PlaceholderType.PropertyValue.ToName()))
-                {
-                    placeholders.Add(PlaceholderType.PropertyValue);
-                }
-
                 accumulator.Add(new SyntaxEntity(
                     Body: line.ReplaceLineEndings("").Trim(),
                     Children: Enumerable.Empty<SyntaxEntity>(),
                     Indent: PickIndent(line),
-                    Placeholders: placeholders
+                    Placeholders: PlaceholderTypeExtensions.Members
+                        .Where(member => line.Contains(member.ToName()))
                 ));
                 i++;
             }
