@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Templates\" />
+    <ProjectReference Include="..\GenerateCodeLibrary\GenerateCodeLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,16 +18,10 @@
     <None Update="Data\ReplaceDictionary.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Templates\item.template.kt">
+    <None Update="Templates\enum.template.kt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Templates\item.template.swift">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\root.template.kt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\root.template.swift">
+    <None Update="Templates\enum.template.swift">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

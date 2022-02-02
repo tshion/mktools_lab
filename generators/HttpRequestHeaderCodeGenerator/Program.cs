@@ -1,7 +1,7 @@
 // See https://aka.ms/new-console-template for more information
+using GenerateCodeLibrary;
 using HttpRequestHeaderCodeGenerator;
 using System.Collections.Immutable;
-using System.Text;
 
 
 Console.WriteLine("Start");
@@ -10,96 +10,15 @@ string basePath = Directory.GetCurrentDirectory();
 
 // コード生成器の作成
 string templateBasePath = Path.Combine(basePath, "Templates");
-ImmutableDictionary<string, EnumCodeGenerator> generators = new Dictionary<string, EnumCodeGenerator?>()
+ImmutableDictionary<string, IEnumerable<string>> templates = new[]
 {
-    ["kt"] = EnumCodeGenerator.LoadOrNull(
-        actionFormatDocs: (item, indent) =>
-        {
-            string prefix = $"{indent} * ";
-            string start = $"{indent}/**";
-            StringBuilder builder = new();
-            if (!string.IsNullOrWhiteSpace(item.Title))
-            {
-                builder.AppendLine(start);
-                builder.AppendLine($"{prefix}{item.Title}");
-                if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
-                {
-                    builder.AppendLine($"{prefix}{item.TitleSuffix}");
-                }
-            }
-            if (item.Links.Any())
-            {
-                builder.AppendLine(builder.Length < 1 ? start : prefix);
-                foreach (var (title, url) in item.Links)
-                {
-                    builder.AppendLine($"{prefix}* [{title}]({url})");
-                }
-            }
-            if (0 < builder.Length)
-            {
-                builder.Append($"{indent} */");
-            }
-            return builder.ToString();
-        },
-        actionFormatPrefix: (item, indent) =>
-        {
-            string prefix = $"{indent}";
-            StringBuilder builder = new();
-            if (!string.IsNullOrWhiteSpace(item.Warning))
-            {
-                builder.AppendLine($"{prefix}@Deprecated(\"{item.Warning}\")");
-            }
-            builder.Append(prefix);
-            return builder.ToString();
-        },
-        indentSize: 4,
-        memberNameType: NameType.Snake,
-        templateItemPath: Path.Combine(templateBasePath, "item.template.kt"),
-        templateRootPath: Path.Combine(templateBasePath, "root.template.kt")
-    ),
-    ["swift"] = EnumCodeGenerator.LoadOrNull(
-        actionFormatDocs: (item, indent) =>
-        {
-            string prefix = $"{indent}/// ";
-            List<string> candidate = new();
-            if (!string.IsNullOrWhiteSpace(item.Title))
-            {
-                candidate.Add($"{prefix}{item.Title}");
-                if (!string.IsNullOrWhiteSpace(item.TitleSuffix))
-                {
-                    candidate.Add($"{prefix}{item.TitleSuffix}");
-                }
-            }
-            if (item.Links.Any())
-            {
-                if (candidate.Any())
-                {
-                    candidate.Add(prefix.TrimEnd());
-                }
-                foreach (var (title, url) in item.Links)
-                {
-                    candidate.Add($"{prefix}* [{title}]({url})");
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(item.Warning))
-            {
-                if (candidate.Any())
-                {
-                    candidate.Add(prefix.TrimEnd());
-                }
-                candidate.Add($"{prefix}- Warning: {item.Warning}");
-            }
-            return string.Join(Environment.NewLine, candidate);
-        },
-        indentSize: 4,
-        memberNameType: NameType.Camel,
-        templateItemPath: Path.Combine(templateBasePath, "item.template.swift"),
-        templateRootPath: Path.Combine(templateBasePath, "root.template.swift")
-    ),
+    Path.Combine(templateBasePath, "enum.template.kt"),
+    Path.Combine(templateBasePath, "enum.template.swift"),
 }
-.Where(pair => pair.Value != null)
-.ToImmutableDictionary(pair => pair.Key, pair => pair.Value!);
-if (!generators.Any())
+.Where(path => File.Exists(path))
+.Select(path => (Path.GetExtension(path).TrimStart('.'), File.ReadLines(path)))
+.ToImmutableDictionary(item => item.Item1, item => item.Item2);
+if (!templates.Any())
 {
     Console.WriteLine("Finish: None targets.");
     return;
@@ -146,11 +65,71 @@ Directory.CreateDirectory(outputBasePath);
 
 
 // コード生成
-foreach (var (ext, generator) in generators)
+string[] classNameWords = new[] { "Http", "Request", "Header" };
+IEnumerable<KeyValuePair<string, string>>? classDocsLinks = Enumerable.Empty<KeyValuePair<string, string>>();
+string[] classDocsTitle = new[] { string.Join(" ", classNameWords) };
+string className = NamingStyle.Pascal.Format(classNameWords);
+foreach (var (ext, template) in templates)
 {
+    var templateModel = CodeTemplateModel.CreateOrNull(template);
+    if (templateModel == null)
+    {
+        continue;
+    }
+
+    SourceBodyEntity? source;
+    switch (ext)
+    {
+        case "kt":
+            {
+                TextKotlinModel model = new(NamingStyle.Snake);
+                string type = "String";
+
+                source = new SourceBodyEntity(
+                    Documents: model.FormatDocuments(classDocsLinks, classDocsTitle),
+                    Properties: data.Select(item => new SourcePropertyEntity(
+                        Documents: model.FormatDocuments(item.Links, new[] { item.Title, item.TitleSuffix }),
+                        Name: model.FormatMemberName(item.MemberWords),
+                        Prefix: new[] { model.FormatWarning(item.Warning) },
+                        Type: "",
+                        Value: model.FormatMemberValue(type, item.MemberValue)
+                    )),
+                    Name: className,
+                    TypeBase: type
+                );
+            }
+            break;
+        case "swift":
+            {
+                TextSwiftModel model = new(NamingStyle.Camel);
+                string type = "String";
+
+                source = new SourceBodyEntity(
+                    Documents: model.FormatDocuments(classDocsLinks, classDocsTitle, ""),
+                    Properties: data.Select(item => new SourcePropertyEntity(
+                        Documents: model.FormatDocuments(item.Links, new[] { item.Title, item.TitleSuffix }, item.Warning),
+                        Name: model.FormatMemberName(item.MemberWords),
+                        Prefix: Enumerable.Empty<string>(),
+                        Type: "",
+                        Value: model.FormatMemberValue(type, item.MemberValue)
+                    )),
+                    Name: className,
+                    TypeBase: type
+                );
+            }
+            break;
+        default:
+            source = null;
+            break;
+    }
+    if (source == null)
+    {
+        continue;
+    }
+
     File.WriteAllText(
-        Path.Combine(outputBasePath, $"HttpRequestHeader.{ext}"),
-        generator.Generate(data)
+        Path.Combine(outputBasePath, $"{className}.{ext}"),
+        templateModel.Format(source)
     );
 }
 
