@@ -16,9 +16,9 @@ namespace GenerateCodeLibraryTest
         }
 
         [Test]
-        public void Test_Names()
+        public void Test_Members()
         {
-            var target = PlaceholderTypeExtensions.Names;
+            var target = PlaceholderTypeExtensions.Members;
             Assert.AreEqual(
                  Enum.GetNames<PlaceholderType>().Length - 1,
                  target.Count()

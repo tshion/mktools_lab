@@ -90,12 +90,6 @@ namespace GenerateCodeLibrary
         };
 
         /// <summary>
-        /// プレースホルダー名の一覧
-        /// </summary>
-        public static IEnumerable<string> Names { get; } = Members
-            .Select(item => item.ToName());
-
-        /// <summary>
         /// プレースホルダー名に変換
         /// </summary>
         /// <param name="receiver">プレースホルダーの種類</param>
