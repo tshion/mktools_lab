@@ -58,13 +58,13 @@ namespace HttpRequestHeaderCodeGenerator
         /// コード文字列生成
         /// </summary>
         /// <param name="from">対象データ</param>
-        public string Format(IEnumerable<EnumCodeEntity> from)
+        public string Format(IEnumerable<CodeEntity> from)
             => _templateModel?.Format(Parse(from)) ?? "";
 
         /// <summary>
         /// 出力用データへ変換
         /// </summary>
-        protected abstract SourceBodyEntity Parse(IEnumerable<EnumCodeEntity> from);
+        protected abstract SourceBodyEntity Parse(IEnumerable<CodeEntity> from);
 
         /// <summary>
         /// テンプレートデータの設定

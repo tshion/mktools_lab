@@ -27,7 +27,7 @@ namespace HttpRequestHeaderCodeGenerator
         /// <summary>
         /// 出力用データへ変換
         /// </summary>
-        protected override SourceBodyEntity Parse(IEnumerable<EnumCodeEntity> from)
+        protected override SourceBodyEntity Parse(IEnumerable<CodeEntity> from)
             => new(
                 Documents: _model.FormatDocuments(_classDocsLinks, _classDescriptions),
                 Properties: from.Select(item => new SourcePropertyEntity(

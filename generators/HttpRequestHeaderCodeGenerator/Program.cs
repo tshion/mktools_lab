@@ -48,8 +48,8 @@ ImmutableDictionary<string, string> renameWords = queryRenameWords != null
 
 
 // データの解析
-ImmutableList<EnumCodeEntity> data = queryCsvBody
-    .Select(item => ProgramModel.Compile(item, renameWords))
+ImmutableList<CodeEntity> data = queryCsvBody
+    .Select(item => CodeEntity.Parse(item, renameWords))
     .Where(item => item != null)
     .Select(item => item!)
     .ToImmutableList();
