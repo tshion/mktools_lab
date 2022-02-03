@@ -65,10 +65,10 @@ Directory.CreateDirectory(outputBasePath);
 
 
 // コード生成
-string[] classNameWords = new[] { "Http", "Request", "Header" };
-IEnumerable<KeyValuePair<string, string>>? classDocsLinks = Enumerable.Empty<KeyValuePair<string, string>>();
-string[] classDocsTitle = new[] { string.Join(" ", classNameWords) };
-string className = NamingStyle.Pascal.Format(classNameWords);
+ProgramModel model = new ProgramModel(
+    classDocsLinks: null,
+    classNameWords: new[] { "Http", "Request", "Header" }
+);
 foreach (var (ext, template) in templates)
 {
     var templateModel = CodeTemplateModel.CreateOrNull(template);
@@ -81,42 +81,10 @@ foreach (var (ext, template) in templates)
     switch (ext)
     {
         case "kt":
-            {
-                TextKotlinModel model = new(NamingStyle.Snake);
-                string type = "String";
-
-                source = new SourceBodyEntity(
-                    Documents: model.FormatDocuments(classDocsLinks, classDocsTitle),
-                    Properties: data.Select(item => new SourcePropertyEntity(
-                        Documents: model.FormatDocuments(item.Links, new[] { item.Title, item.TitleSuffix }),
-                        Name: model.FormatMemberName(item.MemberWords),
-                        Prefix: new[] { model.FormatWarning(item.Warning) },
-                        Type: "",
-                        Value: model.FormatMemberValue(type, item.MemberValue)
-                    )),
-                    Name: className,
-                    TypeBase: type
-                );
-            }
+            source = model.ToKotlinData(data);
             break;
         case "swift":
-            {
-                TextSwiftModel model = new(NamingStyle.Camel);
-                string type = "String";
-
-                source = new SourceBodyEntity(
-                    Documents: model.FormatDocuments(classDocsLinks, classDocsTitle, ""),
-                    Properties: data.Select(item => new SourcePropertyEntity(
-                        Documents: model.FormatDocuments(item.Links, new[] { item.Title, item.TitleSuffix }, item.Warning),
-                        Name: model.FormatMemberName(item.MemberWords),
-                        Prefix: Enumerable.Empty<string>(),
-                        Type: "",
-                        Value: model.FormatMemberValue(type, item.MemberValue)
-                    )),
-                    Name: className,
-                    TypeBase: type
-                );
-            }
+            source = model.ToSwiftData(data);
             break;
         default:
             source = null;
@@ -128,7 +96,7 @@ foreach (var (ext, template) in templates)
     }
 
     File.WriteAllText(
-        Path.Combine(outputBasePath, $"{className}.{ext}"),
+        Path.Combine(outputBasePath, $"{model.ClassName}.{ext}"),
         templateModel.Format(source)
     );
 }

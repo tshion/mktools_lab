@@ -1,3 +1,4 @@
+using GenerateCodeLibrary;
 using System.Text.RegularExpressions;
 
 namespace HttpRequestHeaderCodeGenerator
@@ -31,7 +32,7 @@ namespace HttpRequestHeaderCodeGenerator
                 {
                     tmpLinks.TryAdd(url, result.Groups[1].Value.ToUpper());
                 }
-                else if(!string.IsNullOrWhiteSpace(url) && url != "?")
+                else if (!string.IsNullOrWhiteSpace(url) && url != "?")
                 {
                     tmpLinks.TryAdd(url, url);
                 }
@@ -51,12 +52,71 @@ namespace HttpRequestHeaderCodeGenerator
 
             // インスタンス生成
             return new EnumCodeEntity(
-                links: queryLinks,
-                memberValue: $"{from.Name}",
-                memberWords: nameWords,
-                title: $"{from.Name}",
-                titleSuffix: "",
-                warning: from.Caution
+                DocsDescription: new[] { $"{from.Name}" },
+                DocsLinks: queryLinks,
+                MemberValue: $"{from.Name}",
+                MemberWords: nameWords,
+                Warning: from.Caution
+            );
+        }
+
+
+        private readonly IEnumerable<KeyValuePair<string, string>> _classDocsLinks;
+        private readonly string[] _classDocsTitle;
+        public string ClassName { get; private set; }
+
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
+        /// <param name="classNameWords">クラス名を構成する単語一覧</param>
+        public ProgramModel(
+            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
+            string[] classNameWords
+        )
+        {
+            _classDocsLinks = classDocsLinks ?? Enumerable.Empty<KeyValuePair<string, string>>();
+            _classDocsTitle = new[] { string.Join(" ", classNameWords) };
+            ClassName = NamingStyle.Pascal.Format(classNameWords);
+        }
+
+
+        public SourceBodyEntity ToKotlinData(IEnumerable<EnumCodeEntity> from)
+        {
+            TextKotlinModel model = new(NamingStyle.Snake);
+            string type = "String";
+
+            return new SourceBodyEntity(
+                Documents: model.FormatDocuments(_classDocsLinks, _classDocsTitle),
+                Properties: from.Select(item => new SourcePropertyEntity(
+                    Documents: model.FormatDocuments(item.DocsLinks, item.DocsDescription),
+                    Name: model.FormatMemberName(item.MemberWords),
+                    Prefix: new[] { model.FormatWarning(item.Warning) },
+                    Type: "",
+                    Value: model.FormatMemberValue(type, item.MemberValue)
+                )),
+                Name: ClassName,
+                TypeBase: type
+            );
+        }
+
+        public SourceBodyEntity ToSwiftData(IEnumerable<EnumCodeEntity> from)
+        {
+            TextSwiftModel model = new(NamingStyle.Camel);
+            string type = "String";
+
+            return new SourceBodyEntity(
+                Documents: model.FormatDocuments(_classDocsLinks, _classDocsTitle, ""),
+                Properties: from.Select(item => new SourcePropertyEntity(
+                    Documents: model.FormatDocuments(item.DocsLinks, item.DocsDescription, item.Warning),
+                    Name: model.FormatMemberName(item.MemberWords),
+                    Prefix: Enumerable.Empty<string>(),
+                    Type: "",
+                    Value: model.FormatMemberValue(type, item.MemberValue)
+                )),
+                Name: ClassName,
+                TypeBase: type
             );
         }
     }
