@@ -50,7 +50,7 @@ namespace GenerateCodeLibrary
                     // プレースホルダーがない場合はそのまま受け入れる
                     if (!syntax.Placeholders.Any())
                     {
-                        resultBuilder.AppendLine(target);
+                        resultBuilder.AppendLine(target.TrimEnd());
                         continue;
                     }
 
