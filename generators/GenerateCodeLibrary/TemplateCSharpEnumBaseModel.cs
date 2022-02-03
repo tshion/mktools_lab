@@ -64,6 +64,6 @@ namespace GenerateCodeLibrary
         /// </summary>
         /// <param name="value">警告文</param>
         protected string FormatWarning(string value)
-            => !string.IsNullOrWhiteSpace(value) ? $"[System.Obsolete(\"{value}\")]" : "";
+            => !string.IsNullOrWhiteSpace(value) ? $"[Obsolete(\"{value}\")]" : "";
     }
 }

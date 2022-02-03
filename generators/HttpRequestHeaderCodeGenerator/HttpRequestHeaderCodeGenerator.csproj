@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Templates\enum.template.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Templates\enum.template.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GenerateCodeLibrary\GenerateCodeLibrary.csproj" />
   </ItemGroup>
 

@@ -26,18 +26,18 @@ namespace GenerateCodeLibrary
         /// <summary>
         /// 与えられたプロパティ関連データを構文へ設定した文字列の取得
         /// </summary>
+        /// <param name="data">設定するデータ</param>
         /// <param name="parentIndent">引き継ぐインデント文字列</param>
-        /// <param name="properties">設定するプロパティデータ</param>
         /// <param name="syntaxTree">プロパティ関連の構文木</param>
         /// <returns>データ設定した文字列</returns>
         private static string FormatProperty(
+            SourceBodyEntity data,
             string parentIndent,
-            IEnumerable<SourcePropertyEntity> properties,
             IEnumerable<SyntaxEntity> syntaxTree
         )
         {
             StringBuilder resultBuilder = new();
-            foreach (SourcePropertyEntity property in properties)
+            foreach (SourcePropertyEntity property in data.Properties)
             {
                 foreach (SyntaxEntity syntax in syntaxTree)
                 {
@@ -60,6 +60,12 @@ namespace GenerateCodeLibrary
                     {
                         switch (type)
                         {
+                            case PlaceholderType.ClassName:
+                                lineBuilder.Replace(type.ToName(), data.Name);
+                                break;
+                            case PlaceholderType.ClassTypeBase:
+                                lineBuilder.Replace(type.ToName(), data.TypeBase);
+                                break;
                             case PlaceholderType.PropertyDocs:
                                 lineBuilder.Replace(
                                     type.ToName(),
@@ -212,7 +218,7 @@ namespace GenerateCodeLibrary
                 // 子構文がある場合はその文字列を取得する
                 if (syntax.Children.Any())
                 {
-                    resultBuilder.Append(FormatProperty(syntax.Indent, data.Properties, syntax.Children));
+                    resultBuilder.Append(FormatProperty(data, syntax.Indent, syntax.Children));
                     continue;
                 }
 
