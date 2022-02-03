@@ -3,7 +3,12 @@ namespace HttpRequestHeaderCodeGenerator
     /// <summary>
     /// 単語データ
     /// </summary>
-    internal class WordEntity
+    /// <param name="Rename">置換後の文字列</param>
+    /// <param name="Target">置換対象文字列</param>
+    internal sealed record class WordEntity(
+        string Rename,
+        string Target
+    )
     {
         /// <summary>
         /// データ取得クエリの取得
@@ -26,30 +31,9 @@ namespace HttpRequestHeaderCodeGenerator
                 .Select(line => line.Split(","))
                 .Where(tokens => 2 <= tokens.Length && tokens.All(x => !string.IsNullOrWhiteSpace(x)))
                 .Select(tokens => new WordEntity(
-                    rename: tokens[1],
-                    target: tokens[0]
+                    Rename: tokens[1],
+                    Target: tokens[0]
                 ));
-        }
-
-
-        /// <summary>
-        /// 置換後の文字列
-        /// </summary>
-        public string Rename { get; private set; }
-
-        /// <summary>
-        /// 置換対象文字列
-        /// </summary>
-        public string Target { get; private set; }
-
-
-        private WordEntity(
-            string rename,
-            string target
-        )
-        {
-            Rename = rename;
-            Target = target;
         }
     }
 }
