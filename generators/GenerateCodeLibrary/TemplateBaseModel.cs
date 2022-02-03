@@ -1,11 +1,10 @@
-using GenerateCodeLibrary;
-
-namespace HttpRequestHeaderCodeGenerator
+namespace GenerateCodeLibrary
 {
     /// <summary>
     /// コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    internal abstract class TemplateBaseModel
+    /// <typeparam name="TEntity">対象データの型</typeparam>
+    public abstract class TemplateBaseModel<TEntity>
     {
         /// <summary>
         /// クラスの説明(コメント用)
@@ -21,6 +20,11 @@ namespace HttpRequestHeaderCodeGenerator
         /// クラス名
         /// </summary>
         protected readonly string _className;
+
+        /// <summary>
+        /// 命名スタイル
+        /// </summary>
+        protected readonly NamingStyle _style;
 
         /// <summary>
         /// コード生成ロジック
@@ -43,14 +47,17 @@ namespace HttpRequestHeaderCodeGenerator
         /// </summary>
         /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
+        /// <param name="style">命名スタイル</param>
         protected TemplateBaseModel(
             IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
-            IEnumerable<string> classNameWords
+            IEnumerable<string> classNameWords,
+            NamingStyle style
         )
         {
             _classDescriptions = new[] { string.Join(" ", classNameWords) };
             _classDocsLinks = classDocsLinks ?? Enumerable.Empty<KeyValuePair<string, string>>();
             _className = NamingStyle.Pascal.Format(classNameWords);
+            _style = style;
         }
 
 
@@ -58,13 +65,30 @@ namespace HttpRequestHeaderCodeGenerator
         /// コード文字列生成
         /// </summary>
         /// <param name="from">対象データ</param>
-        public string Format(IEnumerable<CodeEntity> from)
+        public string Format(IEnumerable<TEntity> from)
             => _templateModel?.Format(Parse(from)) ?? "";
+
+        /// <summary>
+        /// メンバー名の文字列生成
+        /// </summary>
+        /// <param name="words">メンバー名を構成する単語一覧</param>
+        protected string FormatMemberName(IEnumerable<string> words)
+            => _style.Format(words);
+
+        /// <summary>
+        /// メンバーの値の文字列生成
+        /// </summary>
+        /// <param name="type">メンバーの型</param>
+        /// <param name="value">メンバーの値</param>
+        protected string FormatMemberValue(string type, string value)
+            => type.Equals("string", StringComparison.OrdinalIgnoreCase)
+                ? $"\"{value}\""
+                : value;
 
         /// <summary>
         /// 出力用データへ変換
         /// </summary>
-        protected abstract SourceBodyEntity Parse(IEnumerable<CodeEntity> from);
+        protected abstract SourceBodyEntity Parse(IEnumerable<TEntity> from);
 
         /// <summary>
         /// テンプレートデータの設定
@@ -72,7 +96,7 @@ namespace HttpRequestHeaderCodeGenerator
         /// <param name="path">テンプレートファイルパス</param>
         public void SetTemplate(string path)
         {
-            if (File.Exists(path)) { return; }
+            if (!File.Exists(path)) { return; }
 
             _templateModel = CodeTemplateModel.CreateOrNull(File.ReadLines(path));
             if (CanFormat)

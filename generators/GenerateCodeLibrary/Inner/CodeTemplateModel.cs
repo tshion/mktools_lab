@@ -9,7 +9,7 @@ namespace GenerateCodeLibrary
     /// <summary>
     /// コード生成ロジック
     /// </summary>
-    public sealed class CodeTemplateModel
+    internal sealed class CodeTemplateModel
     {
         /// <summary>
         /// インスタンス生成

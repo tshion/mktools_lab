@@ -5,9 +5,8 @@ namespace HttpRequestHeaderCodeGenerator
     /// <summary>
     /// Kotlin コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    internal sealed class TemplateKotlinModel : TemplateBaseModel
+    internal sealed class TemplateKotlinModel : TemplateKotlinEnumBaseModel<CodeEntity>
     {
-        private readonly TextKotlinModel _model = new(NamingStyle.Snake);
         private readonly string _type = "String";
 
 
@@ -29,13 +28,13 @@ namespace HttpRequestHeaderCodeGenerator
         /// </summary>
         protected override SourceBodyEntity Parse(IEnumerable<CodeEntity> from)
             => new(
-                Documents: _model.FormatDocuments(_classDocsLinks, _classDescriptions),
+                Documents: FormatDocuments(_classDocsLinks, _classDescriptions),
                 Properties: from.Select(item => new SourcePropertyEntity(
-                    Documents: _model.FormatDocuments(item.DocsLinks, item.DocsDescription),
-                    Name: _model.FormatMemberName(item.MemberWords),
-                    Prefix: new[] { _model.FormatWarning(item.Warning) },
+                    Documents: FormatDocuments(item.DocsLinks, item.DocsDescription),
+                    Name: FormatMemberName(item.MemberWords),
+                    Prefix: new[] { FormatWarning(item.Warning) },
                     Type: "",
-                    Value: _model.FormatMemberValue(_type, item.MemberValue)
+                    Value: FormatMemberValue(_type, item.MemberValue)
                 )),
                 Name: _className,
                 TypeBase: _type

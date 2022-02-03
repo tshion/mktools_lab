@@ -1,4 +1,5 @@
 // See https://aka.ms/new-console-template for more information
+using GenerateCodeLibrary;
 using HttpRequestHeaderCodeGenerator;
 using System.Collections.Immutable;
 
@@ -11,7 +12,7 @@ string basePath = Directory.GetCurrentDirectory();
 IEnumerable<KeyValuePair<string, string>>? classDocsLinks = null;
 IEnumerable<string> classNameWords = new[] { "Http", "Request", "Header" };
 string templateBasePath = Path.Combine(basePath, "Templates");
-ImmutableArray<TemplateBaseModel> templates = new Dictionary<string, TemplateBaseModel>()
+ImmutableArray<TemplateBaseModel<CodeEntity>> templates = new Dictionary<string, TemplateBaseModel<CodeEntity>>()
 {
     ["enum.template.kt"] = new TemplateKotlinModel(classDocsLinks, classNameWords),
     ["enum.template.swift"] = new TemplateSwiftModel(classDocsLinks, classNameWords),

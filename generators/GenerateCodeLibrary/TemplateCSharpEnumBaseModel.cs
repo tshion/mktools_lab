@@ -1,11 +1,20 @@
 namespace GenerateCodeLibrary
 {
     /// <summary>
-    /// C# の文字列関連の生成ロジック
+    /// C# 列挙型コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    public sealed class TextCSharpModel : TextModel
+    /// <typeparam name="TEntity">対象データの型</typeparam>
+    public abstract class TemplateCSharpEnumBaseModel<TEntity> : TemplateBaseModel<TEntity>
     {
-        public TextCSharpModel(NamingStyle style) : base(style)
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
+        /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
+        protected TemplateCSharpEnumBaseModel(
+            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
+            IEnumerable<string> classNameWords
+        ) : base(classDocsLinks, classNameWords, NamingStyle.Pascal)
         {
         }
 
@@ -15,7 +24,7 @@ namespace GenerateCodeLibrary
         /// </summary>
         /// <param name="links">リンク一覧</param>
         /// <param name="titles">タイトル一覧</param>
-        public IEnumerable<string> FormatDocuments(
+        protected IEnumerable<string> FormatDocuments(
             IEnumerable<KeyValuePair<string, string>> links,
             IEnumerable<string> titles
         )
@@ -54,7 +63,7 @@ namespace GenerateCodeLibrary
         /// 警告文の文字列生成
         /// </summary>
         /// <param name="value">警告文</param>
-        public string FormatWarning(string value)
+        protected string FormatWarning(string value)
             => !string.IsNullOrWhiteSpace(value) ? $"[System.Obsolete(\"{value}\")]" : "";
     }
 }

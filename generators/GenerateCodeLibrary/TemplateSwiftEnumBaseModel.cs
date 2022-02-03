@@ -1,11 +1,22 @@
-namespace GenerateCodeLibrary
+using GenerateCodeLibrary;
+
+namespace HttpRequestHeaderCodeGenerator
 {
     /// <summary>
-    /// Swift の文字列関連の生成ロジック
+    /// Swift 列挙型コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    public sealed class TextSwiftModel : TextModel
+    /// <typeparam name="TEntity">対象データの型</typeparam>
+    public abstract class TemplateSwiftEnumBaseModel<TEntity> : TemplateBaseModel<TEntity>
     {
-        public TextSwiftModel(NamingStyle style) : base(style)
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
+        /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
+        public TemplateSwiftEnumBaseModel(
+            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
+            IEnumerable<string> classNameWords
+        ) : base(classDocsLinks, classNameWords, NamingStyle.Camel)
         {
         }
 
@@ -17,7 +28,7 @@ namespace GenerateCodeLibrary
         /// <param name="titles">タイトル一覧</param>
         /// <param name="warning">警告文</param>
         /// 
-        public IEnumerable<string> FormatDocuments(
+        protected IEnumerable<string> FormatDocuments(
             IEnumerable<KeyValuePair<string, string>> links,
             IEnumerable<string> titles,
             string warning

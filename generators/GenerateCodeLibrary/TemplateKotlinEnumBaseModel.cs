@@ -1,11 +1,22 @@
-namespace GenerateCodeLibrary
+using GenerateCodeLibrary;
+
+namespace HttpRequestHeaderCodeGenerator
 {
     /// <summary>
-    /// Kotlin の文字列関連の生成ロジック
+    /// Kotlin 列挙型コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    public sealed class TextKotlinModel : TextModel
+    /// <typeparam name="TEntity">対象データの型</typeparam>
+    public abstract class TemplateKotlinEnumBaseModel<TEntity> : TemplateBaseModel<TEntity>
     {
-        public TextKotlinModel(NamingStyle style) : base(style)
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
+        /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
+        public TemplateKotlinEnumBaseModel(
+            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
+            IEnumerable<string> classNameWords
+        ) : base(classDocsLinks, classNameWords, NamingStyle.Snake)
         {
         }
 
@@ -15,7 +26,7 @@ namespace GenerateCodeLibrary
         /// </summary>
         /// <param name="links">リンク一覧</param>
         /// <param name="titles">タイトル一覧</param>
-        public IEnumerable<string> FormatDocuments(
+        protected IEnumerable<string> FormatDocuments(
             IEnumerable<KeyValuePair<string, string>> links,
             IEnumerable<string> titles
         )
@@ -48,7 +59,7 @@ namespace GenerateCodeLibrary
         /// 警告文の文字列生成
         /// </summary>
         /// <param name="value">警告文</param>
-        public string FormatWarning(string value)
+        protected string FormatWarning(string value)
             => !string.IsNullOrWhiteSpace(value) ? $"@Deprecated(\"{value}\")" : "";
     }
 }
