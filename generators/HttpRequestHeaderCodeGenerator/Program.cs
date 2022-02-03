@@ -1,5 +1,4 @@
 // See https://aka.ms/new-console-template for more information
-using GenerateCodeLibrary;
 using HttpRequestHeaderCodeGenerator;
 using System.Collections.Immutable;
 
@@ -9,15 +8,21 @@ string basePath = Directory.GetCurrentDirectory();
 
 
 // コード生成器の作成
+IEnumerable<KeyValuePair<string, string>>? classDocsLinks = null;
+IEnumerable<string> classNameWords = new[] { "Http", "Request", "Header" };
 string templateBasePath = Path.Combine(basePath, "Templates");
-ImmutableDictionary<string, IEnumerable<string>> templates = new[]
+ImmutableArray<TemplateBaseModel> templates = new Dictionary<string, TemplateBaseModel>()
 {
-    Path.Combine(templateBasePath, "enum.template.kt"),
-    Path.Combine(templateBasePath, "enum.template.swift"),
+    ["enum.template.kt"] = new TemplateKotlinModel(classDocsLinks, classNameWords),
+    ["enum.template.swift"] = new TemplateSwiftModel(classDocsLinks, classNameWords),
 }
-.Where(path => File.Exists(path))
-.Select(path => (Path.GetExtension(path).TrimStart('.'), File.ReadLines(path)))
-.ToImmutableDictionary(item => item.Item1, item => item.Item2);
+.Select(pair =>
+{
+    pair.Value.SetTemplate(Path.Combine(templateBasePath, pair.Key));
+    return pair.Value;
+})
+.Where(model => model.CanFormat)
+.ToImmutableArray();
 if (!templates.Any())
 {
     Console.WriteLine("Finish: None targets.");
@@ -65,39 +70,11 @@ Directory.CreateDirectory(outputBasePath);
 
 
 // コード生成
-ProgramModel model = new ProgramModel(
-    classDocsLinks: null,
-    classNameWords: new[] { "Http", "Request", "Header" }
-);
-foreach (var (ext, template) in templates)
+foreach (var template in templates)
 {
-    var templateModel = CodeTemplateModel.CreateOrNull(template);
-    if (templateModel == null)
-    {
-        continue;
-    }
-
-    SourceBodyEntity? source;
-    switch (ext)
-    {
-        case "kt":
-            source = model.ToKotlinData(data);
-            break;
-        case "swift":
-            source = model.ToSwiftData(data);
-            break;
-        default:
-            source = null;
-            break;
-    }
-    if (source == null)
-    {
-        continue;
-    }
-
     File.WriteAllText(
-        Path.Combine(outputBasePath, $"{model.ClassName}.{ext}"),
-        templateModel.Format(source)
+        Path.Combine(outputBasePath, template.OutputFilename),
+        template.Format(data)
     );
 }
 
