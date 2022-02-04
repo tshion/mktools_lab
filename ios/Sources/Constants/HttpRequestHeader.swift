@@ -1,7 +1,5 @@
-/**
- Http Request Header
- */
-enum HttpRequestHeader: String {
+/// HTTP Request Header
+public enum HttpRequestHeader: String {
 
     /// Returns the element matching the given value.
     public static func parse(value: String) -> HttpRequestHeader {

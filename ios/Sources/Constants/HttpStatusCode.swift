@@ -1,6 +1,4 @@
-/**
- Http Status Code
- */
+/// HTTP Status Code
 public enum HttpStatusCode: Int {
 
     /// Returns the element matching the given value.
@@ -438,4 +436,5 @@ public enum HttpStatusCode: Int {
     /// * [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511)
     /// * [RFC6585](https://datatracker.ietf.org/doc/html/rfc6585#section-6)
     case networkAuthenticationRequired = 511
+
 }

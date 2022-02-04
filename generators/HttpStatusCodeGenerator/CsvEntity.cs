@@ -3,7 +3,24 @@ namespace HttpStatusCodeGenerator
     /// <summary>
     /// CSV データ
     /// </summary>
-    internal class CsvEntity
+    /// <param name="Caution">注意書き</param>
+    /// <param name="Code">ステータスコード</param>
+    /// <param name="HasMdn">MDN に記載があるかどうか</param>
+    /// <param name="Name">ステータス名</param>
+    /// <param name="NameOld">旧ステータス名</param>
+    /// <param name="Note">注釈</param>
+    /// <param name="Url1">URL その１</param>
+    /// <param name="Url2">URL その２</param>
+    internal sealed record class CsvEntity(
+        string Caution,
+        int Code,
+        bool HasMdn,
+        string Name,
+        string Note,
+        string NameOld,
+        string Url1,
+        string Url2
+    )
     {
         /// <summary>
         /// データ取得クエリの取得
@@ -50,81 +67,18 @@ namespace HttpStatusCodeGenerator
                     if (!bool.TryParse(tokens.ElementAtOrDefault(csvIndexHasMdn), out var hasMdn)) { return null; }
 
                     return new CsvEntity(
-                        caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
-                        code: code,
-                        hasMdn: hasMdn,
-                        name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
-                        nameOld: tokens.ElementAtOrDefault(csvIndexNameOld) ?? "",
-                        note: tokens.ElementAtOrDefault(csvIndexNote) ?? "",
-                        url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
-                        url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? ""
+                        Caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
+                        Code: code,
+                        HasMdn: hasMdn,
+                        Name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
+                        NameOld: tokens.ElementAtOrDefault(csvIndexNameOld) ?? "",
+                        Note: tokens.ElementAtOrDefault(csvIndexNote) ?? "",
+                        Url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
+                        Url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? ""
                     );
                 })
                 .Where(item => item != null)
                 .Select(item => item!);
-        }
-
-
-        /// <summary>
-        /// 注意書き
-        /// </summary>
-        public string Caution { get; private set; }
-
-        /// <summary>
-        /// ステータスコード
-        /// </summary>
-        public int Code { get; private set; }
-
-        /// <summary>
-        /// MDN に記載があるかどうか
-        /// </summary>
-        public bool HasMdn { get; private set; }
-
-        /// <summary>
-        /// ステータス名
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// 旧ステータス名
-        /// </summary>
-        public string NameOld { get; private set; }
-
-        /// <summary>
-        /// 注釈
-        /// </summary>
-        public string Note { get; private set; }
-
-        /// <summary>
-        /// URL その１
-        /// </summary>
-        public string Url1 { get; private set; }
-
-        /// <summary>
-        /// URL その２
-        /// </summary>
-        public string Url2 { get; private set; }
-
-
-        private CsvEntity(
-            string caution,
-            int code,
-            bool hasMdn,
-            string name,
-            string nameOld,
-            string note,
-            string url1,
-            string url2
-        )
-        {
-            Caution = caution;
-            Code = code;
-            HasMdn = hasMdn;
-            Name = name;
-            NameOld = nameOld;
-            Note = note;
-            Url1 = url1;
-            Url2 = url2;
         }
     }
 }

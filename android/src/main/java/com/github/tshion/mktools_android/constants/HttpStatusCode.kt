@@ -560,16 +560,12 @@ enum class HttpStatusCode(val value: Int) {
          * Returns the element matching the given value.
          */
         @JvmStatic
-        fun parse(value: Int): HttpStatusCode {
-            return values().single { it.value == value }
-        }
+        fun parse(value: Int) = values().single { it.value == value }
 
         /**
          * Returns the element matching the given value or null.
          */
         @JvmStatic
-        fun parseOrNull(value: Int): HttpStatusCode? {
-            return values().singleOrNull { it.value == value }
-        }
+        fun parseOrNull(value: Int) = values().singleOrNull { it.value == value }
     }
 }

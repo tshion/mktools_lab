@@ -3,7 +3,20 @@ namespace HttpRequestHeaderCodeGenerator
     /// <summary>
     /// CSV データ
     /// </summary>
-    internal class CsvEntity
+    /// <param name="Caution">注意書き</param>
+    /// <param name="HasMdn">MDN に記載があるかどうか</param>
+    /// <param name="Name">ステータス名</param>
+    /// <param name="Url1">URL その１</param>
+    /// <param name="Url2">URL その２</param>
+    /// <param name="Url3">URL その３</param>
+    internal sealed record class CsvEntity(
+        string Caution,
+        bool HasMdn,
+        string Name,
+        string Url1,
+        string Url2,
+        string Url3
+    )
     {
         /// <summary>
         /// データ取得クエリの取得
@@ -45,65 +58,16 @@ namespace HttpRequestHeaderCodeGenerator
                     if (!bool.TryParse(tokens.ElementAtOrDefault(csvIndexHasMdn), out var hasMdn)) { return null; }
 
                     return new CsvEntity(
-                        caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
-                        hasMdn: hasMdn,
-                        name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
-                        url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
-                        url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? "",
-                        url3: tokens.ElementAtOrDefault(csvIndexUrl3) ?? ""
+                        Caution: tokens.ElementAtOrDefault(csvIndexCaution) ?? "",
+                        HasMdn: hasMdn,
+                        Name: tokens.ElementAtOrDefault(csvIndexName) ?? "",
+                        Url1: tokens.ElementAtOrDefault(csvIndexUrl1) ?? "",
+                        Url2: tokens.ElementAtOrDefault(csvIndexUrl2) ?? "",
+                        Url3: tokens.ElementAtOrDefault(csvIndexUrl3) ?? ""
                     );
                 })
                 .Where(item => item != null)
                 .Select(item => item!);
-        }
-
-
-        /// <summary>
-        /// 注意書き
-        /// </summary>
-        public string Caution { get; private set; }
-
-        /// <summary>
-        /// MDN に記載があるかどうか
-        /// </summary>
-        public bool HasMdn { get; private set; }
-
-        /// <summary>
-        /// ステータス名
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// URL その１
-        /// </summary>
-        public string Url1 { get; private set; }
-
-        /// <summary>
-        /// URL その２
-        /// </summary>
-        public string Url2 { get; private set; }
-
-        /// <summary>
-        /// URL その３
-        /// </summary>
-        public string Url3 { get; private set; }
-
-
-        private CsvEntity(
-            string caution,
-            bool hasMdn,
-            string name,
-            string url1,
-            string url2,
-            string url3
-        )
-        {
-            Caution = caution;
-            HasMdn = hasMdn;
-            Name = name;
-            Url1 = url1;
-            Url2 = url2;
-            Url3 = url3;
         }
     }
 }
