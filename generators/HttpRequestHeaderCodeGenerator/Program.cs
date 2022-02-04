@@ -9,7 +9,7 @@ string basePath = Directory.GetCurrentDirectory();
 
 
 // コード生成器の作成
-IEnumerable<string> classNameWords = new[] { "Http", "Request", "Header" };
+IEnumerable<string> classNameWords = new[] { "HTTP", "Request", "Header" };
 string templateBasePath = Path.Combine(basePath, "Templates");
 ImmutableArray<TemplateBaseModel<CodeEntity>> templates = new Dictionary<string, TemplateBaseModel<CodeEntity>>()
 {
