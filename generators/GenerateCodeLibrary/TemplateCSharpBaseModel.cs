@@ -7,6 +7,35 @@ namespace GenerateCodeLibrary
     public abstract class TemplateCSharpBaseModel<TEntity> : TemplateBaseModel<TEntity>
     {
         /// <summary>
+        /// 言語の予約語
+        /// </summary>
+        protected override string[] LaungageKeywords { get; } = new[]
+        {
+            "abstract", "add", "and", "alias", "as", "ascending", "async", "await",
+            "base", "bool", "break", "by", "byte",
+            "case", "catch", "char", "checked", "class", "const", "continue",
+            "decimal", "default", "delegate", "descending", "do", "double", "dynamic",
+            "else", "enum", "equals", "event", "explicit", "extern",
+            "false", "finally", "fixed", "float", "for", "foreach", "from",
+            "get", "global", "goto", "group",
+            "if", "implicit", "in", "init", "int", "interface", "internal", "into", "is",
+            "join",
+            "let", "lock", "long",
+            "managed",
+            "nameof", "namespace", "new", "nint", "not", "notnull", "nuint", "null",
+            "object", "on", "operator", "or", "orderby", "out", "override",
+            "params", "partial", "private", "protected", "public",
+            "readonly", "record", "ref", "remove", "return",
+            "sbyte", "sealed", "select", "set", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch",
+            "this", "throw", "true", "try", "typeof",
+            "uint", "ulong", "unchecked", "unmanaged", "unsafe", "ushort", "using",
+            "value", "var", "virtual", "void", "volatile",
+            "when", "where", "while",
+            "yield",
+        };
+
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
@@ -57,6 +86,16 @@ namespace GenerateCodeLibrary
             }
 
             return candidate;
+        }
+
+        /// <summary>
+        /// メンバー名の文字列生成
+        /// </summary>
+        /// <param name="words">メンバー名を構成する単語一覧</param>
+        protected override string FormatMemberName(IEnumerable<string> words)
+        {
+            string candidate = base.FormatMemberName(words);
+            return LaungageKeywords.Contains(candidate) ? $"@{candidate}" : candidate;
         }
 
         /// <summary>

@@ -32,6 +32,11 @@ namespace GenerateCodeLibrary
         public bool CanFormat => _templateModel != null;
 
         /// <summary>
+        /// 言語の予約語
+        /// </summary>
+        protected virtual string[] LaungageKeywords { get; }
+
+        /// <summary>
         /// 出力時のファイル名
         /// </summary>
         public string OutputFilename { get; private set; } = "";
