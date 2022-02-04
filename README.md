@@ -4,13 +4,16 @@
 対象の実行環境 | ライブラリ名 | 備考
 --- | --- | ---
 [Android](./android) | mktools_android | Android 用ライブラリの試作環境
-([HttpStatusCodeGenerator](./generators/HttpStatusCodeGenerator)) | (なし) | HttpStatusCode 定義のコード生成
+([generators](./generators)) | (なし) | 設定値から各言語向けにコード生成していくプロジェクト
 [iOS](./ios) | mktools_ios | iOS 用ライブラリの試作環境
 
 
 ## 開発環境の準備
 ### Android
 Android Studio を利用して開発してください。
+
+### C#(generators)
+Visual Studio 2022 以降を利用して開発してください。
 
 ### iOS
 下記が使える状態で```make ios-init``` を実行してください。
