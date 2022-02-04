@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpRequestHeaderCodeGenera
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpResponseHeaderCodeGenerator", "generators\HttpResponseHeaderCodeGenerator\HttpResponseHeaderCodeGenerator.csproj", "{3BE83200-37F5-4617-8E11-F4617617417E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateCodeLibrary", "generators\GenerateCodeLibrary\GenerateCodeLibrary.csproj", "{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCodeLibrary", "generators\GenerateCodeLibrary\GenerateCodeLibrary.csproj", "{BE5BEA25-2DFA-4EBE-9DAA-6BB5BCE82932}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateCodeLibraryTest", "generators\GenerateCodeLibraryTest\GenerateCodeLibraryTest.csproj", "{0D3BE84F-7E78-47A8-B305-82DA0DF862C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCodeLibraryTest", "generators\GenerateCodeLibraryTest\GenerateCodeLibraryTest.csproj", "{0D3BE84F-7E78-47A8-B305-82DA0DF862C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
