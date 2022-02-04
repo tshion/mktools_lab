@@ -12,11 +12,6 @@ namespace GenerateCodeLibrary
         protected readonly string[] _classDescriptions;
 
         /// <summary>
-        /// クラスのドキュメントコメント内のリンク一覧
-        /// </summary>
-        protected readonly IEnumerable<KeyValuePair<string, string>> _classDocsLinks;
-
-        /// <summary>
         /// クラス名
         /// </summary>
         protected readonly string _className;
@@ -45,17 +40,14 @@ namespace GenerateCodeLibrary
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
         /// <param name="style">命名スタイル</param>
         protected TemplateBaseModel(
-            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
             IEnumerable<string> classNameWords,
             NamingStyle style
         )
         {
             _classDescriptions = new[] { string.Join(" ", classNameWords) };
-            _classDocsLinks = classDocsLinks ?? Enumerable.Empty<KeyValuePair<string, string>>();
             _className = NamingStyle.Pascal.Format(classNameWords);
             _style = style;
         }

@@ -9,14 +9,13 @@ string basePath = Directory.GetCurrentDirectory();
 
 
 // コード生成器の作成
-IEnumerable<KeyValuePair<string, string>>? classDocsLinks = null;
 IEnumerable<string> classNameWords = new[] { "Http", "Request", "Header" };
 string templateBasePath = Path.Combine(basePath, "Templates");
 ImmutableArray<TemplateBaseModel<CodeEntity>> templates = new Dictionary<string, TemplateBaseModel<CodeEntity>>()
 {
-    ["enum.template.cs"] = new TemplateCSharpModel(classDocsLinks, classNameWords),
-    ["enum.template.kt"] = new TemplateKotlinModel(classDocsLinks, classNameWords),
-    ["enum.template.swift"] = new TemplateSwiftModel(classDocsLinks, classNameWords),
+    ["enum.template.cs"] = new TemplateCSharpModel(classNameWords),
+    ["enum.template.kt"] = new TemplateKotlinModel(classNameWords),
+    ["enum.template.swift"] = new TemplateSwiftModel(classNameWords),
 }
 .Select(pair =>
 {

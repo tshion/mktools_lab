@@ -13,12 +13,10 @@ namespace HttpRequestHeaderCodeGenerator
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
         public TemplateKotlinModel(
-            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
             IEnumerable<string> classNameWords
-        ) : base(classDocsLinks, classNameWords)
+        ) : base(classNameWords)
         {
         }
 
@@ -28,7 +26,7 @@ namespace HttpRequestHeaderCodeGenerator
         /// </summary>
         protected override SourceBodyEntity Parse(IEnumerable<CodeEntity> from)
             => new(
-                Documents: FormatDocuments(_classDocsLinks, _classDescriptions),
+                Documents: FormatDocuments(Enumerable.Empty<KeyValuePair<string, string>>(), _classDescriptions),
                 Properties: from.Select(item => new SourcePropertyEntity(
                     Documents: FormatDocuments(item.DocsLinks, item.DocsDescription),
                     Name: FormatMemberName(item.MemberWords),

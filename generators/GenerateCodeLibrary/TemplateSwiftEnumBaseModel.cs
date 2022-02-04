@@ -11,12 +11,10 @@ namespace HttpRequestHeaderCodeGenerator
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="classDocsLinks">クラスのドキュメントコメント内に記載するリンク一覧</param>
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
         public TemplateSwiftEnumBaseModel(
-            IEnumerable<KeyValuePair<string, string>>? classDocsLinks,
             IEnumerable<string> classNameWords
-        ) : base(classDocsLinks, classNameWords, NamingStyle.Camel)
+        ) : base(classNameWords, NamingStyle.Camel)
         {
         }
 
