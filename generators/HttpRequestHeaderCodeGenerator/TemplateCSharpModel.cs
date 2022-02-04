@@ -5,7 +5,7 @@ namespace HttpRequestHeaderCodeGenerator
     /// <summary>
     /// C# コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    internal sealed class TemplateCSharpModel : TemplateCSharpEnumBaseModel<CodeEntity>
+    internal sealed class TemplateCSharpModel : TemplateCSharpBaseModel<CodeEntity>
     {
         private readonly string _type = "string";
 
@@ -16,7 +16,7 @@ namespace HttpRequestHeaderCodeGenerator
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
         public TemplateCSharpModel(
             IEnumerable<string> classNameWords
-        ) : base(classNameWords)
+        ) : base(classNameWords, NamingStyle.Pascal)
         {
         }
 

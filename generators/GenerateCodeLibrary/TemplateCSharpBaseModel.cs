@@ -1,18 +1,20 @@
 namespace GenerateCodeLibrary
 {
     /// <summary>
-    /// C# 列挙型コード生成時の元になるテンプレート関連ロジック
+    /// C# コード生成時の元になるテンプレート関連ロジック
     /// </summary>
     /// <typeparam name="TEntity">対象データの型</typeparam>
-    public abstract class TemplateCSharpEnumBaseModel<TEntity> : TemplateBaseModel<TEntity>
+    public abstract class TemplateCSharpBaseModel<TEntity> : TemplateBaseModel<TEntity>
     {
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
-        protected TemplateCSharpEnumBaseModel(
-            IEnumerable<string> classNameWords
-        ) : base(classNameWords, NamingStyle.Pascal)
+        /// <param name="style">命名スタイル</param>
+        protected TemplateCSharpBaseModel(
+            IEnumerable<string> classNameWords,
+            NamingStyle style
+        ) : base(classNameWords, style)
         {
         }
 

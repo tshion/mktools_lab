@@ -5,7 +5,7 @@ namespace HttpRequestHeaderCodeGenerator
     /// <summary>
     /// Swift コード生成時の元になるテンプレート関連ロジック
     /// </summary>
-    internal sealed class TemplateSwiftModel : TemplateSwiftEnumBaseModel<CodeEntity>
+    internal sealed class TemplateSwiftModel : TemplateSwiftBaseModel<CodeEntity>
     {
         private readonly string _type = "String";
 
@@ -16,7 +16,7 @@ namespace HttpRequestHeaderCodeGenerator
         /// <param name="classNameWords">生成クラス名を構成する単語一覧</param>
         public TemplateSwiftModel(
             IEnumerable<string> classNameWords
-        ) : base(classNameWords)
+        ) : base(classNameWords, NamingStyle.Camel)
         {
         }
 
