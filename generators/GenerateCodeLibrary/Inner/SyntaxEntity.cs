@@ -1,4 +1,4 @@
-namespace GenerateCodeLibrary
+namespace GenerateCodeLibrary.Inner
 {
     /// <summary>
     /// 構文データ

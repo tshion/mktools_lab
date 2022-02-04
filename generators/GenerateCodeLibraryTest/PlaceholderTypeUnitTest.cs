@@ -1,4 +1,4 @@
-using GenerateCodeLibrary;
+using GenerateCodeLibrary.Inner;
 using NUnit.Framework;
 using System;
 using System.Linq;

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 [assembly: InternalsVisibleTo("GenerateCodeLibraryTest")]
 
-namespace GenerateCodeLibrary
+namespace GenerateCodeLibrary.Inner
 {
     /// <summary>
     /// コード生成ロジック

@@ -1,3 +1,5 @@
+using GenerateCodeLibrary.Inner;
+
 namespace GenerateCodeLibrary
 {
     /// <summary>

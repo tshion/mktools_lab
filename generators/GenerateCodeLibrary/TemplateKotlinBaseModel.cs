@@ -1,6 +1,4 @@
-using GenerateCodeLibrary;
-
-namespace HttpRequestHeaderCodeGenerator
+namespace GenerateCodeLibrary
 {
     /// <summary>
     /// Kotlin コード生成時の元になるテンプレート関連ロジック

@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GenerateCodeLibraryTest")]
 
-namespace GenerateCodeLibrary
+namespace GenerateCodeLibrary.Inner
 {
     /// <summary>
     /// プレースホルダーの種類

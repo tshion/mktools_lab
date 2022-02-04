@@ -1,6 +1,4 @@
-using GenerateCodeLibrary;
-
-namespace HttpRequestHeaderCodeGenerator
+namespace GenerateCodeLibrary
 {
     /// <summary>
     /// Swift コード生成時の元になるテンプレート関連ロジック
