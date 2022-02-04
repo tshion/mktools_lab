@@ -2,15 +2,29 @@ using System.Text.RegularExpressions;
 
 namespace HttpStatusCodeGenerator
 {
-    internal class ProgramModel
+    /// <summary>
+    /// コード生成に使うデータ
+    /// </summary>
+    /// <param name="DocsDescription">ドキュメントコメント</param>
+    /// <param name="DocsLinks">ドキュメント内のリンク一覧</param>
+    /// <param name="MemberValue">メンバーの値</param>
+    /// <param name="MemberWords">メンバー名向けの単語一覧</param>
+    /// <param name="Warning">警告事項</param>
+    internal sealed record class CodeEntity(
+        IEnumerable<string> DocsDescription,
+        IEnumerable<KeyValuePair<string, string>> DocsLinks,
+        string MemberValue,
+        IEnumerable<string> MemberWords,
+        string Warning
+    )
     {
         /// <summary>
         /// データ変換
         /// </summary>
         /// <param name="from">CSV データ</param>
         /// <param name="replaceWords">単語変換データ</param>
-        /// <returns>列挙型コードデータ</returns>
-        public static EnumCodeEntity Compile(
+        /// <returns>コードデータ</returns>
+        public static CodeEntity Parse(
             in CsvEntity from,
             in IReadOnlyDictionary<string, string> replaceWords
         )
@@ -49,13 +63,12 @@ namespace HttpStatusCodeGenerator
             string suffix = !string.IsNullOrWhiteSpace(from.NameOld) ? $"(HTTP 1.0: {from.NameOld})" : "";
 
             // インスタンス生成
-            return new EnumCodeEntity(
-                links: queryLinks,
-                memberValue: $"{from.Code}",
-                memberWords: nameWords,
-                title: $"{from.Code} {from.Name}{note}",
-                titleSuffix: suffix,
-                warning: from.Caution
+            return new CodeEntity(
+                DocsDescription: new[] { $"{from.Code} {from.Name}{note}", $"{suffix}" },
+                DocsLinks: queryLinks,
+                MemberValue: $"{from.Code}",
+                MemberWords: nameWords,
+                Warning: from.Caution
             );
         }
     }
