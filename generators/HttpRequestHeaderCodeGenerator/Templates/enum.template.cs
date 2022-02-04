@@ -55,5 +55,13 @@ namespace YourNamespace
                 .Value;
             return result != default;
         }
+
+        public static %%CLASS_TYPE_BASE%% Value(this %%CLASS_NAME%% receiver) => receiver switch
+        {
+            %%REPEAT_BEGIN%%
+            %%CLASS_NAME%%.%%PROPERTY_NAME%% => %%PROPERTY_VALUE%%,
+            %%REPEAT_END%%
+            _ => ""
+        };
     }
 }
