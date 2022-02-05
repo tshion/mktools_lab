@@ -19,6 +19,10 @@ version = "${ver_major}.${ver_minor}.${ver_revision}"
 
 android {
     buildTypes {
+        debug {
+            // Firebase Crashlytics の無効化
+            ext.enableCrashlytics = false
+        }
         release {
             minifyEnabled false
         }
