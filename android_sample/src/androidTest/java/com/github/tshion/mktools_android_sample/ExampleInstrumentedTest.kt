@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android
+package com.github.tshion.mktools_android_sample
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.github.tshion.mktools_android.test", appContext.packageName)
+        assertEquals("com.github.tshion.mktools_android_sample", appContext.packageName)
     }
 }

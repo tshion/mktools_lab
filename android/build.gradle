@@ -43,6 +43,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+
+        multipleVariants {
+            withSourcesJar()
+            withJavadocJar()
+            allVariants()
+        }
+    }
 }
 
 dependencies {
@@ -72,8 +84,6 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                artifact javadocJar
-                artifact sourcesJar
 
                 artifactId = 'mktools_android'
                 groupId = 'com.github.tshion'
@@ -81,15 +91,4 @@ afterEvaluate {
             }
         }
     }
-}
-
-
-task javadocJar(type: Jar, dependsOn: "dokkaJavadoc") {
-    archiveClassifier.set("javadoc")
-    from dokkaJavadoc.outputDirectory
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier.set("sources")
-    from android.sourceSets.main.java.srcDirs
 }
