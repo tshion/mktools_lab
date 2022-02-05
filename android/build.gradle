@@ -59,7 +59,7 @@ dependencies {
     implementation "com.google.guava:guava:31.0.1-android"
 
     // JUnit
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
 
     // OkHttp
     implementation platform("com.squareup.okhttp3:okhttp-bom:4.9.0")
