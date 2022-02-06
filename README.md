@@ -6,6 +6,7 @@
 ([generators](./generators/)) | N/A | (macOS, Windows) | コード自動生成ツール群
 [mktools_android](./android/) | [![Release](https://jitpack.io/v/tshion/mktools_lab.svg)](https://jitpack.io/#tshion/mktools_lab) | Android | Android 用ライブラリの試作環境
 ([mktools_android_sample](./android_sample/)) | N/A | (Android) | mktools_android の試し書き環境
+([mktools_jvm_sample](./jvm_sample/)) | N/A | (macOS, Windows) | Java, Kotlin 文法の試し書き環境
 [mktools_ios](./ios/) | SwiftPM<br />[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/tshion/mktools_lab)](https://github.com/tshion/mktools_lab/tags) | iOS | iOS 用ライブラリの試作環境
 
 ※バッジ表記：[Shields.io](https://shields.io/)
