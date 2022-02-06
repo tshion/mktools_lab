@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.grammar;
+package com.github.tshion.mktools_jvm_sample;
 
 public class EnumHadClass {
 

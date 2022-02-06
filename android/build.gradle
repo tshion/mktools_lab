@@ -2,7 +2,7 @@ plugins {
     // Android Library
     id 'com.android.library'
 
-    // Kotlin Android
+    // Kotlin
     id 'kotlin-android'
 
     // Maven Publish

@@ -12,6 +12,7 @@ plugins {
     // Kotlin(& Dokka)
     id 'org.jetbrains.dokka' version "$libraryVersionKotlin" apply false
     id 'org.jetbrains.kotlin.android' version "$libraryVersionKotlin" apply false
+    id 'org.jetbrains.kotlin.jvm' version "$libraryVersionKotlin" apply false
 }
 
 task clean(type: Delete) {

@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "mktools_lab"
 include ':android'
 include ':android_sample'
+include ':jvm_sample'
