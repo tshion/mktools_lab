@@ -1,5 +1,5 @@
 # mktools_ios
-## 導入方法 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/tshion/mktools_lab)](https://github.com/tshion/mktools_lab/tags/latest)
+## 導入方法 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/tshion/mktools_lab)](https://github.com/tshion/mktools_lab/tags)
 Swift Package Manager 経由で導入出来ます。
 Package.swift に下記を記述してください。
 
