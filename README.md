@@ -1,16 +1,20 @@
 # mktools_lab
 自作ライブラリの試作環境
 
-対象の実行環境 | ライブラリ名 | 備考
---- | --- | ---
-[Android](./android) | mktools_android | Android 用ライブラリの試作環境
-([generators](./generators)) | (なし) | 設定値から各言語向けにコード生成していくプロジェクト
-[iOS](./ios) | mktools_ios | iOS 用ライブラリの試作環境
+プロジェクト | 入手先 | 対象環境 | 備考
+--- | :---: | --- | ---
+([generators](./generators/)) | N/A | (macOS, Windows) | コード自動生成ツール群
+[mktools_android](./android/) | [![Release](https://jitpack.io/v/tshion/mktools_lab.svg)](https://jitpack.io/#tshion/mktools_lab) | Android | Android 用ライブラリの試作環境
+([mktools_android_sample](./android_sample/)) | N/A | (Android) | mktools_android の試し書き環境
+([mktools_jvm_sample](./jvm_sample/)) | N/A | (macOS, Windows) | Java, Kotlin 文法の試し書き環境
+[mktools_ios](./ios/) | SwiftPM<br />[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/tshion/mktools_lab)](https://github.com/tshion/mktools_lab/tags) | iOS | iOS 用ライブラリの試作環境
+
+※バッジ表記：[Shields.io](https://shields.io/)
 
 
 ## 開発環境の準備
 ### Android
-Android Studio を利用して開発してください。
+Android Studio Bumblebee 以降を利用して開発してください。
 
 ### C#(generators)
 Visual Studio 2022 以降を利用して開発してください。
@@ -32,6 +36,13 @@ Xcode | Build のPre Action 等を設定していないので、適宜コマン�
 
 
 ## 開発ルール
+### Android
+* [Android API Guidelines](https://android.googlesource.com/platform/developers/docs/+/refs/heads/master/api-guidelines/index.md)
+* [Android Developers](https://developer.android.com/)
+* [AOSP Java Code Style for Contributors | Android Open Source Project](https://source.android.com/setup/contribute/code-style)
+* [Document Kotlin code: KDoc and Dokka | Kotlin](https://kotlinlang.org/docs/kotlin-doc.html)
+* [Kotlin Docs | Kotlin](https://kotlinlang.org/docs/home.html)
+
 ### ファイル書式
 全体のルールは[.editorconfig](./.editorconfig) をご覧ください。
 
