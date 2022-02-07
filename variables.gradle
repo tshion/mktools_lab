@@ -23,6 +23,10 @@ ext {
     libraryVersionOkHttp = '4.9.0'
 
     // ライブラリ群
+    libraryUiTest = [
+        // AndroidX
+        'androidx.test.espresso:espresso-core:3.4.0',
+    ]
     libraryUnitTestOnAndroid = [
         // AndroidX
         "androidx.test.ext:junit-ktx:$libraryVersionJetpackJunit",
@@ -31,7 +35,7 @@ ext {
         "junit:junit:$libraryVersionJUnit",
 
         // Robolectric
-        'org.robolectric:robolectric:4.6.1'
+        'org.robolectric:robolectric:4.6.1',
     ]
     libraryUnitTestOnJvm = [
         // AndroidX
