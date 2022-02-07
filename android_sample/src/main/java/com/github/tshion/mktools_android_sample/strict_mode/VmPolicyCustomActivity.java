@@ -10,26 +10,24 @@ import androidx.annotation.Nullable;
 import com.github.tshion.mktools_android.StrictModeActivator;
 
 /**
- * StrictMode.ThreadPolicy のデフォルト挙動の上書きの確認用
+ * StrictMode.VmPolicy のデフォルト挙動の上書きの確認用
  *
  * @see com.github.tshion.mktools_android.StrictModeActivator
  */
-public class ThreadPolicyCustomActivity extends ThreadPolicyBaseActivity implements StrictModeActivator {
-
+public class VmPolicyCustomActivity extends VmPolicyBaseActivity implements StrictModeActivator {
     @NonNull
     @Override
     public ThreadPolicy getThreadPolicy() {
-        return new ThreadPolicy.Builder()
-            .detectDiskReads()
-            .detectDiskWrites()
-            .penaltyDeath()
-            .build();
+        return StrictModeActivator.DefaultImpls.getThreadPolicy(this);
     }
 
     @NonNull
     @Override
     public VmPolicy getVmPolicy() {
-        return StrictModeActivator.DefaultImpls.getVmPolicy(this);
+        return new VmPolicy.Builder()
+            // TODO: 変更点の追加
+            .penaltyDeath()
+            .build();
     }
 
 

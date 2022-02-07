@@ -1,8 +1,10 @@
 package com.github.tshion.mktools_android_sample.strict_mode;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.StrictMode.ThreadPolicy;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
@@ -12,13 +14,19 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * StrictMode.ThreadPolicy のデフォルト挙動の確認用
- *
- * @see com.github.tshion.mktools_android_sample.strict_mode.ThreadPolicyBaseActivity
  */
 public class ThreadPolicyBaseActivity extends AppCompatActivity {
 
     private static final String KEY = ThreadPolicyBaseActivity.class.getSimpleName() + "_KEY";
 
+
+    /**
+     * @see ThreadPolicy.Builder#detectCustomSlowCalls()
+     */
+    public void runCustomSlowCalls() {
+        // FIXME: 検知に引っ掛かる実行コードの実装
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * @see ThreadPolicy.Builder#allowThreadDiskReads()
@@ -56,5 +64,23 @@ public class ThreadPolicyBaseActivity extends AppCompatActivity {
             }
             connection = null;
         }
+    }
+
+    /**
+     * @see ThreadPolicy.Builder#detectResourceMismatches()
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void runResourceMismatches() {
+        // FIXME: 検知に引っ掛かる実行コードの実装
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * @see ThreadPolicy.Builder#detectUnbufferedIo()
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void runUnbufferedIo() {
+        // FIXME: 検知に引っ掛かる実行コードの実装
+        throw new UnsupportedOperationException();
     }
 }

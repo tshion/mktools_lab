@@ -30,5 +30,13 @@
         <activity
             android:name=".strict_mode.ThreadPolicyCustomActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".strict_mode.VmPolicyBaseActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".strict_mode.VmPolicyCustomActivity"
+            android:exported="false" />
     </application>
 </manifest>
