@@ -24,7 +24,11 @@
         </activity>
 
         <activity
-            android:name=".StrictModeThreadPolicyActivity"
+            android:name=".strict_mode.ThreadPolicyBaseActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".strict_mode.ThreadPolicyCustomActivity"
             android:exported="false" />
     </application>
 </manifest>

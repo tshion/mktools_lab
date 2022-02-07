@@ -6,11 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Ignore("API の試し書きのため")
+/**
+ * 適用前後の変化の検証
+ *
+ * @see com.github.tshion.mktools_android.StrictModeActivator
+ */
 @RunWith(AndroidJUnit4.class)
 public class StrictModeActivatorPlayground {
 
