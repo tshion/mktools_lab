@@ -12,6 +12,6 @@ java {
 }
 
 dependencies {
-    // 共通設定
-    testImplementation libraryUnitTestOnJvm
+    // JUnit
+    testImplementation "junit:junit:$libraryVersionJUnit"
 }

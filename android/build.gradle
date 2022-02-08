@@ -55,8 +55,9 @@ android {
 }
 
 dependencies {
-    // 共通設定
-    testImplementation libraryUnitTestOnAndroid
+    // AndroidX
+    testImplementation "androidx.test:core-ktx:$libraryVersionJetpackTestCore"
+    testImplementation "androidx.test.ext:junit-ktx:$libraryVersionJetpackJunit"
 
     // Guava
     implementation "com.google.guava:guava:$libraryVersionGuava"
@@ -64,9 +65,15 @@ dependencies {
     // Java 8+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$libraryVersionDesugarJdk"
 
+    // JUnit
+    testImplementation "junit:junit:$libraryVersionJUnit"
+
     // OkHttp
     implementation platform("com.squareup.okhttp3:okhttp-bom:$libraryVersionOkHttp")
     implementation 'com.squareup.okhttp3:okhttp'
+
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:$libraryVersionRobolectric"
 }
 
 
