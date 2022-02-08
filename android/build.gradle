@@ -52,12 +52,23 @@ android {
             allVariants()
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
+    // 共通設定
+    androidTestImplementation libsTest
+    testImplementation libsTest
+
     // AndroidX
+    debugImplementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
     testImplementation "androidx.test:core-ktx:$libraryVersionJetpackTestCore"
     testImplementation "androidx.test.ext:junit-ktx:$libraryVersionJetpackJunit"
+    testImplementation "androidx.test.ext:truth:$libraryVersionJetpackTruth"
 
     // Guava
     implementation "com.google.guava:guava:$libraryVersionGuava"
@@ -65,21 +76,12 @@ dependencies {
     // Java 8+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$libraryVersionDesugarJdk"
 
-    // JUnit
-    testImplementation "junit:junit:$libraryVersionJUnit"
-
     // OkHttp
     implementation platform("com.squareup.okhttp3:okhttp-bom:$libraryVersionOkHttp")
     implementation 'com.squareup.okhttp3:okhttp'
 
     // Robolectric
     testImplementation "org.robolectric:robolectric:$libraryVersionRobolectric"
-
-    // Truth
-    androidTestImplementation "com.google.truth:truth:$libraryVersionTruth"
-    testImplementation "com.google.truth:truth:$libraryVersionTruth"
-    androidTestImplementation "com.google.truth.extensions:truth-java8-extension:$libraryVersionTruth"
-    testImplementation "com.google.truth.extensions:truth-java8-extension:$libraryVersionTruth"
 }
 
 
