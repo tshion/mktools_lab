@@ -24,4 +24,5 @@ ext {
     libraryVersionKotlin = '1.6.10'
     libraryVersionOkHttp = '4.9.0'
     libraryVersionRobolectric = '4.7.3'
+    libraryVersionTruth = '1.1.3'
 }

@@ -64,4 +64,8 @@ dependencies {
     // JUnit
     androidTestImplementation "junit:junit:$libraryVersionJUnit"
     testImplementation "junit:junit:$libraryVersionJUnit"
+
+    // Truth
+    testImplementation "com.google.truth:truth:$libraryVersionTruth"
+    testImplementation "com.google.truth.extensions:truth-java8-extension:$libraryVersionTruth"
 }

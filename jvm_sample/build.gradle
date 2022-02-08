@@ -14,4 +14,8 @@ java {
 dependencies {
     // JUnit
     testImplementation "junit:junit:$libraryVersionJUnit"
+
+    // Truth
+    testImplementation "com.google.truth:truth:$libraryVersionTruth"
+    testImplementation "com.google.truth.extensions:truth-java8-extension:$libraryVersionTruth"
 }

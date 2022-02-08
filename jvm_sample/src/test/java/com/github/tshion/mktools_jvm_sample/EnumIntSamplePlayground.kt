@@ -1,6 +1,6 @@
 package com.github.tshion.mktools_jvm_sample
 
-import org.junit.Assert.assertNull
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 import kotlin.system.measureNanoTime
@@ -58,7 +58,6 @@ class EnumIntSamplePlayground {
 
     @Test
     fun test_default_value_java() {
-        val javaClass = EnumHadClass()
-        assertNull(javaClass.typeInt)
+        assertThat(EnumHadClass().typeInt).isNull()
     }
 }
