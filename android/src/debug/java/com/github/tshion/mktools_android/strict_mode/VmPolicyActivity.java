@@ -6,6 +6,12 @@ import android.os.StrictMode;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * StrictMode.VmPolicy に違反するコードの実装
  */
@@ -24,8 +30,16 @@ public abstract class VmPolicyActivity extends AppCompatActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void runCleartextNetwork() {
-        // FIXME: 検知に引っ掛かる実行コードの実装
-        throw new UnsupportedOperationException();
+        final Request request = new Request.Builder()
+            .url("http://developer.android.com/reference/javax/net/ssl/HttpsURLConnection")
+            .build();
+        try {
+            Response response = new OkHttpClient.Builder().build()
+                .newCall(request)
+                .execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
