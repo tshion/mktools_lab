@@ -11,7 +11,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.tshion.mktools_android.StrictModeActivator;
 
-import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,10 +24,20 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class StrictModeActivatorUnitTest {
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void afterClass() {
+        cleanup();
+    }
+
+    private static void cleanup() {
         StrictMode.setThreadPolicy(ThreadPolicy.LAX);
         StrictMode.setVmPolicy(VmPolicy.LAX);
+    }
+
+
+    @Before
+    public void before() {
+        cleanup();
     }
 
 

@@ -61,11 +61,9 @@ android {
 
 dependencies {
     // 共通設定
-    androidTestImplementation libsTest
-    testImplementation libsTest
-    androidTestImplementation libsTestInstrument
-    androidTestImplementation libsTestJetpack
-    testImplementation libsTestJetpack
+    debugImplementation libsTest
+    debugImplementation libsTestInstrument
+    debugImplementation libsTestJetpack
 
     // AndroidX
     debugImplementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
