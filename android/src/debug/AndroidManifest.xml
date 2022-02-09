@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.tshion.mktools_android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <application android:theme="@style/Theme.AppCompat">
+
+        <activity
+            android:name=".strict_mode.ThreadPolicyAndroidActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".strict_mode.ThreadPolicyMkToolsActivity"
+            android:exported="false" />
+    </application>
+</manifest>

@@ -1,47 +1,159 @@
 package com.github.tshion.mktools_android.strict_mode;
 
+import static com.github.tshion.mktools_android.TestUtils.pickException;
 import static com.google.common.truth.Truth.assertThat;
+
+import android.os.StrictMode;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.google.common.truth.ThrowableSubject;
-
+import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * StrictMode.ThreadPolicy の設定方法の違いによる結果差異の検証
+ */
 @RunWith(AndroidJUnit4.class)
 public class ThreadPolicyUnitTest {
 
     @Rule
-    public ActivityScenarioRule<ThreadPolicyBaseActivity> ruleBase = new ActivityScenarioRule<>(ThreadPolicyBaseActivity.class);
+    public ActivityScenarioRule<ThreadPolicyMkToolsActivity> ruleActual = new ActivityScenarioRule<>(ThreadPolicyMkToolsActivity.class);
 
     @Rule
-    public ActivityScenarioRule<ThreadPolicyCustomActivity> ruleCustom = new ActivityScenarioRule<>(ThreadPolicyCustomActivity.class);
+    public ActivityScenarioRule<ThreadPolicyAndroidActivity> ruleExpected = new ActivityScenarioRule<>(ThreadPolicyAndroidActivity.class);
+
+
+    @After
+    public void tearDown() {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
+        StrictMode.setVmPolicy(StrictMode.VmPolicy.LAX);
+    }
 
 
     /**
-     * @see ThreadPolicyBaseActivity#runDiskReads()
+     * @see ThreadPolicyActivity#runCustomSlowCalls()
+     */
+    @Ignore("検証コードが未実装のため")
+    @Test
+    public void test_runCustomSlowCalls() {
+        final Exception exExpected = pickException(() -> ruleExpected.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runCustomSlowCalls)
+        );
+        assertThat(exExpected).isInstanceOf(RuntimeException.class);
+
+        final Exception exActual = pickException(() -> ruleActual.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runCustomSlowCalls)
+        );
+        assertThat(exActual).isInstanceOf(RuntimeException.class);
+
+        assertThat(exActual.toString()).isEqualTo(exExpected.toString());
+    }
+
+    /**
+     * @see ThreadPolicyActivity#runDiskReads()
      */
     @Test
     public void test_runDiskReads() {
-        final Exception exBase;
-        try {
-            ruleBase.getScenario().onActivity(ThreadPolicyBaseActivity::runDiskReads);
-            return;
-        } catch (RuntimeException ex) {
-            exBase = ex;
-        }
+        final Exception exExpected = pickException(() -> ruleExpected.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runDiskReads)
+        );
+        assertThat(exExpected).isInstanceOf(RuntimeException.class);
 
-        final Exception exCustom;
-        try {
-            ruleCustom.getScenario().onActivity(ThreadPolicyBaseActivity::runDiskReads);
-            return;
-        } catch (RuntimeException ex) {
-            exCustom = ex;
-        }
+        final Exception exActual = pickException(() -> ruleActual.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runDiskReads)
+        );
+        assertThat(exActual).isInstanceOf(RuntimeException.class);
 
-        assertThat(exCustom.toString()).isEqualTo(exBase.toString());
+        assertThat(exActual.toString()).isEqualTo(exExpected.toString());
+    }
+
+    /**
+     * @see ThreadPolicyActivity#runDiskWrites()
+     */
+    @Test
+    public void test_runDiskWrites() {
+        final Exception exExpected = pickException(() -> ruleExpected.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runDiskWrites)
+        );
+        assertThat(exExpected).isInstanceOf(RuntimeException.class);
+
+        final Exception exActual = pickException(() -> ruleActual.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runDiskWrites)
+        );
+        assertThat(exActual).isInstanceOf(RuntimeException.class);
+
+        assertThat(exActual.toString()).isEqualTo(exExpected.toString());
+    }
+
+    /**
+     * @see ThreadPolicyActivity#runNetwork()
+     */
+    @Ignore("Robolectric で検出できなかったため")
+    @Test
+    public void test_runNetwork() {
+        final Exception exExpected = pickException(() -> ruleExpected.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runNetwork)
+        );
+        assertThat(exExpected).isInstanceOf(RuntimeException.class);
+
+        final Exception exActual = pickException(() -> ruleActual.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runNetwork)
+        );
+
+        assertThat(exActual.toString()).isEqualTo(exExpected.toString());
+    }
+
+    /**
+     * @see ThreadPolicyActivity#runResourceMismatches()
+     */
+    @Ignore("検証コードが未実装のため")
+    @Test
+    public void test_runResourceMismatches() {
+        final Exception exExpected = pickException(() -> ruleExpected.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runResourceMismatches)
+        );
+        assertThat(exExpected).isInstanceOf(RuntimeException.class);
+
+        final Exception exActual = pickException(() -> ruleActual.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runResourceMismatches)
+        );
+        assertThat(exActual).isInstanceOf(RuntimeException.class);
+
+        assertThat(exActual.toString()).isEqualTo(exExpected.toString());
+    }
+
+    /**
+     * @see ThreadPolicyActivity#runUnbufferedIo()
+     */
+    @Ignore("検証コードが未実装のため")
+    @Test
+    public void test_runUnbufferedIo() {
+        final Exception exExpected = pickException(() -> ruleExpected.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runUnbufferedIo)
+        );
+        assertThat(exExpected).isInstanceOf(RuntimeException.class);
+
+        final Exception exActual = pickException(() -> ruleActual.getScenario()
+            .recreate()
+            .onActivity(ThreadPolicyActivity::runUnbufferedIo)
+        );
+        assertThat(exActual).isInstanceOf(RuntimeException.class);
+
+        assertThat(exActual.toString()).isEqualTo(exExpected.toString());
     }
 }

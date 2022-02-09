@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android;
+package com.github.tshion.mktools_android.strict_mode;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -9,16 +9,26 @@ import android.os.StrictMode.VmPolicy;
 import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.github.tshion.mktools_android.StrictModeActivator;
+
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * 適用前後の変化の検証
+ * 適用前後のインスタンス変化の検証
  *
  * @see com.github.tshion.mktools_android.StrictModeActivator
  */
 @RunWith(AndroidJUnit4.class)
-public class StrictModeActivatorPlayground {
+public class StrictModeActivatorUnitTest {
+
+    @After
+    public void tearDown() {
+        StrictMode.setThreadPolicy(ThreadPolicy.LAX);
+        StrictMode.setVmPolicy(VmPolicy.LAX);
+    }
+
 
     @Test
     public void test_Activate() {
