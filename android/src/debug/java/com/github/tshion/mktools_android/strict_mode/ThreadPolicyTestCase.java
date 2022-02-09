@@ -9,6 +9,8 @@ import android.os.StrictMode;
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.truth.StringSubject;
+
 /**
  * StrictMode.ThreadPolicy の設定方法の違いによる結果差異の検証ケース
  */
@@ -22,7 +24,13 @@ public abstract class ThreadPolicyTestCase {
     private static void doTest(Exception exActual, Exception exExpected) {
         assertThat(exActual.toString()).isEqualTo(exExpected.toString());
         assertThat(exActual).isInstanceOf(RuntimeException.class);
-        assertThat(exActual).hasMessageThat().isEqualTo("StrictMode ThreadPolicy violation");
+
+        StringSubject subject = assertThat(exActual).hasMessageThat();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            subject.contains("violation");
+        } else {
+            subject.isEqualTo("StrictMode ThreadPolicy violation");
+        }
     }
 
 
