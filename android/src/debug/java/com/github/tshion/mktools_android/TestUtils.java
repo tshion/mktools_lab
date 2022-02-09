@@ -1,5 +1,7 @@
 package com.github.tshion.mktools_android;
 
+import android.os.Build;
+
 import java.util.Objects;
 
 /**
@@ -27,5 +29,12 @@ public final class TestUtils {
             }
             return ex;
         }
+    }
+
+    /**
+     * サポート外API で実行した際のメッセージ表示
+     */
+    public static void showMessageApiVersionUnmatched() {
+        System.out.printf("API %d では実行できません%n", Build.VERSION.SDK_INT);
     }
 }

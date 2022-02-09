@@ -1,12 +1,12 @@
 package com.github.tshion.mktools_android.strict_mode;
 
 import static com.github.tshion.mktools_android.TestUtils.pickException;
+import static com.github.tshion.mktools_android.TestUtils.showMessageApiVersionUnmatched;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.os.Build;
 import android.os.StrictMode;
 
-import androidx.annotation.RequiresApi;
 import androidx.test.core.app.ActivityScenario;
 
 /**
@@ -98,8 +98,12 @@ public abstract class ThreadPolicyTestCase {
     /**
      * @see ThreadPolicyActivity#runResourceMismatches()
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void test_runResourceMismatches() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<ThreadPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(ThreadPolicyActivity::runResourceMismatches);
@@ -114,8 +118,12 @@ public abstract class ThreadPolicyTestCase {
     /**
      * @see ThreadPolicyActivity#runUnbufferedIo()
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void test_runUnbufferedIo() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<ThreadPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(ThreadPolicyActivity::runUnbufferedIo);

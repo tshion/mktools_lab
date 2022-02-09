@@ -1,12 +1,12 @@
 package com.github.tshion.mktools_android.strict_mode;
 
 import static com.github.tshion.mktools_android.TestUtils.pickException;
+import static com.github.tshion.mktools_android.TestUtils.showMessageApiVersionUnmatched;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.os.Build;
 import android.os.StrictMode;
 
-import androidx.annotation.RequiresApi;
 import androidx.test.core.app.ActivityScenario;
 
 /**
@@ -53,8 +53,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runCleartextNetwork()
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void runCleartextNetwork() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runCleartextNetwork);
@@ -69,8 +73,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runContentUriWithoutPermission()
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void runContentUriWithoutPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runContentUriWithoutPermission);
@@ -85,8 +93,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runCredentialProtectedWhileLocked()
      */
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void runCredentialProtectedWhileLocked() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runCredentialProtectedWhileLocked);
@@ -116,8 +128,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runImplicitDirectBoot()
      */
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void runImplicitDirectBoot() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runImplicitDirectBoot);
@@ -132,8 +148,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runIncorrectContextUse()
      */
-    @RequiresApi(api = Build.VERSION_CODES.S)
     public void runIncorrectContextUse() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runIncorrectContextUse);
@@ -193,8 +213,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runNonSdkApiUsage()
      */
-    @RequiresApi(api = Build.VERSION_CODES.P)
     public void runNonSdkApiUsage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runNonSdkApiUsage);
@@ -209,8 +233,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runUnsafeIntentLaunch()
      */
-    @RequiresApi(api = Build.VERSION_CODES.S)
     public void runUnsafeIntentLaunch() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runUnsafeIntentLaunch);
@@ -225,8 +253,12 @@ public abstract class VmPolicyTestCase {
     /**
      * @see VmPolicyActivity#runUntaggedSockets()
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void runUntaggedSockets() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            showMessageApiVersionUnmatched();
+            return;
+        }
+
         final Exception exExpected = pickException(() -> {
             ActivityScenario<VmPolicyAndroidActivity> scenario = getScenarioExpected();
             scenario.onActivity(VmPolicyActivity::runUntaggedSockets);
