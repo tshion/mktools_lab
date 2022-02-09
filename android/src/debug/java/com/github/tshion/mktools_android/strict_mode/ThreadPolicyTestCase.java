@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.StrictMode;
 
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 
 /**
@@ -57,12 +56,10 @@ public abstract class ThreadPolicyTestCase {
     public void test_runDiskReads() {
         final Exception exExpected = pickException(() -> {
             ActivityScenario<ThreadPolicyAndroidActivity> scenario = getScenarioExpected();
-            scenario.moveToState(Lifecycle.State.CREATED);
             scenario.onActivity(ThreadPolicyActivity::runDiskReads);
         });
         final Exception exActual = pickException(() -> {
             ActivityScenario<ThreadPolicyMkToolsActivity> scenario = getScenarioActual();
-            scenario.moveToState(Lifecycle.State.CREATED);
             scenario.onActivity(ThreadPolicyActivity::runDiskReads);
         });
         doTest(exActual, exExpected);

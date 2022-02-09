@@ -8,19 +8,19 @@ import android.os.StrictMode.VmPolicy;
 import androidx.annotation.Nullable;
 
 /**
- * StrictMode.ThreadPolicy を標準機能を使って有効化
+ * StrictMode.VmPolicy を標準機能を使って有効化
  */
-public class ThreadPolicyAndroidActivity extends ThreadPolicyActivity {
+public class VmPolicyAndroidActivity extends VmPolicyActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        ThreadPolicy threadPolicy = new ThreadPolicy.Builder()
+        StrictMode.setThreadPolicy(ThreadPolicy.LAX);
+
+        VmPolicy vmPolicy = new VmPolicy.Builder()
             .detectAll()
             .penaltyDeath()
             .build();
-        StrictMode.setThreadPolicy(threadPolicy);
-
-        StrictMode.setVmPolicy(VmPolicy.LAX);
+        StrictMode.setVmPolicy(vmPolicy);
 
         super.onCreate(savedInstanceState);
     }

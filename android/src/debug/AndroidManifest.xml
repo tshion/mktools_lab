@@ -13,5 +13,13 @@
         <activity
             android:name=".strict_mode.ThreadPolicyMkToolsActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".strict_mode.VmPolicyAndroidActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".strict_mode.VmPolicyMkToolsActivity"
+            android:exported="false" />
     </application>
 </manifest>
