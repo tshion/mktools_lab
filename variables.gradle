@@ -22,6 +22,7 @@ ext {
     libraryVersionJetpackTestCore = '1.4.0'
     libraryVersionJetpackTestEspresso = '3.4.0'
     libraryVersionJetpackTruth = '1.4.0'
+    libraryVersionJetpackWebkit = '1.4.0'
     libraryVersionJUnit = '4.13.2'
     libraryVersionKotlin = '1.6.10'
     libraryVersionOkHttp = '4.9.0'
