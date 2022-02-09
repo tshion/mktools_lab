@@ -37,4 +37,14 @@ ext {
         "com.google.truth:truth:$libraryVersionTruth",
         "com.google.truth.extensions:truth-java8-extension:$libraryVersionTruth",
     ]
+    libsTestInstrument = [
+        // AndroidX
+        "androidx.test.espresso:espresso-core:$libraryVersionJetpackTestEspresso",
+    ]
+    libsTestJetpack = [
+        // AndroidX
+        "androidx.test:core-ktx:$libraryVersionJetpackTestCore",
+        "androidx.test.ext:junit-ktx:$libraryVersionJetpackJunit",
+        "androidx.test.ext:truth:$libraryVersionJetpackTruth",
+    ]
 }

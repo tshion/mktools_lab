@@ -63,12 +63,12 @@ dependencies {
     // 共通設定
     androidTestImplementation libsTest
     testImplementation libsTest
+    androidTestImplementation libsTestInstrument
+    androidTestImplementation libsTestJetpack
+    testImplementation libsTestJetpack
 
     // AndroidX
     debugImplementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
-    testImplementation "androidx.test:core-ktx:$libraryVersionJetpackTestCore"
-    testImplementation "androidx.test.ext:junit-ktx:$libraryVersionJetpackJunit"
-    testImplementation "androidx.test.ext:truth:$libraryVersionJetpackTruth"
 
     // Guava
     implementation "com.google.guava:guava:$libraryVersionGuava"
