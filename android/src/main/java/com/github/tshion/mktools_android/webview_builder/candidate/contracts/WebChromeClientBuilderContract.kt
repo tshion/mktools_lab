@@ -3,91 +3,98 @@ package com.github.tshion.mktools_android.webview_builder.candidate.contracts
 import android.graphics.Bitmap
 import android.view.View
 import android.webkit.*
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktBiConsumer
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktConsumer
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktObjIntConsumer
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnCreateWindowPredicate
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnJsPredicate
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnJsPromptPredicate
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnReceivedTouchIconUrlConsumer
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnShowFileChooserPredicate
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktPredicate
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktRunnable
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktSupplier
+import android.webkit.WebChromeClient.CustomViewCallback
+import android.webkit.WebStorage.QuotaUpdater
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
 
 /**
  * Defines [WebChromeClient] build rule.
  */
 interface WebChromeClientBuilderContract {
 
-    /**
-     * Creates [WebChromeClient] instance.
-     */
-    fun create(): WebChromeClient
-
     /** @see WebChromeClient.getDefaultVideoPoster */
-    fun getDefaultVideoPoster(value: MktSupplier<Bitmap?>): WebChromeClientBuilderContract
+    fun getDefaultVideoPoster(fx: MktSupplier<Bitmap?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.getVideoLoadingProgressView */
-    fun getVideoLoadingProgressView(value: MktSupplier<View?>): WebChromeClientBuilderContract
+    fun getVideoLoadingProgressView(fx: MktSupplier<View?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.getVisitedHistory */
-    fun getVisitedHistory(value: MktConsumer<ValueCallback<Array<String>>?>): WebChromeClientBuilderContract
+    fun getVisitedHistory(fx: MktConsumer<ValueCallback<Array<String?>?>?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onCloseWindow */
-    fun onCloseWindow(value: MktConsumer<WebView?>): WebChromeClientBuilderContract
+    fun onCloseWindow(fx: MktConsumer<WebView?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onConsoleMessage */
-    fun onConsoleMessage(value: MktPredicate<ConsoleMessage?>): WebChromeClientBuilderContract
+    @Deprecated("Deprecated in API level 15")
+    fun onConsoleMessage(fx: (String?, Int, String?) -> Unit): WebChromeClientBuilderContract
+
+    /** @see WebChromeClient.onConsoleMessage */
+    fun onConsoleMessage(fx: MktPredicate<ConsoleMessage?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onCreateWindow */
-    fun onCreateWindow(value: MktOnCreateWindowPredicate): WebChromeClientBuilderContract
+    fun onCreateWindow(fx: MktOnCreateWindowPredicate): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onGeolocationPermissionsHidePrompt */
-    fun onGeolocationPermissionsHidePrompt(value: MktRunnable): WebChromeClientBuilderContract
+    fun onGeolocationPermissionsHidePrompt(fx: MktRunnable): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onGeolocationPermissionsShowPrompt */
-    fun onGeolocationPermissionsShowPrompt(value: MktBiConsumer<String?, GeolocationPermissions.Callback?>): WebChromeClientBuilderContract
+    fun onGeolocationPermissionsShowPrompt(fx: MktBiConsumer<String?, GeolocationPermissions.Callback?>): WebChromeClientBuilderContract
+
+    /** @see WebChromeClient.onExceededDatabaseQuota */
+    @Deprecated("Deprecated in API level 19")
+    fun onExceededDatabaseQuota(fx: (String?, String?, Long, Long, Long, QuotaUpdater?) -> Unit): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onHideCustomView */
-    fun onHideCustomView(value: MktRunnable): WebChromeClientBuilderContract
+    fun onHideCustomView(fx: MktRunnable): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onJsAlert */
-    fun onJsAlert(value: MktOnJsPredicate): WebChromeClientBuilderContract
+    fun onJsAlert(fx: MktOnJsPredicate): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onJsBeforeUnload */
-    fun onJsBeforeUnload(value: MktOnJsPredicate): WebChromeClientBuilderContract
+    fun onJsBeforeUnload(fx: MktOnJsPredicate): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onJsConfirm */
-    fun onJsConfirm(value: MktOnJsPredicate): WebChromeClientBuilderContract
+    fun onJsConfirm(fx: MktOnJsPredicate): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onJsPrompt */
-    fun onJsPrompt(value: MktOnJsPromptPredicate): WebChromeClientBuilderContract
+    fun onJsPrompt(fx: MktOnJsPromptPredicate): WebChromeClientBuilderContract
+
+    /** @see WebChromeClient.onJsTimeout */
+    @Deprecated("Deprecated in API level 17")
+    fun onJsTimeout(fx: MktBooleanSupplier): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onPermissionRequest */
-    fun onPermissionRequest(value: MktConsumer<PermissionRequest?>): WebChromeClientBuilderContract
+    fun onPermissionRequest(fx: MktConsumer<PermissionRequest?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onPermissionRequestCanceled */
-    fun onPermissionRequestCanceled(value: MktConsumer<PermissionRequest?>): WebChromeClientBuilderContract
+    fun onPermissionRequestCanceled(fx: MktConsumer<PermissionRequest?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onProgressChanged */
-    fun onProgressChanged(value: MktObjIntConsumer<WebView?>): WebChromeClientBuilderContract
+    fun onProgressChanged(fx: MktObjIntConsumer<WebView?>): WebChromeClientBuilderContract
+
+    /** @see WebChromeClient.onReachedMaxAppCacheSize */
+    @Deprecated("Deprecated in API level 19")
+    fun onReachedMaxAppCacheSize(fx: (Long, Long, QuotaUpdater?) -> Unit): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onReceivedIcon */
-    fun onReceivedIcon(value: MktBiConsumer<WebView?, Bitmap?>): WebChromeClientBuilderContract
+    fun onReceivedIcon(fx: MktBiConsumer<WebView?, Bitmap?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onReceivedTitle */
-    fun onReceivedTitle(value: MktBiConsumer<WebView?, String?>): WebChromeClientBuilderContract
+    fun onReceivedTitle(fx: MktBiConsumer<WebView?, String?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onReceivedTouchIconUrl */
-    fun onReceivedTouchIconUrl(value: MktOnReceivedTouchIconUrlConsumer): WebChromeClientBuilderContract
+    fun onReceivedTouchIconUrl(fx: MktOnReceivedTouchIconUrlConsumer): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onRequestFocus */
-    fun onRequestFocus(value: MktConsumer<WebView?>): WebChromeClientBuilderContract
+    fun onRequestFocus(fx: MktConsumer<WebView?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onShowCustomView */
-    fun onShowCustomView(value: MktBiConsumer<View?, WebChromeClient.CustomViewCallback?>): WebChromeClientBuilderContract
+    @Deprecated("Deprecated in API level 18")
+    fun onShowCustomView(fx: (View?, Int, CustomViewCallback?) -> Unit): WebChromeClientBuilderContract
+
+    /** @see WebChromeClient.onShowCustomView */
+    fun onShowCustomView(fx: MktBiConsumer<View?, CustomViewCallback?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onShowFileChooser */
-    fun onShowFileChooser(value: MktOnShowFileChooserPredicate): WebChromeClientBuilderContract
+    fun onShowFileChooser(fx: MktOnShowFileChooserPredicate): WebChromeClientBuilderContract
 }
