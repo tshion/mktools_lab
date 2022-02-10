@@ -1,9 +1,10 @@
 package com.github.tshion.mktools_android.webview_builder.candidate.annotations
 
-import android.annotation.TargetApi
+import android.os.Build
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*
 import androidx.annotation.IntDef
+import androidx.annotation.RequiresApi
 
 /**
  * Wraps WebSettings.MenuItemFlags annotation.
@@ -19,6 +20,6 @@ import androidx.annotation.IntDef
     MENU_ITEM_SHARE,
     MENU_ITEM_WEB_SEARCH
 )
+@RequiresApi(Build.VERSION_CODES.N)
 @Retention(AnnotationRetention.SOURCE)
-@TargetApi(24)
 annotation class MktMenuItemFlags

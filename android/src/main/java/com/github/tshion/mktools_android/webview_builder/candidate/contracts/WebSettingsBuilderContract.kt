@@ -1,8 +1,10 @@
 package com.github.tshion.mktools_android.webview_builder.candidate.contracts
 
+import android.os.Build
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
+import androidx.annotation.RequiresApi
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktCacheMode
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktForceDark
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMenuItemFlags
@@ -13,12 +15,6 @@ import com.github.tshion.mktools_android.webview_builder.candidate.annotations.M
  */
 interface WebSettingsBuilderContract {
 
-    /**
-     * Apply settings to [WebSettings] instance.
-     */
-    fun apply(target: WebSettings)
-
-
     /** @see WebSettings.setAllowContentAccess */
     fun allowContentAccess(allow: Boolean): WebSettingsBuilderContract
 
@@ -26,23 +22,23 @@ interface WebSettingsBuilderContract {
     fun allowFileAccess(allow: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setAllowFileAccessFromFileURLs */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 30")
     fun allowFileAccessFromFileURLs(flag: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setAllowUniversalAccessFromFileURLs */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 30")
     fun allowUniversalAccessFromFileURLs(flag: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setAppCacheEnabled */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 30")
     fun appCacheEnabled(flag: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setAppCacheMaxSize */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 18")
     fun appCacheMaxSize(appCacheMaxSize: Long): WebSettingsBuilderContract
 
     /** @see WebSettings.setAppCachePath */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 30")
     fun appCachePath(appCachePath: String?): WebSettingsBuilderContract
 
     /** @see WebSettings.setBlockNetworkImage */
@@ -64,7 +60,7 @@ interface WebSettingsBuilderContract {
     fun databaseEnabled(flag: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setDatabasePath */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 19")
     fun databasePath(databasePath: String?): WebSettingsBuilderContract
 
     /** @see WebSettings.setDefaultFixedFontSize */
@@ -77,10 +73,11 @@ interface WebSettingsBuilderContract {
     fun defaultTextEncodingName(encoding: String?): WebSettingsBuilderContract
 
     /** @see WebSettings.setDefaultZoom */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 19")
     fun defaultZoom(zoom: ZoomDensity?): WebSettingsBuilderContract
 
     /** @see WebSettings.setDisabledActionModeMenuItems */
+    @RequiresApi(Build.VERSION_CODES.N)
     fun disabledActionModeMenuItems(@MktMenuItemFlags menuItems: Int): WebSettingsBuilderContract
 
     /** @see WebSettings.setDisplayZoomControls */
@@ -90,7 +87,7 @@ interface WebSettingsBuilderContract {
     fun domStorageEnabled(flag: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setEnableSmoothTransition */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 17")
     fun enableSmoothTransition(enable: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setFantasyFontFamily */
@@ -100,10 +97,11 @@ interface WebSettingsBuilderContract {
     fun fixedFontFamily(font: String?): WebSettingsBuilderContract
 
     /** @see WebSettings.setForceDark */
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun forceDark(@MktForceDark forceDarkMode: Int): WebSettingsBuilderContract
 
     /** @see WebSettings.setGeolocationDatabasePath */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 24")
     fun geolocationDatabasePath(databasePath: String?): WebSettingsBuilderContract
 
     /** @see WebSettings.setGeolocationEnabled */
@@ -119,7 +117,7 @@ interface WebSettingsBuilderContract {
     fun layoutAlgorithm(l: LayoutAlgorithm?): WebSettingsBuilderContract
 
     /** @see WebSettings.setLightTouchEnabled */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 18")
     fun lightTouchEnabled(enabled: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setLoadsImagesAutomatically */
@@ -129,6 +127,7 @@ interface WebSettingsBuilderContract {
     fun loadWithOverviewMode(overview: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setMediaPlaybackRequiresUserGesture */
+    @Deprecated("Deprecated in API level 17")
     fun mediaPlaybackRequiresUserGesture(require: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setMinimumFontSize */
@@ -138,34 +137,37 @@ interface WebSettingsBuilderContract {
     fun minimumLogicalFontSize(@IntRange(from = 1, to = 72) size: Int): WebSettingsBuilderContract
 
     /** @see WebSettings.setMixedContentMode */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun mixedContentMode(@MktMixedContentMode mode: Int): WebSettingsBuilderContract
 
     /** @see WebSettings.setNeedInitialFocus */
     fun needInitialFocus(flag: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setOffscreenPreRaster */
+    @RequiresApi(Build.VERSION_CODES.M)
     fun offscreenPreRaster(enabled: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setPluginState */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 18")
     fun pluginState(state: PluginState?): WebSettingsBuilderContract
 
     /** @see WebSettings.setRenderPriority */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 18")
     fun renderPriority(priority: RenderPriority?): WebSettingsBuilderContract
 
     /** @see WebSettings.setSafeBrowsingEnabled */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun safeBrowsingEnabled(enabled: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setSansSerifFontFamily */
     fun sansSerifFontFamily(font: String?): WebSettingsBuilderContract
 
     /** @see WebSettings.setSaveFormData */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 26")
     fun saveFormData(save: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setSavePassword */
-    @Deprecated("Please visit 'See Also'.")
+    @Deprecated("Deprecated in API level 18")
     fun savePassword(save: Boolean): WebSettingsBuilderContract
 
     /** @see WebSettings.setSerifFontFamily */
@@ -179,6 +181,10 @@ interface WebSettingsBuilderContract {
 
     /** @see WebSettings.supportZoom */
     fun supportZoom(support: Boolean): WebSettingsBuilderContract
+
+    /** @see WebSettings.setTextSize */
+    @Deprecated("Deprecated in API level 15")
+    fun textSize(t: TextSize?): WebSettingsBuilderContract
 
     /** @see WebSettings.setTextZoom */
     fun textZoom(textZoom: Int): WebSettingsBuilderContract

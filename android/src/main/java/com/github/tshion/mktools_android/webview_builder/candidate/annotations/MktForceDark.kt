@@ -1,9 +1,10 @@
 package com.github.tshion.mktools_android.webview_builder.candidate.annotations
 
-import android.annotation.TargetApi
+import android.os.Build
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*
 import androidx.annotation.IntDef
+import androidx.annotation.RequiresApi
 
 /**
  * Wraps WebSettings.ForceDark annotation.
@@ -17,6 +18,6 @@ import androidx.annotation.IntDef
     FORCE_DARK_OFF,
     FORCE_DARK_ON
 )
+@RequiresApi(Build.VERSION_CODES.Q)
 @Retention(AnnotationRetention.SOURCE)
-@TargetApi(29)
 annotation class MktForceDark
