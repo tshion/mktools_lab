@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate
+package com.github.tshion.mktools_android.webview_builder.candidate.aliases
 
 internal typealias MktBiConsumer<T, U> = (T, U) -> Unit
 internal typealias MktBiFunction<T, U, R> = (T, U) -> R

@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate
+package com.github.tshion.mktools_android.webview_builder.candidate.aliases
 
 import android.net.Uri
 import android.os.Message

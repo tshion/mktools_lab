@@ -1,8 +1,19 @@
-package com.github.tshion.mktools_android.webview_builder.candidate
+package com.github.tshion.mktools_android.webview_builder.candidate.contracts
 
 import android.graphics.Bitmap
 import android.view.View
 import android.webkit.*
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktBiConsumer
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktConsumer
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktObjIntConsumer
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnCreateWindowPredicate
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnJsPredicate
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnJsPromptPredicate
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnReceivedTouchIconUrlConsumer
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktOnShowFileChooserPredicate
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktPredicate
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktRunnable
+import com.github.tshion.mktools_android.webview_builder.candidate.aliases.MktSupplier
 
 /**
  * Defines [WebChromeClient] build rule.

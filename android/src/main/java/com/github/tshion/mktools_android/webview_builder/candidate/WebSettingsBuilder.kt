@@ -9,6 +9,7 @@ import com.github.tshion.mktools_android.webview_builder.candidate.annotations.M
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktForceDark
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMenuItemFlags
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMixedContentMode
+import com.github.tshion.mktools_android.webview_builder.candidate.contracts.WebSettingsBuilderContract
 
 class WebSettingsBuilder : WebSettingsBuilderContract {
 
