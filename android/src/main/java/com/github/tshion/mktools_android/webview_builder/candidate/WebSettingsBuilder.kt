@@ -17,7 +17,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
     private var allowFileAccessFromFileURLs: Boolean? = null
     private var allowUniversalAccessFromFileURLs: Boolean? = null
     private var appCacheEnabled: Boolean? = null
-    private var appCacheMaxSize: Long? = null
+//    private var appCacheMaxSize: Long? = null
     private var appCachePath: String? = null
     private var blockNetworkImage: Boolean? = null
     private var blockNetworkLoads: Boolean? = null
@@ -25,15 +25,15 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
     private var cacheMode: Int? = null
     private var cursiveFontFamily: String? = null
     private var databaseEnabled: Boolean? = null
-    private var databasePath: String? = null
+//    private var databasePath: String? = null
     private var defaultFixedFontSize: Int? = null
     private var defaultFontSize: Int? = null
     private var defaultTextEncodingName: String? = null
-    private var defaultZoom: ZoomDensity? = null
+//    private var defaultZoom: ZoomDensity? = null
     private var disabledActionModeMenuItems: Int? = null
     private var displayZoomControls: Boolean? = null
     private var domStorageEnabled: Boolean? = null
-    private var enableSmoothTransition: Boolean? = null
+//    private var enableSmoothTransition: Boolean? = null
     private var fantasyFontFamily: String? = null
     private var fixedFontFamily: String? = null
     private var forceDark: Int? = null
@@ -42,7 +42,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
     private var javaScriptCanOpenWindowsAutomatically: Boolean? = null
     private var javaScriptEnabled: Boolean? = null
     private var layoutAlgorithm: LayoutAlgorithm? = null
-    private var lightTouchEnabled: Boolean? = null
+//    private var lightTouchEnabled: Boolean? = null
     private var loadWithOverviewMode: Boolean? = null
     private var loadsImagesAutomatically: Boolean? = null
     private var mediaPlaybackRequiresUserGesture: Boolean? = null
@@ -51,12 +51,12 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
     private var mixedContentMode: Int? = null
     private var needInitialFocus: Boolean? = null
     private var offscreenPreRaster: Boolean? = null
-    private var pluginState: PluginState? = null
+//    private var pluginState: PluginState? = null
     private var renderPriority: RenderPriority? = null
     private var safeBrowsingEnabled: Boolean? = null
     private var sansSerifFontFamily: String? = null
     private var saveFormData: Boolean? = null
-    private var savePassword: Boolean? = null
+//    private var savePassword: Boolean? = null
     private var serifFontFamily: String? = null
     private var standardFontFamily: String? = null
     private var supportMultipleWindows: Boolean? = null
@@ -93,7 +93,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setAppCacheMaxSize */
     override fun appCacheMaxSize(appCacheMaxSize: Long) = apply {
-        this.appCacheMaxSize = appCacheMaxSize
+//        this.appCacheMaxSize = appCacheMaxSize
     }
 
     /** @see WebSettings.setAppCachePath */
@@ -133,7 +133,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setDatabasePath */
     override fun databasePath(databasePath: String?) = apply {
-        this.databasePath = databasePath
+//        this.databasePath = databasePath
     }
 
     /** @see WebSettings.setDefaultFixedFontSize */
@@ -153,7 +153,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setDefaultZoom */
     override fun defaultZoom(zoom: ZoomDensity?) = apply {
-        defaultZoom = zoom
+//        defaultZoom = zoom
     }
 
     /** @see WebSettings.setDisabledActionModeMenuItems */
@@ -173,7 +173,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setEnableSmoothTransition */
     override fun enableSmoothTransition(enable: Boolean) = apply {
-        enableSmoothTransition = enable
+//        enableSmoothTransition = enable
     }
 
     /** @see WebSettings.setFantasyFontFamily */
@@ -218,7 +218,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setLightTouchEnabled */
     override fun lightTouchEnabled(enabled: Boolean) = apply {
-        lightTouchEnabled = enabled
+//        lightTouchEnabled = enabled
     }
 
     /** @see WebSettings.setLoadsImagesAutomatically */
@@ -263,7 +263,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setPluginState */
     override fun pluginState(state: PluginState?) = apply {
-        pluginState = state
+//        pluginState = state
     }
 
     /** @see WebSettings.setRenderPriority */
@@ -288,7 +288,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
 
     /** @see WebSettings.setSavePassword */
     override fun savePassword(save: Boolean) = apply {
-        savePassword = save
+//        savePassword = save
     }
 
     /** @see WebSettings.setSerifFontFamily */
@@ -336,7 +336,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
         allowFileAccessFromFileURLs?.also { target.allowFileAccessFromFileURLs = it }
         allowUniversalAccessFromFileURLs?.also { target.allowUniversalAccessFromFileURLs = it }
         appCacheEnabled?.also { target.setAppCacheEnabled(it) }
-        appCacheMaxSize?.also { target.setAppCacheMaxSize(it) }
+//        appCacheMaxSize?.also { target.setAppCacheMaxSize(it) }
         appCachePath?.also { target.setAppCachePath(it) }
         blockNetworkImage?.also { target.blockNetworkImage = it }
         blockNetworkLoads?.also { target.blockNetworkLoads = it }
@@ -344,11 +344,11 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
         cacheMode?.also { target.cacheMode = it }
         cursiveFontFamily?.also { target.cursiveFontFamily = it }
         databaseEnabled?.also { target.databaseEnabled = it }
-        databasePath?.also { target.databasePath = it }
+//        databasePath?.also { target.databasePath = it }
         defaultFixedFontSize?.also { target.defaultFixedFontSize = it }
         defaultFontSize?.also { target.defaultFontSize = it }
         defaultTextEncodingName?.also { target.defaultTextEncodingName = it }
-        defaultZoom?.also { target.defaultZoom = it }
+//        defaultZoom?.also { target.defaultZoom = it }
         disabledActionModeMenuItems?.also {
             if (WebViewFeature.isFeatureSupported(WebViewFeature.DISABLED_ACTION_MODE_MENU_ITEMS)) {
                 WebSettingsCompat.setDisabledActionModeMenuItems(target, it)
@@ -356,7 +356,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
         }
         displayZoomControls?.also { target.displayZoomControls = it }
         domStorageEnabled?.also { target.domStorageEnabled = it }
-        enableSmoothTransition?.also { target.setEnableSmoothTransition(it) }
+//        enableSmoothTransition?.also { target.setEnableSmoothTransition(it) }
         fantasyFontFamily?.also { target.fantasyFontFamily = it }
         fixedFontFamily?.also { target.fixedFontFamily = it }
         forceDark?.also {
@@ -371,7 +371,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
         }
         javaScriptEnabled?.also { target.javaScriptEnabled = it }
         layoutAlgorithm?.also { target.layoutAlgorithm = it }
-        lightTouchEnabled?.also { target.lightTouchEnabled = it }
+//        lightTouchEnabled?.also { target.lightTouchEnabled = it }
         loadsImagesAutomatically?.also { target.loadsImagesAutomatically = it }
         loadWithOverviewMode?.also { target.loadWithOverviewMode = it }
         mediaPlaybackRequiresUserGesture?.also { target.mediaPlaybackRequiresUserGesture = it }
@@ -384,7 +384,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
                 WebSettingsCompat.setOffscreenPreRaster(target, it)
             }
         }
-        pluginState?.also { target.pluginState = it }
+//        pluginState?.also { target.pluginState = it }
         renderPriority?.also { target.setRenderPriority(it) }
         safeBrowsingEnabled?.also {
             if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
@@ -393,7 +393,7 @@ class WebSettingsBuilder : WebSettingsBuilderContract {
         }
         sansSerifFontFamily?.also { target.sansSerifFontFamily = it }
         saveFormData?.also { target.saveFormData = it }
-        savePassword?.also { target.savePassword = it }
+//        savePassword?.also { target.savePassword = it }
         serifFontFamily?.also { target.serifFontFamily = it }
         standardFontFamily?.also { target.standardFontFamily = it }
         supportMultipleWindows?.also { target.setSupportMultipleWindows(it) }
