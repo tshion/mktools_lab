@@ -1,10 +1,12 @@
 package com.github.tshion.mktools_android.webview_builder.candidate
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Message
 import android.view.KeyEvent
+import android.view.View
 import android.webkit.*
 import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
@@ -14,16 +16,29 @@ import androidx.webkit.WebSettingsCompat.*
 import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktCacheMode
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMixedContentMode
+import com.github.tshion.mktools_android.webview_builder.candidate.contracts.WebChromeClientBuilderContract
 import com.github.tshion.mktools_android.webview_builder.candidate.contracts.WebSettingsBuilderContract
 import com.github.tshion.mktools_android.webview_builder.candidate.contracts.WebViewClientCompatBuilderContract
+import com.github.tshion.mktools_android.webview_builder.candidate.states.WebChromeClientState
 import com.github.tshion.mktools_android.webview_builder.candidate.states.WebSettingsState
 import com.github.tshion.mktools_android.webview_builder.candidate.states.WebViewClientCompatState
 
 /**
  * Builder for WebView.
  */
-class WebViewBuilder : WebSettingsBuilderContract,
+class WebViewBuilder : WebChromeClientBuilderContract,
+    WebSettingsBuilderContract,
     WebViewClientCompatBuilderContract {
+
+    private var _stateWebChromeClient: WebChromeClientState? = null
+    private val stateWebChromeClient: WebChromeClientState
+        get() {
+            // FIXME: スレッド防御
+            if (_stateWebChromeClient == null) {
+                _stateWebChromeClient = WebChromeClientState()
+            }
+            return _stateWebChromeClient!!
+        }
 
     private var _stateWebSettings: WebSettingsState? = null
     private val stateWebSettings: WebSettingsState
@@ -44,6 +59,115 @@ class WebViewBuilder : WebSettingsBuilderContract,
             }
             return _stateWebViewClientCompat!!
         }
+
+
+    // Start overrides [WebChromeClientBuilderContract].
+
+    override fun getDefaultVideoPoster(
+        fx: MktSupplier<Bitmap?>
+    ) = apply { stateWebChromeClient.getDefaultVideoPoster = fx }
+
+    override fun getVideoLoadingProgressView(
+        fx: MktSupplier<View?>
+    ) = apply { stateWebChromeClient.getVideoLoadingProgressView = fx }
+
+    override fun getVisitedHistory(
+        fx: MktConsumer<ValueCallback<Array<String>>>
+    ) = apply { stateWebChromeClient.getVisitedHistory = fx }
+
+    override fun onCloseWindow(
+        fx: MktConsumer<WebView>
+    ) = apply { stateWebChromeClient.onCloseWindow = fx }
+
+    override fun onConsoleMessageUntil15(
+        fx: MktTriConsumer<String, Int, String>
+    ) = this
+
+    override fun onConsoleMessage(
+        fx: MktPredicate<ConsoleMessage>
+    ) = apply { stateWebChromeClient.onConsoleMessage = fx }
+
+    override fun onCreateWindow(
+        fx: MktOnCreateWindowPredicate
+    ) = apply { stateWebChromeClient.onCreateWindow = fx }
+
+    override fun onExceededDatabaseQuota(
+        fx: MktOnExceededDatabaseQuotaConsumer
+    ) = this
+
+    override fun onGeolocationPermissionsHidePrompt(
+        fx: MktRunnable
+    ) = apply { stateWebChromeClient.onGeolocationPermissionsHidePrompt = fx }
+
+    override fun onGeolocationPermissionsShowPrompt(
+        fx: MktBiConsumer<String, GeolocationPermissions.Callback>
+    ) = apply { stateWebChromeClient.onGeolocationPermissionsShowPrompt = fx }
+
+    override fun onHideCustomView(
+        fx: MktRunnable
+    ) = apply { stateWebChromeClient.onHideCustomView = fx }
+
+    override fun onJsAlert(
+        fx: MktOnJsPredicate
+    ) = apply { stateWebChromeClient.onJsAlert = fx }
+
+    override fun onJsBeforeUnload(
+        fx: MktOnJsPredicate
+    ) = apply { stateWebChromeClient.onJsBeforeUnload = fx }
+
+    override fun onJsConfirm(
+        fx: MktOnJsPredicate
+    ) = apply { stateWebChromeClient.onJsConfirm = fx }
+
+    override fun onJsPrompt(
+        fx: MktOnJsPromptPredicate
+    ) = apply { stateWebChromeClient.onJsPrompt = fx }
+
+    override fun onJsTimeout(
+        fx: MktBooleanSupplier
+    ) = this
+
+    override fun onPermissionRequest(
+        fx: MktConsumer<PermissionRequest>
+    ) = apply { stateWebChromeClient.onPermissionRequest = fx }
+
+    override fun onPermissionRequestCanceled(
+        fx: MktConsumer<PermissionRequest>
+    ) = apply { stateWebChromeClient.onPermissionRequestCanceled = fx }
+
+    override fun onProgressChanged(
+        fx: MktObjIntConsumer<WebView>
+    ) = apply { stateWebChromeClient.onProgressChanged = fx }
+
+    override fun onReceivedIcon(
+        fx: MktBiConsumer<WebView, Bitmap>
+    ) = apply { stateWebChromeClient.onReceivedIcon = fx }
+
+    override fun onReceivedTitle(
+        fx: MktBiConsumer<WebView, String>
+    ) = apply { stateWebChromeClient.onReceivedTitle = fx }
+
+    override fun onReceivedTouchIconUrl(
+        fx: MktBiObjBooleanConsumer<WebView, String>
+    ) = apply { stateWebChromeClient.onReceivedTouchIconUrl = fx }
+
+    override fun onRequestFocus(
+        fx: MktConsumer<WebView>
+    ) = apply { stateWebChromeClient.onRequestFocus = fx }
+
+    override fun onShowCustomViewUntil18(
+        fx: MktTriConsumer<View, Int, WebChromeClient.CustomViewCallback>
+    ) = this
+
+    override fun onShowCustomView(
+        fx: MktBiConsumer<View, WebChromeClient.CustomViewCallback>
+    ) = apply { stateWebChromeClient.onShowCustomView = fx }
+
+    override fun onShowFileChooser(
+        fx: MktTriPredicate<WebView, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>
+    ) = apply { stateWebChromeClient.onShowFileChooser = fx }
+
+    // End overrides [WebChromeClientBuilderContract].
 
 
     // Start overrides [WebSettingsBuilderContract].
@@ -343,4 +467,20 @@ class WebViewBuilder : WebSettingsBuilderContract,
     ) = apply { stateWebViewClientCompat.shouldOverrideUrlLoading = fx }
 
     // End overrides [WebViewClientCompatBuilderContract].
+
+
+    /**
+     * Reflects builder's settings.
+     */
+    fun into(target: WebView) {
+        _stateWebChromeClient?.also {
+            target.webChromeClient = it.create()
+        }
+        _stateWebSettings?.also {
+            it.into(target.settings)
+        }
+        _stateWebViewClientCompat?.also {
+            target.webViewClient = it.create()
+        }
+    }
 }
