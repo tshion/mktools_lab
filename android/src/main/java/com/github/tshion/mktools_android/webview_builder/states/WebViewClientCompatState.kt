@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.states
+package com.github.tshion.mktools_android.webview_builder.states
 
 import android.graphics.Bitmap
 import android.net.http.SslError
@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.webkit.SafeBrowsingResponseCompat
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
+import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
  * State of [androidx.webkit.WebViewClientCompat].

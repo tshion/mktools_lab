@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.annotations
+package com.github.tshion.mktools_android.webview_builder.annotations
 
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*

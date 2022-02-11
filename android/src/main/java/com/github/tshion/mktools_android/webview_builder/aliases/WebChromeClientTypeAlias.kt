@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.aliases
+package com.github.tshion.mktools_android.webview_builder.aliases
 
 import android.os.Message
 import android.webkit.JsPromptResult

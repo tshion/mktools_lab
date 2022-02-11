@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.states
+package com.github.tshion.mktools_android.webview_builder.states
 
 import android.os.Build
 import android.webkit.WebSettings
@@ -6,7 +6,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.RequiresApi
 import androidx.webkit.WebSettingsCompat.*
 import androidx.webkit.WebViewFeature.*
-import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktCacheMode
+import com.github.tshion.mktools_android.webview_builder.annotations.MktCacheMode
 
 /**
  * State of [WebSettings] and [androidx.webkit.WebSettingsCompat].

@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.contracts
+package com.github.tshion.mktools_android.webview_builder.contracts
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -6,7 +6,7 @@ import android.view.View
 import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebChromeClient.FileChooserParams
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
+import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
  * Defines [WebChromeClient] build rule.

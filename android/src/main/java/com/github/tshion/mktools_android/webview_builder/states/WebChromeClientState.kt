@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.states
+package com.github.tshion.mktools_android.webview_builder.states
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -7,7 +7,7 @@ import android.view.View
 import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebChromeClient.FileChooserParams
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
+import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
  * State of [WebChromeClient].

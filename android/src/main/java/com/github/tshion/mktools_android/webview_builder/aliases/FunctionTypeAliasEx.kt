@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.aliases
+package com.github.tshion.mktools_android.webview_builder.aliases
 
 internal typealias MktBiObjBooleanConsumer<T, U> = (T, U, Boolean) -> Unit
 internal typealias MktObjBiFloatConsumer<T> = (T, Float, Float) -> Unit

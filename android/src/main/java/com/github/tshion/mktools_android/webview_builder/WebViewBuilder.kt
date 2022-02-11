@@ -1,6 +1,5 @@
 package com.github.tshion.mktools_android.webview_builder
 
-import android.annotation.TargetApi
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
@@ -8,872 +7,477 @@ import android.os.Message
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
-import androidx.webkit.*
-import com.github.tshion.mktools_android.webview_builder.inner.WebChromeClientContract
-import com.github.tshion.mktools_android.webview_builder.inner.WebSettingsContract
-import com.github.tshion.mktools_android.webview_builder.inner.WebViewClientContract
-import com.github.tshion.mktools_android.webview_builder.inner.WebViewContract
+import android.webkit.WebSettings.*
+import androidx.annotation.IntRange
+import androidx.webkit.WebResourceErrorCompat
+import androidx.webkit.WebSettingsCompat.*
+import com.github.tshion.mktools_android.webview_builder.aliases.*
+import com.github.tshion.mktools_android.webview_builder.annotations.MktCacheMode
+import com.github.tshion.mktools_android.webview_builder.annotations.MktMixedContentMode
+import com.github.tshion.mktools_android.webview_builder.contracts.WebChromeClientBuilderContract
+import com.github.tshion.mktools_android.webview_builder.contracts.WebSettingsBuilderContract
+import com.github.tshion.mktools_android.webview_builder.contracts.WebViewClientCompatBuilderContract
+import com.github.tshion.mktools_android.webview_builder.states.WebChromeClientState
+import com.github.tshion.mktools_android.webview_builder.states.WebSettingsState
+import com.github.tshion.mktools_android.webview_builder.states.WebViewClientCompatState
 
 /**
- * Builder for WebView
+ * Builder for WebView.
  */
-class WebViewBuilder : WebChromeClientContract, WebSettingsContract, WebViewContract,
-    WebViewClientContract {
+class WebViewBuilder : WebChromeClientBuilderContract,
+    WebSettingsBuilderContract,
+    WebViewClientCompatBuilderContract {
+
+    private var _stateWebChromeClient: WebChromeClientState? = null
+    private val stateWebChromeClient: WebChromeClientState
+        get() {
+            // FIXME: スレッド防御
+            if (_stateWebChromeClient == null) {
+                _stateWebChromeClient = WebChromeClientState()
+            }
+            return _stateWebChromeClient!!
+        }
+
+    private var _stateWebSettings: WebSettingsState? = null
+    private val stateWebSettings: WebSettingsState
+        get() {
+            // FIXME: スレッド防御
+            if (_stateWebSettings == null) {
+                _stateWebSettings = WebSettingsState()
+            }
+            return _stateWebSettings!!
+        }
+
+    private var _stateWebViewClientCompat: WebViewClientCompatState? = null
+    private val stateWebViewClientCompat: WebViewClientCompatState
+        get() {
+            // FIXME: スレッド防御
+            if (_stateWebViewClientCompat == null) {
+                _stateWebViewClientCompat = WebViewClientCompatState()
+            }
+            return _stateWebViewClientCompat!!
+        }
+
+
+    // Start overrides [WebChromeClientBuilderContract].
+
+    override fun getDefaultVideoPoster(
+        fx: MktSupplier<Bitmap?>
+    ) = apply { stateWebChromeClient.getDefaultVideoPoster = fx }
+
+    override fun getVideoLoadingProgressView(
+        fx: MktSupplier<View?>
+    ) = apply { stateWebChromeClient.getVideoLoadingProgressView = fx }
+
+    override fun getVisitedHistory(
+        fx: MktConsumer<ValueCallback<Array<String>>>
+    ) = apply { stateWebChromeClient.getVisitedHistory = fx }
+
+    override fun onCloseWindow(
+        fx: MktConsumer<WebView>
+    ) = apply { stateWebChromeClient.onCloseWindow = fx }
+
+    override fun onConsoleMessageUntil15(
+        fx: MktTriConsumer<String, Int, String>
+    ) = this
+
+    override fun onConsoleMessage(
+        fx: MktPredicate<ConsoleMessage>
+    ) = apply { stateWebChromeClient.onConsoleMessage = fx }
+
+    override fun onCreateWindow(
+        fx: MktOnCreateWindowPredicate
+    ) = apply { stateWebChromeClient.onCreateWindow = fx }
+
+    override fun onExceededDatabaseQuota(
+        fx: MktOnExceededDatabaseQuotaConsumer
+    ) = this
+
+    override fun onGeolocationPermissionsHidePrompt(
+        fx: MktRunnable
+    ) = apply { stateWebChromeClient.onGeolocationPermissionsHidePrompt = fx }
+
+    override fun onGeolocationPermissionsShowPrompt(
+        fx: MktBiConsumer<String, GeolocationPermissions.Callback>
+    ) = apply { stateWebChromeClient.onGeolocationPermissionsShowPrompt = fx }
+
+    override fun onHideCustomView(
+        fx: MktRunnable
+    ) = apply { stateWebChromeClient.onHideCustomView = fx }
+
+    override fun onJsAlert(
+        fx: MktOnJsPredicate
+    ) = apply { stateWebChromeClient.onJsAlert = fx }
+
+    override fun onJsBeforeUnload(
+        fx: MktOnJsPredicate
+    ) = apply { stateWebChromeClient.onJsBeforeUnload = fx }
+
+    override fun onJsConfirm(
+        fx: MktOnJsPredicate
+    ) = apply { stateWebChromeClient.onJsConfirm = fx }
+
+    override fun onJsPrompt(
+        fx: MktOnJsPromptPredicate
+    ) = apply { stateWebChromeClient.onJsPrompt = fx }
+
+    override fun onJsTimeout(
+        fx: MktBooleanSupplier
+    ) = this
+
+    override fun onPermissionRequest(
+        fx: MktConsumer<PermissionRequest>
+    ) = apply { stateWebChromeClient.onPermissionRequest = fx }
 
-    /** @see WebSettings.setAllowContentAccess */
-    private var allowContentAccess: Boolean? = null
+    override fun onPermissionRequestCanceled(
+        fx: MktConsumer<PermissionRequest>
+    ) = apply { stateWebChromeClient.onPermissionRequestCanceled = fx }
 
-    /** @see WebSettings.setAllowFileAccess */
-    private var allowFileAccess: Boolean? = null
+    override fun onProgressChanged(
+        fx: MktObjIntConsumer<WebView>
+    ) = apply { stateWebChromeClient.onProgressChanged = fx }
 
-    /** @see WebSettings.setAllowFileAccessFromFileURLs */
-    private var allowFileAccessFromFileURLs: Boolean? = null
+    override fun onReceivedIcon(
+        fx: MktBiConsumer<WebView, Bitmap>
+    ) = apply { stateWebChromeClient.onReceivedIcon = fx }
 
-    /** @see WebSettings.setAllowUniversalAccessFromFileURLs */
-    private var allowUniversalAccessFromFileURLs: Boolean? = null
+    override fun onReceivedTitle(
+        fx: MktBiConsumer<WebView, String>
+    ) = apply { stateWebChromeClient.onReceivedTitle = fx }
 
-    /** @see WebSettings.setAppCacheEnabled */
-    private var appCacheEnabled: Boolean? = null
+    override fun onReceivedTouchIconUrl(
+        fx: MktBiObjBooleanConsumer<WebView, String>
+    ) = apply { stateWebChromeClient.onReceivedTouchIconUrl = fx }
 
-    /** @see WebSettings.setAppCachePath */
-    private var appCachePath: String? = null
+    override fun onRequestFocus(
+        fx: MktConsumer<WebView>
+    ) = apply { stateWebChromeClient.onRequestFocus = fx }
 
-    /** @see WebSettings.setBlockNetworkImage */
-    private var blockNetworkImage: Boolean? = null
+    override fun onShowCustomViewUntil18(
+        fx: MktTriConsumer<View, Int, WebChromeClient.CustomViewCallback>
+    ) = this
 
-    /** @see WebSettings.setBlockNetworkLoads */
-    private var blockNetworkLoads: Boolean? = null
+    override fun onShowCustomView(
+        fx: MktBiConsumer<View, WebChromeClient.CustomViewCallback>
+    ) = apply { stateWebChromeClient.onShowCustomView = fx }
 
-    /** @see WebSettings.setBuiltInZoomControls */
-    private var builtInZoomControls: Boolean? = null
+    override fun onShowFileChooser(
+        fx: MktTriPredicate<WebView, ValueCallback<Array<Uri>>, WebChromeClient.FileChooserParams>
+    ) = apply { stateWebChromeClient.onShowFileChooser = fx }
 
-    /** @see WebSettings.setCacheMode */
-    @get:WebSettingsContract.CacheModeType
-    @setparam:WebSettingsContract.CacheModeType
-    private var cacheMode: Int? = null
+    // End overrides [WebChromeClientBuilderContract].
 
-    /** @see WebSettings.setCursiveFontFamily */
-    private var cursiveFontFamily: String? = null
 
-    /** @see WebSettings.setDatabaseEnabled */
-    private var databaseEnabled: Boolean? = null
+    // Start overrides [WebSettingsBuilderContract].
 
-    /** @see WebSettings.setDefaultFixedFontSize */
-    private var defaultFixedFontSize: Int? = null
+    override fun allowContentAccess(
+        allow: Boolean
+    ) = apply { stateWebSettings.allowContentAccess = allow }
 
-    /** @see WebSettings.setDefaultFontSize */
-    private var defaultFontSize: Int? = null
+    override fun allowFileAccess(
+        allow: Boolean
+    ) = apply { stateWebSettings.allowFileAccess = allow }
 
-    /** @see WebSettings.setDefaultTextEncodingName */
-    private var defaultTextEncodingName: String? = null
+    override fun allowFileAccessFromFileURLs(
+        flag: Boolean
+    ) = apply { stateWebSettings.allowFileAccessFromFileURLs = flag }
 
-    /** @see WebSettings.setDisabledActionModeMenuItems */
-    @get:WebSettingsContract.MenuItemsType
-    @setparam:WebSettingsContract.MenuItemsType
-    private var disabledActionModeMenuItems: Int? = null
+    override fun allowUniversalAccessFromFileURLs(
+        flag: Boolean
+    ) = apply { stateWebSettings.allowUniversalAccessFromFileURLs = flag }
 
-    /** @see WebSettings.setDisplayZoomControls */
-    private var displayZoomControls: Boolean? = null
+    override fun blockNetworkImage(
+        flag: Boolean
+    ) = apply { stateWebSettings.blockNetworkImage = flag }
 
-    /** @see WebSettings.setDomStorageEnabled */
-    private var domStorageEnabled: Boolean? = null
+    override fun blockNetworkLoads(
+        flag: Boolean
+    ) = apply { stateWebSettings.blockNetworkLoads = flag }
 
-    /** @see WebViewClient.doUpdateVisitedHistory */
-    private var doUpdateVisitedHistory: ((view: WebView?, url: String?, isReload: Boolean) -> Unit)? =
-        null
+    override fun builtInZoomControls(
+        enabled: Boolean
+    ) = apply { stateWebSettings.builtInZoomControls = enabled }
 
-    /** @see WebSettings.setFantasyFontFamily */
-    private var fantasyFontFamily: String? = null
+    override fun cacheMode(
+        @MktCacheMode mode: Int
+    ) = apply { stateWebSettings.cacheMode = mode }
 
-    /** @see WebSettings.setFixedFontFamily */
-    private var fixedFontFamily: String? = null
+    override fun cursiveFontFamily(
+        font: String
+    ) = apply { stateWebSettings.cursiveFontFamily = font }
 
-    /** @see WebSettings.setForceDark */
-    @get:WebSettingsContract.ForceDarkType
-    @setparam:WebSettingsContract.ForceDarkType
-    private var forceDark: Int? = null
+    override fun databaseEnabled(
+        flag: Boolean
+    ) = apply { stateWebSettings.databaseEnabled = flag }
 
-    /** @see WebSettings.setGeolocationEnabled */
-    private var geolocationEnabled: Boolean? = null
+    override fun databasePath(
+        databasePath: String
+    ) = this
 
-    /** @see WebChromeClient.getDefaultVideoPoster */
-    private var getDefaultVideoPoster: (() -> Bitmap?)? = null
+    override fun defaultFixedFontSize(
+        @IntRange(from = 1, to = 72) size: Int
+    ) = apply { stateWebSettings.defaultFixedFontSize = size }
 
-    /** @see WebChromeClient.getVideoLoadingProgressView */
-    private var getVideoLoadingProgressView: (() -> View?)? = null
+    override fun defaultFontSize(
+        @IntRange(from = 1, to = 72) size: Int
+    ) = apply { stateWebSettings.defaultFontSize = size }
 
-    /** @see WebChromeClient.getVisitedHistory */
-    private var getVisitedHistory: ((callback: ValueCallback<Array<String>>?) -> Unit)? = null
+    override fun defaultTextEncodingName(
+        encoding: String
+    ) = apply { stateWebSettings.defaultTextEncodingName = encoding }
 
-    /** @see WebSettings.setJavaScriptCanOpenWindowsAutomatically */
-    private var javaScriptCanOpenWindowsAutomatically: Boolean? = null
+    override fun defaultZoom(
+        zoom: WebSettings.ZoomDensity?
+    ) = this
 
-    /** @see WebSettings.setJavaScriptEnabled */
-    private var javaScriptEnabled: Boolean? = null
+    override fun disabledActionModeMenuItems(
+        @MenuItemFlags menuItems: Int
+    ) = apply { stateWebSettings.disabledActionModeMenuItems = menuItems }
 
-    /** @see WebSettings.setLayoutAlgorithm */
-    private var layoutAlgorithm: WebSettings.LayoutAlgorithm? = null
+    override fun displayZoomControls(
+        enabled: Boolean
+    ) = apply { stateWebSettings.displayZoomControls = enabled }
 
-    /** @see WebSettings.setLoadWithOverviewMode */
-    private var loadWithOverviewMode: Boolean? = null
+    override fun domStorageEnabled(
+        flag: Boolean
+    ) = apply { stateWebSettings.domStorageEnabled = flag }
 
-    /** @see WebSettings.setLoadsImagesAutomatically */
-    private var loadsImagesAutomatically: Boolean? = null
+    override fun enableSmoothTransition(
+        enable: Boolean
+    ) = this
 
-    /** @see WebSettings.setMediaPlaybackRequiresUserGesture */
-    private var mediaPlaybackRequiresUserGesture: Boolean? = null
+    override fun fantasyFontFamily(
+        font: String
+    ) = apply { stateWebSettings.fantasyFontFamily = font }
 
-    /** @see WebSettings.setMinimumFontSize */
-    private var minimumFontSize: Int? = null
+    override fun fixedFontFamily(
+        font: String
+    ) = apply { stateWebSettings.fixedFontFamily = font }
 
-    /** @see WebSettings.setMinimumLogicalFontSize */
-    @get:WebSettingsContract.MixedContentModeType
-    @setparam:WebSettingsContract.MixedContentModeType
-    private var minimumLogicalFontSize: Int? = null
+    override fun forceDark(
+        @ForceDark forceDarkMode: Int
+    ) = apply { stateWebSettings.forceDark = forceDarkMode }
 
-    /** @see WebSettings.setMixedContentMode */
-    private var mixedContentMode: Int? = null
+    override fun forceDarkStrategy(
+        @ForceDarkStrategy forceDarkBehavior: Int
+    ) = apply { stateWebSettings.forceDarkStrategy = forceDarkBehavior }
 
-    /** @see WebSettings.setNeedInitialFocus */
-    private var needInitialFocus: Boolean? = null
+    override fun geolocationDatabasePath(
+        databasePath: String
+    ) = apply { stateWebSettings.geolocationDatabasePath = databasePath }
 
-    /** @see WebSettings.setOffscreenPreRaster */
-    private var offscreenPreRaster: Boolean? = null
+    override fun geolocationEnabled(
+        flag: Boolean
+    ) = apply { stateWebSettings.geolocationEnabled = flag }
 
-    /** @see WebChromeClient.onCloseWindow */
-    private var onCloseWindow: ((window: WebView?) -> Unit)? = null
+    override fun javaScriptCanOpenWindowsAutomatically(
+        flag: Boolean
+    ) = apply { stateWebSettings.javaScriptCanOpenWindowsAutomatically = flag }
 
-    /** @see WebChromeClient.onConsoleMessage */
-    private var onConsoleMessage: ((consoleMessage: ConsoleMessage?) -> Boolean)? = null
+    override fun javaScriptEnabled(
+        flag: Boolean
+    ) = apply { stateWebSettings.javaScriptEnabled = flag }
 
-    /** @see WebChromeClient.onCreateWindow */
-    private var onCreateWindow: ((view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?) -> Boolean)? =
-        null
+    override fun layoutAlgorithm(
+        l: LayoutAlgorithm
+    ) = apply { stateWebSettings.layoutAlgorithm = l }
 
-    /** @see WebViewClient.onFormResubmission */
-    private var onFormResubmission: ((view: WebView?, dontResend: Message?, resend: Message?) -> Unit)? =
-        null
+    override fun lightTouchEnabled(
+        enabled: Boolean
+    ) = this
 
-    /** @see WebChromeClient.onGeolocationPermissionsHidePrompt */
-    private var onGeolocationPermissionsHidePrompt: (() -> Unit)? = null
+    override fun loadsImagesAutomatically(
+        flag: Boolean
+    ) = apply { stateWebSettings.loadsImagesAutomatically = flag }
 
-    /** @see WebChromeClient.onGeolocationPermissionsShowPrompt */
-    private var onGeolocationPermissionsShowPrompt: ((origin: String?, callback: GeolocationPermissions.Callback?) -> Unit)? =
-        null
+    override fun loadWithOverviewMode(
+        overview: Boolean
+    ) = apply { stateWebSettings.loadWithOverviewMode = overview }
 
-    /** @see WebChromeClient.onHideCustomView */
-    private var onHideCustomView: (() -> Unit)? = null
+    override fun mediaPlaybackRequiresUserGesture(
+        require: Boolean
+    ) = apply { stateWebSettings.mediaPlaybackRequiresUserGesture = require }
 
-    /** @see WebChromeClient.onJsAlert */
-    private var onJsAlert: ((view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean)? =
-        null
+    override fun minimumFontSize(
+        @IntRange(from = 1, to = 72) size: Int
+    ) = apply { stateWebSettings.minimumFontSize = size }
 
-    /** @see WebChromeClient.onJsBeforeUnload */
-    private var onJsBeforeUnload: ((view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean)? =
-        null
+    override fun minimumLogicalFontSize(
+        @IntRange(from = 1, to = 72) size: Int
+    ) = apply { stateWebSettings.minimumLogicalFontSize = size }
 
-    /** @see WebChromeClient.onJsConfirm */
-    private var onJsConfirm: ((view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean)? =
-        null
+    override fun mixedContentMode(
+        @MktMixedContentMode mode: Int
+    ) = apply { stateWebSettings.mixedContentMode = mode }
 
-    /** @see WebChromeClient.onJsPrompt */
-    private var onJsPrompt: ((view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?) -> Boolean)? =
-        null
+    override fun needInitialFocus(
+        flag: Boolean
+    ) = apply { stateWebSettings.needInitialFocus = flag }
 
-    /** @see WebViewClient.onLoadResource */
-    private var onLoadResource: ((view: WebView?, url: String?) -> Unit)? = null
+    override fun offscreenPreRaster(
+        enabled: Boolean
+    ) = apply { stateWebSettings.offscreenPreRaster = enabled }
 
-    /** @see WebViewClient.onPageCommitVisible */
-    @TargetApi(23)
-    private var onPageCommitVisible: ((view: WebView?, url: String?) -> Unit)? = null
+    override fun pluginState(
+        state: PluginState
+    ) = this
 
-    /** @see WebViewClient.onPageFinished */
-    private var onPageFinished: ((view: WebView?, url: String?) -> Unit)? = null
+    override fun renderPriority(
+        priority: RenderPriority
+    ) = this
 
-    /** @see WebViewClient.onPageStarted */
-    private var onPageStarted: ((view: WebView?, url: String?, favicon: Bitmap?) -> Unit)? = null
+    override fun safeBrowsingEnabled(
+        enabled: Boolean
+    ) = apply { stateWebSettings.safeBrowsingEnabled = enabled }
 
-    /** @see WebChromeClient.onPermissionRequest */
-    private var onPermissionRequest: ((request: PermissionRequest?) -> Unit)? = null
+    override fun sansSerifFontFamily(
+        font: String
+    ) = apply { stateWebSettings.sansSerifFontFamily = font }
 
-    /** @see WebChromeClient.onPermissionRequestCanceled */
-    private var onPermissionRequestCanceled: ((request: PermissionRequest?) -> Unit)? = null
+    override fun saveFormData(
+        save: Boolean
+    ) = apply { stateWebSettings.saveFormData = save }
 
-    /** @see WebChromeClient.onProgressChanged */
-    private var onProgressChanged: ((view: WebView?, newProgress: Int) -> Unit)? = null
+    override fun savePassword(
+        save: Boolean
+    ) = this
 
-    /** @see WebViewClient.onReceivedClientCertRequest */
-    private var onReceivedClientCertRequest: ((view: WebView?, request: ClientCertRequest?) -> Unit)? =
-        null
+    override fun serifFontFamily(
+        font: String
+    ) = apply { stateWebSettings.serifFontFamily = font }
 
-    /** @see WebViewClient.onReceivedError */
-    @TargetApi(23)
-    private var onReceivedError: ((view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) -> Unit)? =
-        null
+    override fun standardFontFamily(
+        font: String
+    ) = apply { stateWebSettings.standardFontFamily = font }
 
-    /** @see WebViewClient.onReceivedHttpAuthRequest */
-    private var onReceivedHttpAuthRequest: ((view: WebView?, handler: HttpAuthHandler?, host: String?, realm: String?) -> Unit)? =
-        null
+    override fun supportMultipleWindows(
+        support: Boolean
+    ) = apply { stateWebSettings.supportMultipleWindows = support }
 
-    /** @see WebViewClient.onReceivedHttpError */
-    @TargetApi(23)
-    private var onReceivedHttpError: ((view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) -> Unit)? =
-        null
+    override fun supportZoom(
+        support: Boolean
+    ) = apply { stateWebSettings.supportZoom = support }
 
-    /** @see WebChromeClient.onReceivedIcon */
-    private var onReceivedIcon: ((view: WebView?, icon: Bitmap?) -> Unit)? = null
+    override fun textSize(
+        t: TextSize
+    ) = this
 
-    /** @see WebViewClient.onReceivedLoginRequest */
-    private var onReceivedLoginRequest: ((view: WebView?, realm: String?, account: String?, args: String?) -> Unit)? =
-        null
+    override fun textZoom(
+        textZoom: Int
+    ) = apply { stateWebSettings.textZoom = textZoom }
 
-    /** @see WebViewClient.onReceivedSslError */
-    private var onReceivedSslError: ((view: WebView?, handler: SslErrorHandler?, error: SslError?) -> Unit)? =
-        null
+    override fun userAgentString(
+        ua: String?
+    ) = apply { stateWebSettings.userAgentString = ua }
 
-    /** @see WebChromeClient.onReceivedTitle */
-    private var onReceivedTitle: ((view: WebView?, title: String?) -> Unit)? = null
+    override fun useWideViewPort(
+        use: Boolean
+    ) = apply { stateWebSettings.useWideViewPort = use }
 
-    /** @see WebChromeClient.onReceivedTouchIconUrl */
-    private var onReceivedTouchIconUrl: ((view: WebView?, url: String?, precomposed: Boolean) -> Unit)? =
-        null
+    // End overrides [WebSettingsBuilderContract].
 
-    /** @see WebViewClient.onRenderProcessGone */
-    @TargetApi(26)
-    private var onRenderProcessGone: ((view: WebView?, detail: RenderProcessGoneDetail?) -> Boolean)? =
-        null
 
-    /** @see WebChromeClient.onRequestFocus */
-    private var onRequestFocus: ((view: WebView?) -> Unit)? = null
+    // Start overrides [WebViewClientCompatBuilderContract].
 
-    /** @see WebViewClient.onSafeBrowsingHit */
-    @TargetApi(27)
-    private var onSafeBrowsingHit: ((view: WebView?, request: WebResourceRequest?, threatType: Int, callback: SafeBrowsingResponseCompat) -> Unit)? =
-        null
+    override fun doUpdateVisitedHistory(
+        fx: MktBiObjBooleanConsumer<WebView, String>
+    ) = apply { stateWebViewClientCompat.doUpdateVisitedHistory = fx }
 
-    /** @see WebViewClient.onScaleChanged */
-    private var onScaleChanged: ((view: WebView?, oldScale: Float, newScale: Float) -> Unit)? = null
+    override fun onFormResubmission(
+        fx: MktTriConsumer<WebView, Message, Message>
+    ) = apply { stateWebViewClientCompat.onFormResubmission = fx }
 
-    /** @see WebChromeClient.onShowCustomView */
-    private var onShowCustomView: ((view: View?, callback: WebChromeClient.CustomViewCallback?) -> Unit)? =
-        null
+    override fun onLoadResource(
+        fx: MktBiConsumer<WebView, String>
+    ) = apply { stateWebViewClientCompat.onLoadResource = fx }
 
-    /** @see WebChromeClient.onShowFileChooser */
-    private var onShowFileChooser: ((webView: WebView?, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?) -> Boolean)? =
-        null
+    override fun onPageCommitVisible(
+        fx: MktBiConsumer<WebView, String>
+    ) = apply { stateWebViewClientCompat.onPageCommitVisible = fx }
 
-    /** @see WebSettings.setSafeBrowsingEnabled */
-    private var safeBrowsingEnabled: Boolean? = null
+    override fun onPageFinished(
+        fx: MktBiConsumer<WebView, String>
+    ) = apply { stateWebViewClientCompat.onPageFinished = fx }
 
-    /** @see WebSettings.setSansSerifFontFamily */
-    private var sansSerifFontFamily: String? = null
+    override fun onPageStarted(
+        fx: MktTriConsumer<WebView, String, Bitmap>
+    ) = apply { stateWebViewClientCompat.onPageStarted = fx }
 
-    /** @see WebSettings.setSerifFontFamily */
-    private var serifFontFamily: String? = null
+    override fun onReceivedClientCertRequest(
+        fx: MktBiConsumer<WebView, ClientCertRequest>
+    ) = apply { stateWebViewClientCompat.onReceivedClientCertRequest = fx }
 
-    /** @see WebViewClient.shouldInterceptRequest */
-    private var shouldInterceptRequest: ((view: WebView?, request: WebResourceRequest?) -> WebResourceResponse?)? =
-        null
+    override fun onReceivedError(
+        fx: MktTriConsumer<WebView, WebResourceRequest, WebResourceErrorCompat>
+    ) = apply { stateWebViewClientCompat.onReceivedError = fx }
 
-    /** @see WebViewClient.shouldOverrideKeyEvent */
-    private var shouldOverrideKeyEvent: ((view: WebView?, event: KeyEvent?) -> Boolean)? = null
+    override fun onReceivedHttpAuthRequest(
+        fx: MktOnReceivedHttpAuthRequestConsumer
+    ) = apply { stateWebViewClientCompat.onReceivedHttpAuthRequest = fx }
 
-    /** @see WebViewClient.shouldOverrideUrlLoading */
-    private var shouldOverrideUrlLoading: ((view: WebView?, request: WebResourceRequest?) -> Boolean)? =
-        null
+    override fun onReceivedHttpError(
+        fx: MktTriConsumer<WebView, WebResourceRequest, WebResourceResponse>
+    ) = apply { stateWebViewClientCompat.onReceivedHttpError = fx }
 
-    /** @see WebSettings.setStandardFontFamily */
-    private var standardFontFamily: String? = null
+    override fun onReceivedLoginRequest(
+        fx: MktOnReceivedLoginRequestConsumer
+    ) = apply { stateWebViewClientCompat.onReceivedLoginRequest = fx }
 
-    /** @see WebSettings.supportMultipleWindows */
-    private var supportMultipleWindows: Boolean? = null
+    override fun onReceivedSslError(
+        fx: MktTriConsumer<WebView, SslErrorHandler, SslError>
+    ) = apply { stateWebViewClientCompat.onReceivedSslError = fx }
 
-    /** @see WebSettings.supportZoom */
-    private var supportZoom: Boolean? = null
+    override fun onRenderProcessGone(
+        fx: MktBiPredicate<WebView, RenderProcessGoneDetail>
+    ) = apply { stateWebViewClientCompat.onRenderProcessGone = fx }
 
-    /** @see WebSettings.setTextZoom */
-    private var textZoom: Int? = null
+    override fun onSafeBrowsingHit(
+        fx: MktOnSafeBrowsingHitConsumer
+    ) = apply { stateWebViewClientCompat.onSafeBrowsingHit = fx }
 
-    /** @see WebSettings.setUserAgentString */
-    private var userAgentString: String? = null
+    override fun onScaleChanged(
+        fx: MktObjBiFloatConsumer<WebView>
+    ) = apply { stateWebViewClientCompat.onScaleChanged = fx }
 
-    /** @see WebSettings.setUseWideViewPort */
-    private var useWideViewPort: Boolean? = null
+    override fun onTooManyRedirects(
+        fx: MktTriConsumer<WebView, Message, Message>
+    ) = this
 
+    override fun onUnhandledKeyEvent(
+        fx: MktBiConsumer<WebView, KeyEvent>
+    ) = this
 
-    /** @see WebSettings.setAllowContentAccess */
-    override fun allowContentAccess(input: Boolean?) = apply { allowContentAccess = input }
+    override fun shouldInterceptRequestUntil21(
+        fx: MktBiFunction<WebView, String, WebResourceResponse?>
+    ) = this
 
-    /** @see WebSettings.setAllowFileAccess */
-    override fun allowFileAccess(input: Boolean?) = apply { allowFileAccess = input }
+    override fun shouldInterceptRequest(
+        fx: MktBiFunction<WebView, WebResourceRequest, WebResourceResponse?>
+    ) = apply { stateWebViewClientCompat.shouldInterceptRequest = fx }
 
-    /** @see WebSettings.setAllowFileAccessFromFileURLs */
-    override fun allowFileAccessFromFileURLs(input: Boolean?) =
-        apply { allowFileAccessFromFileURLs = input }
+    override fun shouldOverrideKeyEvent(
+        fx: MktBiPredicate<WebView, KeyEvent>
+    ) = apply { stateWebViewClientCompat.shouldOverrideKeyEvent = fx }
 
-    /** @see WebSettings.setAllowUniversalAccessFromFileURLs */
-    override fun allowUniversalAccessFromFileURLs(input: Boolean?) =
-        apply { allowUniversalAccessFromFileURLs = input }
+    override fun shouldOverrideUrlLoading(
+        fx: MktBiPredicate<WebView, WebResourceRequest>
+    ) = apply { stateWebViewClientCompat.shouldOverrideUrlLoading = fx }
 
-    /** @see WebSettings.setAppCacheEnabled */
-    override fun appCacheEnabled(input: Boolean?) = apply { appCacheEnabled = input }
-
-    /** @see WebSettings.setAppCachePath */
-    override fun appCachePath(input: String?) = apply { appCachePath = input }
-
-    /** @see WebSettings.setBlockNetworkImage */
-    override fun blockNetworkImage(input: Boolean?) = apply { blockNetworkImage = input }
-
-    /** @see WebSettings.setBlockNetworkLoads */
-    override fun blockNetworkLoads(input: Boolean?) = apply { blockNetworkLoads = input }
-
-    /** @see WebSettings.setBuiltInZoomControls */
-    override fun builtInZoomControls(input: Boolean?) = apply { builtInZoomControls = input }
-
-    /** @see WebSettings.setCacheMode */
-    override fun cacheMode(@WebSettingsContract.CacheModeType input: Int?) =
-        apply { cacheMode = input }
-
-    /** @see WebSettings.setCursiveFontFamily */
-    override fun cursiveFontFamily(input: String?) = apply { cursiveFontFamily = input }
-
-    /** @see WebSettings.setDatabaseEnabled */
-    override fun databaseEnabled(input: Boolean?) = apply { databaseEnabled = input }
-
-    /** @see WebSettings.setDefaultFixedFontSize */
-    override fun defaultFixedFontSize(input: Int?) = apply { defaultFixedFontSize = input }
-
-    /** @see WebSettings.setDefaultFontSize */
-    override fun defaultFontSize(input: Int?) = apply { defaultFontSize = input }
-
-    /** @see WebSettings.setDefaultTextEncodingName */
-    override fun defaultTextEncodingName(input: String?) = apply { defaultTextEncodingName = input }
-
-    /** @see WebSettings.setDisabledActionModeMenuItems */
-    override fun disabledActionModeMenuItems(@WebSettingsContract.MenuItemsType input: Int?) =
-        apply { disabledActionModeMenuItems = input }
-
-    /** @see WebSettings.setDisplayZoomControls */
-    override fun displayZoomControls(input: Boolean?) = apply { displayZoomControls = input }
-
-    /** @see WebSettings.setDomStorageEnabled */
-    override fun domStorageEnabled(input: Boolean?) = apply { domStorageEnabled = input }
-
-    /** @see WebViewClient.doUpdateVisitedHistory */
-    override fun doUpdateVisitedHistory(callback: ((view: WebView?, url: String?, isReload: Boolean) -> Unit)?) =
-        apply { doUpdateVisitedHistory = callback }
-
-    /** @see WebSettings.setFantasyFontFamily */
-    override fun fantasyFontFamily(input: String?) = apply { fantasyFontFamily = input }
-
-    /** @see WebSettings.setFixedFontFamily */
-    override fun fixedFontFamily(input: String?) = apply { fixedFontFamily = input }
-
-    /** @see WebSettings.setForceDark */
-    override fun forceDark(@WebSettingsContract.ForceDarkType input: Int?) =
-        apply { forceDark = input }
-
-    /** @see WebSettings.setGeolocationEnabled */
-    override fun geolocationEnabled(input: Boolean?) = apply { geolocationEnabled = input }
-
-    /** @see WebChromeClient.getDefaultVideoPoster */
-    override fun getDefaultVideoPoster(callback: (() -> Bitmap?)?) =
-        apply { getDefaultVideoPoster = callback }
-
-    /** @see WebChromeClient.getVideoLoadingProgressView */
-    override fun getVideoLoadingProgressView(callback: (() -> View?)?) =
-        apply { getVideoLoadingProgressView = callback }
-
-    /** @see WebChromeClient.getVisitedHistory */
-    override fun getVisitedHistory(callback: ((callback: ValueCallback<Array<String>>?) -> Unit)?) =
-        apply { getVisitedHistory = callback }
-
-    /** @see WebSettings.setJavaScriptCanOpenWindowsAutomatically */
-    override fun javaScriptCanOpenWindowsAutomatically(input: Boolean?) =
-        apply { javaScriptCanOpenWindowsAutomatically = input }
-
-    /** @see WebSettings.setJavaScriptEnabled */
-    override fun javaScriptEnabled(input: Boolean?) = apply { javaScriptEnabled = input }
-
-    /** @see WebSettings.setLayoutAlgorithm */
-    override fun layoutAlgorithm(input: WebSettings.LayoutAlgorithm?) =
-        apply { layoutAlgorithm = input }
-
-    /** @see WebSettings.setLoadsImagesAutomatically */
-    override fun loadsImagesAutomatically(input: Boolean?) =
-        apply { loadsImagesAutomatically = input }
-
-    /** @see WebSettings.setLoadWithOverviewMode */
-    override fun loadWithOverviewMode(input: Boolean?) = apply { loadWithOverviewMode = input }
-
-    /** @see WebSettings.setMediaPlaybackRequiresUserGesture */
-    override fun mediaPlaybackRequiresUserGesture(input: Boolean?) =
-        apply { mediaPlaybackRequiresUserGesture = input }
-
-    /** @see WebSettings.setMinimumFontSize */
-    override fun minimumFontSize(input: Int?) = apply { minimumFontSize = input }
-
-    /** @see WebSettings.setMinimumLogicalFontSize */
-    override fun minimumLogicalFontSize(input: Int?) = apply { minimumLogicalFontSize = input }
-
-    /** @see WebSettings.setMixedContentMode */
-    override fun mixedContentMode(@WebSettingsContract.MixedContentModeType input: Int?) =
-        apply { mixedContentMode = input }
-
-    /** @see WebSettings.setNeedInitialFocus */
-    override fun needInitialFocus(input: Boolean?) = apply { needInitialFocus = input }
-
-    /** @see WebSettings.setOffscreenPreRaster */
-    override fun offscreenPreRaster(input: Boolean?) = apply { offscreenPreRaster = input }
-
-    /** @see WebChromeClient.onCloseWindow */
-    override fun onCloseWindow(callback: ((window: WebView?) -> Unit)?) =
-        apply { onCloseWindow = callback }
-
-    /** @see WebChromeClient.onConsoleMessage */
-    override fun onConsoleMessage(callback: ((consoleMessage: ConsoleMessage?) -> Boolean)?) =
-        apply { onConsoleMessage = callback }
-
-    /** @see WebChromeClient.onCreateWindow */
-    override fun onCreateWindow(callback: ((view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?) -> Boolean)?) =
-        apply { onCreateWindow = callback }
-
-    /** @see WebChromeClient.onGeolocationPermissionsHidePrompt */
-    override fun onGeolocationPermissionsHidePrompt(callback: (() -> Unit)?) =
-        apply { onGeolocationPermissionsHidePrompt = callback }
-
-    /** @see WebChromeClient.onGeolocationPermissionsShowPrompt */
-    override fun onGeolocationPermissionsShowPrompt(callback: ((origin: String?, callback: GeolocationPermissions.Callback?) -> Unit)?) =
-        apply { onGeolocationPermissionsShowPrompt = callback }
-
-    /** @see WebViewClient.onFormResubmission */
-    override fun onFormResubmission(callback: ((view: WebView?, dontResend: Message?, resend: Message?) -> Unit)?) =
-        apply { onFormResubmission = callback }
-
-    /** @see WebChromeClient.onHideCustomView */
-    override fun onHideCustomView(callback: (() -> Unit)?) = apply { onHideCustomView = callback }
-
-    /** @see WebChromeClient.onJsAlert */
-    override fun onJsAlert(callback: ((view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean)?) =
-        apply { onJsAlert = callback }
-
-    /** @see WebChromeClient.onJsBeforeUnload */
-    override fun onJsBeforeUnload(callback: ((view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean)?) =
-        apply { onJsBeforeUnload = callback }
-
-    /** @see WebChromeClient.onJsConfirm */
-    override fun onJsConfirm(callback: ((view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean)?) =
-        apply { onJsConfirm = callback }
-
-    /** @see WebChromeClient.onJsPrompt */
-    override fun onJsPrompt(callback: ((view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?) -> Boolean)?) =
-        apply { onJsPrompt = callback }
-
-    /** @see WebViewClient.onLoadResource */
-    override fun onLoadResource(callback: ((view: WebView?, url: String?) -> Unit)?) =
-        apply { onLoadResource = callback }
-
-    /** @see WebViewClient.onPageCommitVisible */
-    @TargetApi(23)
-    override fun onPageCommitVisible(callback: ((view: WebView?, url: String?) -> Unit)?) =
-        apply { onPageCommitVisible = callback }
-
-    /** @see WebViewClient.onPageFinished */
-    override fun onPageFinished(callback: ((view: WebView?, url: String?) -> Unit)?) =
-        apply { onPageFinished = callback }
-
-    /** @see WebViewClient.onPageStarted */
-    override fun onPageStarted(callback: ((view: WebView?, url: String?, favicon: Bitmap?) -> Unit)?) =
-        apply { onPageStarted = callback }
-
-    /** @see WebChromeClient.onPermissionRequest */
-    override fun onPermissionRequest(callback: ((request: PermissionRequest?) -> Unit)?) =
-        apply { onPermissionRequest = callback }
-
-    /** @see WebChromeClient.onPermissionRequestCanceled */
-    override fun onPermissionRequestCanceled(callback: ((request: PermissionRequest?) -> Unit)?) =
-        apply { onPermissionRequestCanceled = callback }
-
-    /** @see WebChromeClient.onProgressChanged */
-    override fun onProgressChanged(callback: ((view: WebView?, newProgress: Int) -> Unit)?) =
-        apply { onProgressChanged = callback }
-
-    /** @see WebViewClient.onReceivedClientCertRequest */
-    override fun onReceivedClientCertRequest(callback: ((view: WebView?, request: ClientCertRequest?) -> Unit)?) =
-        apply { onReceivedClientCertRequest = callback }
-
-    /** @see WebViewClient.onReceivedError */
-    @TargetApi(23)
-    override fun onReceivedError(callback: ((view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) -> Unit)?) =
-        apply { onReceivedError = callback }
-
-    /** @see WebViewClient.onReceivedHttpAuthRequest */
-    override fun onReceivedHttpAuthRequest(callback: ((view: WebView?, handler: HttpAuthHandler?, host: String?, realm: String?) -> Unit)?) =
-        apply { onReceivedHttpAuthRequest = callback }
-
-    /** @see WebViewClient.onReceivedHttpError */
-    @TargetApi(23)
-    override fun onReceivedHttpError(callback: ((view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) -> Unit)?) =
-        apply { onReceivedHttpError = callback }
-
-    /** @see WebChromeClient.onReceivedIcon */
-    override fun onReceivedIcon(callback: ((view: WebView?, icon: Bitmap?) -> Unit)?) =
-        apply { onReceivedIcon = callback }
-
-    /** @see WebViewClient.onReceivedLoginRequest */
-    override fun onReceivedLoginRequest(callback: ((view: WebView?, realm: String?, account: String?, args: String?) -> Unit)?) =
-        apply { onReceivedLoginRequest = callback }
-
-    /** @see WebViewClient.onReceivedSslError */
-    override fun onReceivedSslError(callback: ((view: WebView?, handler: SslErrorHandler?, error: SslError?) -> Unit)?) =
-        apply { onReceivedSslError = callback }
-
-    /** @see WebChromeClient.onReceivedTitle */
-    override fun onReceivedTitle(callback: ((view: WebView?, title: String?) -> Unit)?) =
-        apply { onReceivedTitle = callback }
-
-    /** @see WebChromeClient.onReceivedTouchIconUrl */
-    override fun onReceivedTouchIconUrl(callback: ((view: WebView?, url: String?, precomposed: Boolean) -> Unit)?) =
-        apply { onReceivedTouchIconUrl = callback }
-
-    /** @see WebViewClient.onRenderProcessGone */
-    @TargetApi(26)
-    override fun onRenderProcessGone(callback: ((view: WebView?, detail: RenderProcessGoneDetail?) -> Boolean)?) =
-        apply { onRenderProcessGone = callback }
-
-    /** @see WebChromeClient.onRequestFocus */
-    override fun onRequestFocus(callback: ((view: WebView?) -> Unit)?) =
-        apply { onRequestFocus = callback }
-
-    /** @see WebViewClient.onSafeBrowsingHit */
-    @TargetApi(27)
-    override fun onSafeBrowsingHit(callback: ((view: WebView?, request: WebResourceRequest?, threatType: Int, callback: SafeBrowsingResponseCompat) -> Unit)?) =
-        apply { onSafeBrowsingHit = callback }
-
-    /** @see WebViewClient.onScaleChanged */
-    override fun onScaleChanged(callback: ((view: WebView?, oldScale: Float, newScale: Float) -> Unit)?) =
-        apply { onScaleChanged = callback }
-
-    /** @see WebChromeClient.onShowCustomView */
-    override fun onShowCustomView(callback: ((view: View?, callback: WebChromeClient.CustomViewCallback?) -> Unit)?) =
-        apply { onShowCustomView = callback }
-
-    /** @see WebChromeClient.onShowFileChooser */
-    override fun onShowFileChooser(callback: ((webView: WebView?, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?) -> Boolean)?) =
-        apply { onShowFileChooser = callback }
-
-    /** @see WebSettings.setSafeBrowsingEnabled */
-    override fun safeBrowsingEnabled(input: Boolean?) = apply { safeBrowsingEnabled = input }
-
-    /** @see WebSettings.setSansSerifFontFamily */
-    override fun sansSerifFontFamily(input: String?) = apply { sansSerifFontFamily = input }
-
-    /** @see WebSettings.setSerifFontFamily */
-    override fun serifFontFamily(input: String?) = apply { serifFontFamily = input }
-
-    /** @see WebViewClient.shouldInterceptRequest */
-    override fun shouldInterceptRequest(callback: ((view: WebView?, request: WebResourceRequest?) -> WebResourceResponse?)?) =
-        apply { shouldInterceptRequest = callback }
-
-    /** @see WebViewClient.shouldOverrideKeyEvent */
-    override fun shouldOverrideKeyEvent(callback: ((view: WebView?, event: KeyEvent?) -> Boolean)?) =
-        apply { shouldOverrideKeyEvent = callback }
-
-    /** @see WebViewClient.shouldOverrideUrlLoading */
-    override fun shouldOverrideUrlLoading(callback: ((view: WebView?, request: WebResourceRequest?) -> Boolean)?) =
-        apply { shouldOverrideUrlLoading = callback }
-
-    /** @see WebSettings.setStandardFontFamily */
-    override fun standardFontFamily(input: String?) = apply { standardFontFamily = input }
-
-    /** @see WebSettings.supportMultipleWindows */
-    override fun supportMultipleWindows(input: Boolean?) = apply { supportMultipleWindows = input }
-
-    /** @see WebSettings.supportZoom */
-    override fun supportZoom(input: Boolean?) = apply { supportZoom = input }
-
-    /** @see WebSettings.setTextZoom */
-    override fun textZoom(input: Int?) = apply { textZoom = input }
-
-    /** @see WebSettings.setUserAgentString */
-    override fun userAgentString(input: String?) = apply { userAgentString = input }
-
-    /** @see WebSettings.setUseWideViewPort */
-    override fun useWideViewPort(input: Boolean?) = apply { useWideViewPort = input }
+    // End overrides [WebViewClientCompatBuilderContract].
 
 
     /**
-     * Reflect builder's settings.
+     * Reflects builder's settings.
      */
-    fun into(target: WebView) = target.apply {
-        into(settings)
-        webChromeClient = buildChromeClient()
-        webViewClient = buildViewClient()
-    }
-
-
-    private fun buildChromeClient() = object : WebChromeClient() {
-        override fun getDefaultVideoPoster() = getDefaultVideoPoster?.invoke()
-            ?: super.getDefaultVideoPoster()
-
-        override fun getVideoLoadingProgressView() = getVideoLoadingProgressView?.invoke()
-            ?: super.getVideoLoadingProgressView()
-
-        override fun getVisitedHistory(callback: ValueCallback<Array<String>>?) =
-            getVisitedHistory?.invoke(callback)
-                ?: super.getVisitedHistory(callback)
-
-        override fun onCloseWindow(window: WebView?) = onCloseWindow?.invoke(window)
-            ?: super.onCloseWindow(window)
-
-        override fun onConsoleMessage(consoleMessage: ConsoleMessage?) =
-            onConsoleMessage?.invoke(consoleMessage)
-                ?: super.onConsoleMessage(consoleMessage)
-
-        override fun onCreateWindow(
-            view: WebView?,
-            isDialog: Boolean,
-            isUserGesture: Boolean,
-            resultMsg: Message?
-        ) = onCreateWindow?.invoke(view, isDialog, isUserGesture, resultMsg)
-            ?: super.onCreateWindow(view, isDialog, isUserGesture, resultMsg)
-
-        override fun onGeolocationPermissionsHidePrompt() =
-            onGeolocationPermissionsHidePrompt?.invoke()
-                ?: super.onGeolocationPermissionsHidePrompt()
-
-        override fun onGeolocationPermissionsShowPrompt(
-            origin: String?,
-            callback: GeolocationPermissions.Callback?
-        ) = onGeolocationPermissionsShowPrompt?.invoke(origin, callback)
-            ?: super.onGeolocationPermissionsShowPrompt(origin, callback)
-
-        override fun onHideCustomView() = onHideCustomView?.invoke()
-            ?: super.onHideCustomView()
-
-        override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?) =
-            onJsAlert?.invoke(view, url, message, result)
-                ?: super.onJsAlert(view, url, message, result)
-
-        override fun onJsBeforeUnload(
-            view: WebView?,
-            url: String?,
-            message: String?,
-            result: JsResult?
-        ) = onJsBeforeUnload?.invoke(view, url, message, result)
-            ?: super.onJsBeforeUnload(view, url, message, result)
-
-        override fun onJsConfirm(
-            view: WebView?,
-            url: String?,
-            message: String?,
-            result: JsResult?
-        ) = onJsConfirm?.invoke(view, url, message, result)
-            ?: super.onJsConfirm(view, url, message, result)
-
-        override fun onJsPrompt(
-            view: WebView?,
-            url: String?,
-            message: String?,
-            defaultValue: String?,
-            result: JsPromptResult?
-        ) = onJsPrompt?.invoke(view, url, message, defaultValue, result)
-            ?: super.onJsPrompt(view, url, message, defaultValue, result)
-
-        override fun onPermissionRequest(request: PermissionRequest?) =
-            onPermissionRequest?.invoke(request)
-                ?: super.onPermissionRequest(request)
-
-        override fun onPermissionRequestCanceled(request: PermissionRequest?) =
-            onPermissionRequestCanceled?.invoke(request)
-                ?: super.onPermissionRequestCanceled(request)
-
-        override fun onProgressChanged(view: WebView?, newProgress: Int) =
-            onProgressChanged?.invoke(view, newProgress)
-                ?: super.onProgressChanged(view, newProgress)
-
-        override fun onReceivedIcon(view: WebView?, icon: Bitmap?) =
-            onReceivedIcon?.invoke(view, icon)
-                ?: super.onReceivedIcon(view, icon)
-
-        override fun onReceivedTitle(view: WebView?, title: String?) =
-            onReceivedTitle?.invoke(view, title)
-                ?: super.onReceivedTitle(view, title)
-
-        override fun onReceivedTouchIconUrl(view: WebView?, url: String?, precomposed: Boolean) =
-            onReceivedTouchIconUrl?.invoke(view, url, precomposed)
-                ?: super.onReceivedTouchIconUrl(view, url, precomposed)
-
-        override fun onRequestFocus(view: WebView?) = onRequestFocus?.invoke(view)
-            ?: super.onRequestFocus(view)
-
-        override fun onShowCustomView(view: View?, callback: CustomViewCallback?) =
-            onShowCustomView?.invoke(view, callback)
-                ?: super.onShowCustomView(view, callback)
-
-        override fun onShowFileChooser(
-            webView: WebView?,
-            filePathCallback: ValueCallback<Array<Uri>>?,
-            fileChooserParams: FileChooserParams?
-        ) = onShowFileChooser?.invoke(webView, filePathCallback, fileChooserParams)
-            ?: super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
-    }
-
-    private fun buildViewClient() = object : WebViewClientCompat() {
-        override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) =
-            doUpdateVisitedHistory?.invoke(view, url, isReload)
-                ?: super.doUpdateVisitedHistory(view, url, isReload)
-
-        override fun onFormResubmission(view: WebView?, dontResend: Message?, resend: Message?) =
-            onFormResubmission?.invoke(view, dontResend, resend)
-                ?: super.onFormResubmission(view, dontResend, resend)
-
-        override fun onLoadResource(view: WebView?, url: String?) =
-            onLoadResource?.invoke(view, url)
-                ?: super.onLoadResource(view, url)
-
-        override fun onPageCommitVisible(view: WebView, url: String) =
-            onPageCommitVisible?.invoke(view, url)
-                ?: super.onPageCommitVisible(view, url)
-
-        override fun onPageFinished(view: WebView?, url: String?) =
-            onPageFinished?.invoke(view, url)
-                ?: super.onPageFinished(view, url)
-
-        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) =
-            onPageStarted?.invoke(view, url, favicon)
-                ?: super.onPageStarted(view, url, favicon)
-
-        override fun onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest?) =
-            onReceivedClientCertRequest?.invoke(view, request)
-                ?: super.onReceivedClientCertRequest(view, request)
-
-        override fun onReceivedError(
-            view: WebView,
-            request: WebResourceRequest,
-            error: WebResourceErrorCompat
-        ) = onReceivedError?.invoke(view, request, error)
-            ?: super.onReceivedError(view, request, error)
-
-        override fun onReceivedHttpAuthRequest(
-            view: WebView?,
-            handler: HttpAuthHandler?,
-            host: String?,
-            realm: String?
-        ) = onReceivedHttpAuthRequest?.invoke(view, handler, host, realm)
-            ?: super.onReceivedHttpAuthRequest(view, handler, host, realm)
-
-        override fun onReceivedHttpError(
-            view: WebView,
-            request: WebResourceRequest,
-            errorResponse: WebResourceResponse
-        ) = onReceivedHttpError?.invoke(view, request, errorResponse)
-            ?: super.onReceivedHttpError(view, request, errorResponse)
-
-        override fun onReceivedLoginRequest(
-            view: WebView?,
-            realm: String?,
-            account: String?,
-            args: String?
-        ) = onReceivedLoginRequest?.invoke(view, realm, account, args)
-            ?: super.onReceivedLoginRequest(view, realm, account, args)
-
-        override fun onReceivedSslError(
-            view: WebView?,
-            handler: SslErrorHandler?,
-            error: SslError?
-        ) = onReceivedSslError?.invoke(view, handler, error)
-            ?: super.onReceivedSslError(view, handler, error)
-
-        override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?) =
-            onRenderProcessGone?.invoke(view, detail)
-                ?: super.onRenderProcessGone(view, detail)
-
-        override fun onSafeBrowsingHit(
-            view: WebView,
-            request: WebResourceRequest,
-            threatType: Int,
-            callback: SafeBrowsingResponseCompat
-        ) = onSafeBrowsingHit?.invoke(view, request, threatType, callback)
-            ?: super.onSafeBrowsingHit(view, request, threatType, callback)
-
-        override fun onScaleChanged(view: WebView?, oldScale: Float, newScale: Float) =
-            onScaleChanged?.invoke(view, oldScale, newScale)
-                ?: super.onScaleChanged(view, oldScale, newScale)
-
-        override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?) =
-            shouldInterceptRequest?.invoke(view, request)
-                ?: super.shouldInterceptRequest(view, request)
-
-        override fun shouldOverrideKeyEvent(view: WebView?, event: KeyEvent?) =
-            shouldOverrideKeyEvent?.invoke(view, event)
-                ?: super.shouldOverrideKeyEvent(view, event)
-
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest) =
-            shouldOverrideUrlLoading?.invoke(view, request)
-                ?: super.shouldOverrideUrlLoading(view, request)
-    }
-
-    private fun into(target: WebSettings) {
-        allowContentAccess?.also { target.allowContentAccess = it }
-        allowFileAccess?.also { target.allowFileAccess = it }
-        allowFileAccessFromFileURLs?.also { target.allowFileAccessFromFileURLs = it }
-        allowUniversalAccessFromFileURLs?.also { target.allowUniversalAccessFromFileURLs = it }
-        appCacheEnabled?.also { target.setAppCacheEnabled(it) }
-        appCachePath?.also { target.setAppCachePath(it) }
-        blockNetworkImage?.also { target.blockNetworkImage = it }
-        blockNetworkLoads?.also { target.blockNetworkLoads = it }
-        builtInZoomControls?.also { target.builtInZoomControls = it }
-        cacheMode?.also { target.cacheMode = it }
-        cursiveFontFamily?.also { target.cursiveFontFamily = it }
-        databaseEnabled?.also { target.databaseEnabled = it }
-        defaultFixedFontSize?.also { target.defaultFixedFontSize = it }
-        defaultFontSize?.also { target.defaultFontSize = it }
-        defaultTextEncodingName?.also { target.defaultTextEncodingName = it }
-        disabledActionModeMenuItems?.also {
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.DISABLED_ACTION_MODE_MENU_ITEMS)) {
-                WebSettingsCompat.setDisabledActionModeMenuItems(target, it)
-            }
+    fun into(target: WebView) {
+        _stateWebChromeClient?.also {
+            target.webChromeClient = it.create()
         }
-        displayZoomControls?.also { target.displayZoomControls = it }
-        domStorageEnabled?.also { target.domStorageEnabled = it }
-        fantasyFontFamily?.also { target.fantasyFontFamily = it }
-        fixedFontFamily?.also { target.fixedFontFamily = it }
-        forceDark?.also {
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-                WebSettingsCompat.setForceDark(target, it)
-            }
+        _stateWebSettings?.also {
+            it.into(target.settings)
         }
-        geolocationEnabled?.also { target.setGeolocationEnabled(it) }
-        javaScriptCanOpenWindowsAutomatically?.also {
-            target.javaScriptCanOpenWindowsAutomatically = it
+        _stateWebViewClientCompat?.also {
+            target.webViewClient = it.create()
         }
-        javaScriptEnabled?.also { target.javaScriptEnabled = it }
-        layoutAlgorithm?.also { target.layoutAlgorithm = it }
-        loadsImagesAutomatically?.also { target.loadsImagesAutomatically = it }
-        loadWithOverviewMode?.also { target.loadWithOverviewMode = it }
-        mediaPlaybackRequiresUserGesture?.also { target.mediaPlaybackRequiresUserGesture = it }
-        minimumFontSize?.also { target.minimumFontSize = it }
-        minimumLogicalFontSize?.also { target.minimumLogicalFontSize = it }
-        mixedContentMode?.also { target.mixedContentMode = it }
-        needInitialFocus?.also { target.setNeedInitialFocus(it) }
-        offscreenPreRaster?.also {
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.OFF_SCREEN_PRERASTER)) {
-                WebSettingsCompat.setOffscreenPreRaster(target, it)
-            }
-        }
-        safeBrowsingEnabled?.also {
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) {
-                WebSettingsCompat.setSafeBrowsingEnabled(target, it)
-            }
-        }
-        sansSerifFontFamily?.also { target.sansSerifFontFamily = it }
-        serifFontFamily?.also { target.serifFontFamily = it }
-        standardFontFamily?.also { target.standardFontFamily = it }
-        supportMultipleWindows?.also { target.setSupportMultipleWindows(it) }
-        supportZoom?.also { target.setSupportZoom(it) }
-        textZoom?.also { target.textZoom = it }
-        userAgentString?.also { target.userAgentString = it }
-        useWideViewPort?.also { target.useWideViewPort = it }
     }
 }

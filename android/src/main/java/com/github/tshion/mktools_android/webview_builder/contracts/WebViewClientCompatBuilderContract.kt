@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.contracts
+package com.github.tshion.mktools_android.webview_builder.contracts
 
 import android.graphics.Bitmap
 import android.net.http.SslError
@@ -9,7 +9,7 @@ import android.webkit.*
 import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.webkit.WebResourceErrorCompat
-import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
+import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
  * Defines [androidx.webkit.WebViewClientCompat] build rule.

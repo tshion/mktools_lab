@@ -1,11 +1,11 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.contracts
+package com.github.tshion.mktools_android.webview_builder.contracts
 
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
 import androidx.webkit.WebSettingsCompat.*
-import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktCacheMode
-import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMixedContentMode
+import com.github.tshion.mktools_android.webview_builder.annotations.MktCacheMode
+import com.github.tshion.mktools_android.webview_builder.annotations.MktMixedContentMode
 
 /**
  * Defines [WebSettings] and [androidx.webkit.WebSettingsCompat] build rule.
