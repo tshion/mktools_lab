@@ -6,11 +6,9 @@ import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
 import androidx.annotation.RequiresApi
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktCacheMode
-import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktForceDark
-import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMenuItemFlags
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMixedContentMode
 import com.github.tshion.mktools_android.webview_builder.candidate.contracts.WebSettingsBuilderContract
-import com.github.tshion.mktools_android.webview_builder.candidate.entities.WebSettingsEntity
+import com.github.tshion.mktools_android.webview_builder.candidate.states.WebSettingsState
 
 /**
  * Builds [WebSettings].
@@ -24,7 +22,7 @@ import com.github.tshion.mktools_android.webview_builder.candidate.entities.WebS
  */
 class WebSettingsBuilder : WebSettingsBuilderContract {
 
-    private val state = WebSettingsEntity()
+    private val state = WebSettingsState()
 
 
     /** @see WebSettings.setAllowContentAccess */
