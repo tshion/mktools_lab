@@ -136,7 +136,7 @@ class WebChromeClientBuilder : WebChromeClientBuilderContract {
     }
 
     /** @see WebChromeClient.onReceivedTouchIconUrl */
-    override fun onReceivedTouchIconUrl(fx: MktOnReceivedTouchIconUrlConsumer) = apply {
+    override fun onReceivedTouchIconUrl(fx: MktBiObjBooleanConsumer<WebView?, String?>) = apply {
         state.onReceivedTouchIconUrl = fx
     }
 

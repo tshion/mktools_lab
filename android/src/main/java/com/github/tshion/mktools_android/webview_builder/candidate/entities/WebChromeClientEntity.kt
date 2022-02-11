@@ -35,7 +35,7 @@ internal data class WebChromeClientEntity(
     // var onReachedMaxAppCacheSize: ((Long, Long, WebStorage.QuotaUpdater?) -> Unit)? = null, // Deprecated in API level 19
     var onReceivedIcon: MktBiConsumer<WebView?, Bitmap?>? = null,
     var onReceivedTitle: MktBiConsumer<WebView?, String?>? = null,
-    var onReceivedTouchIconUrl: MktOnReceivedTouchIconUrlConsumer? = null,
+    var onReceivedTouchIconUrl: MktBiObjBooleanConsumer<WebView?, String?>? = null,
     var onRequestFocus: MktConsumer<WebView?>? = null,
     // var onShowCustomView: ((View?, Int, CustomViewCallback?) -> Unit? = null, // Deprecated in API level 18
     var onShowCustomView: MktBiConsumer<View?, CustomViewCallback?>? = null,

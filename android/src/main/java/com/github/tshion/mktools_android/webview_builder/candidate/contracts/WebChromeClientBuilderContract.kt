@@ -1,9 +1,11 @@
 package com.github.tshion.mktools_android.webview_builder.candidate.contracts
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.view.View
 import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
+import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebStorage.QuotaUpdater
 import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
 
@@ -26,7 +28,7 @@ interface WebChromeClientBuilderContract {
 
     /** @see WebChromeClient.onConsoleMessage */
     @Deprecated("Deprecated in API level 15")
-    fun onConsoleMessage(fx: (String?, Int, String?) -> Unit): WebChromeClientBuilderContract
+    fun onConsoleMessage(fx: MktTriConsumer<String?, Int, String?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onConsoleMessage */
     fun onConsoleMessage(fx: MktPredicate<ConsoleMessage?>): WebChromeClientBuilderContract
@@ -74,7 +76,7 @@ interface WebChromeClientBuilderContract {
 
     /** @see WebChromeClient.onReachedMaxAppCacheSize */
     @Deprecated("Deprecated in API level 19")
-    fun onReachedMaxAppCacheSize(fx: (Long, Long, QuotaUpdater?) -> Unit): WebChromeClientBuilderContract
+    fun onReachedMaxAppCacheSize(fx: MktTriConsumer<Long, Long, QuotaUpdater?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onReceivedIcon */
     fun onReceivedIcon(fx: MktBiConsumer<WebView?, Bitmap?>): WebChromeClientBuilderContract
@@ -83,18 +85,18 @@ interface WebChromeClientBuilderContract {
     fun onReceivedTitle(fx: MktBiConsumer<WebView?, String?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onReceivedTouchIconUrl */
-    fun onReceivedTouchIconUrl(fx: MktOnReceivedTouchIconUrlConsumer): WebChromeClientBuilderContract
+    fun onReceivedTouchIconUrl(fx: MktBiObjBooleanConsumer<WebView?, String?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onRequestFocus */
     fun onRequestFocus(fx: MktConsumer<WebView?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onShowCustomView */
     @Deprecated("Deprecated in API level 18")
-    fun onShowCustomView(fx: (View?, Int, CustomViewCallback?) -> Unit): WebChromeClientBuilderContract
+    fun onShowCustomView(fx: MktTriConsumer<View?, Int, CustomViewCallback?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onShowCustomView */
     fun onShowCustomView(fx: MktBiConsumer<View?, CustomViewCallback?>): WebChromeClientBuilderContract
 
     /** @see WebChromeClient.onShowFileChooser */
-    fun onShowFileChooser(fx: MktOnShowFileChooserPredicate): WebChromeClientBuilderContract
+    fun onShowFileChooser(fx: MktTriPredicate<WebView?, ValueCallback<Array<Uri?>?>?, FileChooserParams?>): WebChromeClientBuilderContract
 }
