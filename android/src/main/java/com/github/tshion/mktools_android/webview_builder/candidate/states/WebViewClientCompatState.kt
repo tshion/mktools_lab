@@ -16,6 +16,7 @@ import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
  * State of [androidx.webkit.WebViewClientCompat].
  */
 internal class WebViewClientCompatState {
+
     var doUpdateVisitedHistory: MktBiObjBooleanConsumer<WebView, String>? = null
 
     var onFormResubmission: MktTriConsumer<WebView, Message, Message>? = null
@@ -28,10 +29,8 @@ internal class WebViewClientCompatState {
 
     var onPageStarted: MktTriConsumer<WebView, String, Bitmap>? = null
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     var onReceivedClientCertRequest: MktBiConsumer<WebView, ClientCertRequest>? = null
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     var onReceivedError: MktTriConsumer<WebView, WebResourceRequest, WebResourceErrorCompat>? = null
 
     var onReceivedHttpAuthRequest: MktOnReceivedHttpAuthRequestConsumer? = null
@@ -55,7 +54,6 @@ internal class WebViewClientCompatState {
 
     var shouldOverrideKeyEvent: MktBiPredicate<WebView, KeyEvent>? = null
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     var shouldOverrideUrlLoading: MktBiPredicate<WebView, WebResourceRequest>? = null
 
 

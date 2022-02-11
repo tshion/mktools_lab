@@ -3,14 +3,12 @@ package com.github.tshion.mktools_android.webview_builder.candidate
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
-import android.os.Build
 import android.os.Message
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
 import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
-import androidx.annotation.RequiresApi
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebSettingsCompat.*
 import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
@@ -308,7 +306,6 @@ class WebViewBuilder : WebChromeClientBuilderContract,
         @IntRange(from = 1, to = 72) size: Int
     ) = apply { stateWebSettings.minimumLogicalFontSize = size }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun mixedContentMode(
         @MktMixedContentMode mode: Int
     ) = apply { stateWebSettings.mixedContentMode = mode }

@@ -1,16 +1,14 @@
 package com.github.tshion.mktools_android.webview_builder.candidate.contracts
 
-import android.os.Build
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
-import androidx.annotation.RequiresApi
 import androidx.webkit.WebSettingsCompat.*
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktCacheMode
 import com.github.tshion.mktools_android.webview_builder.candidate.annotations.MktMixedContentMode
 
 /**
- * Defines [WebSettings] build rule.
+ * Defines [WebSettings] and [androidx.webkit.WebSettingsCompat] build rule.
  */
 interface WebSettingsBuilderContract {
 
@@ -124,7 +122,6 @@ interface WebSettingsBuilderContract {
     fun minimumLogicalFontSize(@IntRange(from = 1, to = 72) size: Int): WebSettingsBuilderContract
 
     /** @see WebSettings.setMixedContentMode */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun mixedContentMode(@MktMixedContentMode mode: Int): WebSettingsBuilderContract
 
     /** @see WebSettings.setNeedInitialFocus */

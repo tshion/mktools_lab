@@ -12,6 +12,7 @@ import com.github.tshion.mktools_android.webview_builder.candidate.annotations.M
  * State of [WebSettings] and [androidx.webkit.WebSettingsCompat].
  */
 internal class WebSettingsState {
+
     var allowContentAccess: Boolean? = null
 
     var allowFileAccess: Boolean? = null

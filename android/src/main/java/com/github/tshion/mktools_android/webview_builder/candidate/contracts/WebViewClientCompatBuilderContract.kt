@@ -11,7 +11,6 @@ import androidx.annotation.UiThread
 import androidx.webkit.WebResourceErrorCompat
 import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
 
-
 /**
  * Defines [androidx.webkit.WebViewClientCompat] build rule.
  */
@@ -36,11 +35,9 @@ interface WebViewClientCompatBuilderContract {
     fun onPageStarted(fx: MktTriConsumer<WebView, String, Bitmap>): WebViewClientCompatBuilderContract
 
     /** @see WebViewClient.onReceivedClientCertRequest */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun onReceivedClientCertRequest(fx: MktBiConsumer<WebView, ClientCertRequest>): WebViewClientCompatBuilderContract
 
     /** @see androidx.webkit.WebViewClientCompat.onReceivedError */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun onReceivedError(@UiThread fx: MktTriConsumer<WebView, WebResourceRequest, WebResourceErrorCompat>): WebViewClientCompatBuilderContract
 
     /** @see WebViewClient.onReceivedHttpAuthRequest */
@@ -84,6 +81,5 @@ interface WebViewClientCompatBuilderContract {
     fun shouldOverrideKeyEvent(fx: MktBiPredicate<WebView, KeyEvent>): WebViewClientCompatBuilderContract
 
     /** @see androidx.webkit.WebViewClientCompat.shouldOverrideUrlLoading */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun shouldOverrideUrlLoading(@UiThread fx: MktBiPredicate<WebView, WebResourceRequest>): WebViewClientCompatBuilderContract
 }
