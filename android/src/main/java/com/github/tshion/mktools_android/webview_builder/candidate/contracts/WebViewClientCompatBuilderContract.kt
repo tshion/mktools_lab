@@ -21,7 +21,7 @@ interface WebViewClientCompatBuilderContract {
     fun doUpdateVisitedHistory(fx: MktBiObjBooleanConsumer<WebView, String>): WebViewClientCompatBuilderContract
 
     /** @see WebViewClient.onFormResubmission */
-    fun onFormResubmission(fx: MktTriConsumer<WebView, Message, Message>): WebChromeClientBuilderContract
+    fun onFormResubmission(fx: MktTriConsumer<WebView, Message, Message>): WebViewClientCompatBuilderContract
 
     /** @see WebViewClient.onLoadResource */
     fun onLoadResource(fx: MktBiConsumer<WebView, String>): WebViewClientCompatBuilderContract
