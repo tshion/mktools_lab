@@ -2,9 +2,11 @@ package com.github.tshion.mktools_android.webview_builder.candidate.aliases
 
 import android.net.Uri
 import android.os.Message
-import android.webkit.*
+import android.webkit.JsPromptResult
+import android.webkit.JsResult
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.FileChooserParams
-import androidx.webkit.SafeBrowsingResponseCompat
+import android.webkit.WebView
 
 internal typealias MktOnCreateWindowPredicate = (view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?) -> Boolean
 internal typealias MktOnJsPredicate = (view: WebView?, url: String?, message: String?, result: JsResult?) -> Boolean

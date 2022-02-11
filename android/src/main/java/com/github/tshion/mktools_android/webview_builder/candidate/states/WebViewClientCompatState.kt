@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate.entities
+package com.github.tshion.mktools_android.webview_builder.candidate.states
 
 import android.graphics.Bitmap
 import android.net.http.SslError
@@ -15,7 +15,7 @@ import com.github.tshion.mktools_android.webview_builder.candidate.aliases.*
 /**
  * State of [androidx.webkit.WebViewClientCompat].
  */
-internal class WebViewClientCompatEntity {
+internal class WebViewClientCompatState {
     var doUpdateVisitedHistory: MktBiObjBooleanConsumer<WebView, String>? = null
 
     var onFormResubmission: MktTriConsumer<WebView, Message, Message>? = null

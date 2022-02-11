@@ -1,4 +1,4 @@
-package com.github.tshion.mktools_android.webview_builder.candidate
+package com.github.tshion.mktools_android.webview_builder.candidate.builders
 
 import android.graphics.Bitmap
 import android.view.View
