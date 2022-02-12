@@ -11,22 +11,30 @@ import android.webkit.WebSettings.*
 import androidx.annotation.IntRange
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebSettingsCompat.*
+import androidx.webkit.WebViewCompat
+import androidx.webkit.WebViewFeature
+import androidx.webkit.WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE
+import androidx.webkit.WebViewRenderProcess
 import com.github.tshion.mktools_android.webview_builder.aliases.*
 import com.github.tshion.mktools_android.webview_builder.annotations.MktCacheMode
 import com.github.tshion.mktools_android.webview_builder.annotations.MktMixedContentMode
 import com.github.tshion.mktools_android.webview_builder.contracts.WebChromeClientBuilderContract
 import com.github.tshion.mktools_android.webview_builder.contracts.WebSettingsBuilderContract
 import com.github.tshion.mktools_android.webview_builder.contracts.WebViewClientCompatBuilderContract
+import com.github.tshion.mktools_android.webview_builder.contracts.WebViewRenderProcessClientBuilderContract
 import com.github.tshion.mktools_android.webview_builder.states.WebChromeClientState
 import com.github.tshion.mktools_android.webview_builder.states.WebSettingsState
 import com.github.tshion.mktools_android.webview_builder.states.WebViewClientCompatState
+import com.github.tshion.mktools_android.webview_builder.states.WebViewRenderProcessClientState
+import java.util.concurrent.Executor
 
 /**
  * Builder for WebView.
  */
 class WebViewBuilder : WebChromeClientBuilderContract,
     WebSettingsBuilderContract,
-    WebViewClientCompatBuilderContract {
+    WebViewClientCompatBuilderContract,
+    WebViewRenderProcessClientBuilderContract {
 
     private var _stateWebChromeClient: WebChromeClientState? = null
     private val stateWebChromeClient: WebChromeClientState
@@ -56,6 +64,16 @@ class WebViewBuilder : WebChromeClientBuilderContract,
                 _stateWebViewClientCompat = WebViewClientCompatState()
             }
             return _stateWebViewClientCompat!!
+        }
+
+    private var _stateWebViewRenderProcessClient: WebViewRenderProcessClientState? = null
+    private val stateWebViewRenderProcessClient: WebViewRenderProcessClientState
+        get() {
+            // FIXME: スレッド防御
+            if (_stateWebViewRenderProcessClient == null) {
+                _stateWebViewRenderProcessClient = WebViewRenderProcessClientState()
+            }
+            return _stateWebViewRenderProcessClient!!
         }
 
 
@@ -466,10 +484,26 @@ class WebViewBuilder : WebChromeClientBuilderContract,
     // End overrides [WebViewClientCompatBuilderContract].
 
 
+    // Start overrides [WebViewRenderProcessClientBuilderContract].
+
+    override fun onRenderProcessResponsive(
+        fx: MktBiConsumer<WebView, WebViewRenderProcess?>
+    ) = apply { stateWebViewRenderProcessClient.onRenderProcessResponsive = fx }
+
+    override fun onRenderProcessUnresponsive(
+        fx: MktBiConsumer<WebView, WebViewRenderProcess?>
+    ) = apply { stateWebViewRenderProcessClient.onRenderProcessUnresponsive = fx }
+
+    // End overrides [WebViewRenderProcessClientBuilderContract].
+
+
     /**
      * Reflects builder's settings.
      */
-    fun into(target: WebView) {
+    fun into(
+        target: WebView,
+        executor: Executor? = null,
+    ) {
         _stateWebChromeClient?.also {
             target.webChromeClient = it.create()
         }
@@ -478,6 +512,14 @@ class WebViewBuilder : WebChromeClientBuilderContract,
         }
         _stateWebViewClientCompat?.also {
             target.webViewClient = it.create()
+        }
+        _stateWebViewRenderProcessClient?.also {
+            if (!WebViewFeature.isFeatureSupported(WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE)) return@also
+            if (executor != null) {
+                WebViewCompat.setWebViewRenderProcessClient(target, executor, it.create())
+            } else {
+                WebViewCompat.setWebViewRenderProcessClient(target, it.create())
+            }
         }
     }
 }
