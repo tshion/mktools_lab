@@ -67,6 +67,7 @@ dependencies {
 
     // AndroidX
     debugImplementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
+    implementation "androidx.webkit:webkit:$libraryVersionJetpackWebkit"
 
     // Guava
     implementation "com.google.guava:guava:$libraryVersionGuava"
