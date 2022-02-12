@@ -574,6 +574,7 @@ class WebViewBuilder : WebChromeClientBuilderContract,
     fun into(
         target: WebView,
         executor: Executor? = null,
+        shouldHandleHistory: Boolean = true,
     ) {
         _stateWebChromeClient?.also {
             target.webChromeClient = it.create()
@@ -584,9 +585,13 @@ class WebViewBuilder : WebChromeClientBuilderContract,
         _stateWebView?.also {
             it.into(target)
         }
-        _stateWebViewClientCompat?.also {
-            target.webViewClient = it.create()
-        }
+
+        when {
+            _stateWebViewClientCompat != null -> _stateWebViewClientCompat
+            shouldHandleHistory -> WebViewClientCompatState()
+            else -> null
+        }?.also { target.webViewClient = it.create() }
+
         _stateWebViewRenderProcessClient?.also {
             if (!WebViewFeature.isFeatureSupported(WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE)) return@also
             if (executor != null) {
