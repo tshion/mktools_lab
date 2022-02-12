@@ -12,7 +12,7 @@ import com.github.tshion.mktools_android.webview_builder.aliases.*
 /**
  * State of [WebChromeClient].
  */
-class WebChromeClientState {
+internal class WebChromeClientState {
 
     var getDefaultVideoPoster: MktSupplier<Bitmap?>? = null
 
