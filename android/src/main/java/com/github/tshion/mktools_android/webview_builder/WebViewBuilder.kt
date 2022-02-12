@@ -2,12 +2,15 @@ package com.github.tshion.mktools_android.webview_builder
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.net.http.SslCertificate
 import android.net.http.SslError
 import android.os.Message
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
 import android.webkit.WebSettings.*
+import android.webkit.WebView.FindListener
+import android.webkit.WebView.PictureListener
 import androidx.annotation.IntRange
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebSettingsCompat.*
@@ -18,14 +21,9 @@ import androidx.webkit.WebViewRenderProcess
 import com.github.tshion.mktools_android.webview_builder.aliases.*
 import com.github.tshion.mktools_android.webview_builder.annotations.MktCacheMode
 import com.github.tshion.mktools_android.webview_builder.annotations.MktMixedContentMode
-import com.github.tshion.mktools_android.webview_builder.contracts.WebChromeClientBuilderContract
-import com.github.tshion.mktools_android.webview_builder.contracts.WebSettingsBuilderContract
-import com.github.tshion.mktools_android.webview_builder.contracts.WebViewClientCompatBuilderContract
-import com.github.tshion.mktools_android.webview_builder.contracts.WebViewRenderProcessClientBuilderContract
-import com.github.tshion.mktools_android.webview_builder.states.WebChromeClientState
-import com.github.tshion.mktools_android.webview_builder.states.WebSettingsState
-import com.github.tshion.mktools_android.webview_builder.states.WebViewClientCompatState
-import com.github.tshion.mktools_android.webview_builder.states.WebViewRenderProcessClientState
+import com.github.tshion.mktools_android.webview_builder.annotations.MktScrollBarStyle
+import com.github.tshion.mktools_android.webview_builder.contracts.*
+import com.github.tshion.mktools_android.webview_builder.states.*
 import java.util.concurrent.Executor
 
 /**
@@ -33,6 +31,7 @@ import java.util.concurrent.Executor
  */
 class WebViewBuilder : WebChromeClientBuilderContract,
     WebSettingsBuilderContract,
+    WebViewBuilderContract,
     WebViewClientCompatBuilderContract,
     WebViewRenderProcessClientBuilderContract {
 
@@ -54,6 +53,16 @@ class WebViewBuilder : WebChromeClientBuilderContract,
                 _stateWebSettings = WebSettingsState()
             }
             return _stateWebSettings!!
+        }
+
+    private var _stateWebView: WebViewState? = null
+    private val stateWebView: WebViewState
+        get() {
+            // FIXME: スレッド防御
+            if (_stateWebView == null) {
+                _stateWebView = WebViewState()
+            }
+            return _stateWebView!!
         }
 
     private var _stateWebViewClientCompat: WebViewClientCompatState? = null
@@ -395,6 +404,68 @@ class WebViewBuilder : WebChromeClientBuilderContract,
     // End overrides [WebSettingsBuilderContract].
 
 
+    // Start overrides [WebViewBuilderContract].
+
+    override fun addWebMessageListener(
+        jsObjectName: String,
+        allowedOriginRules: MutableSet<String>,
+        listener: WebViewCompat.WebMessageListener
+    ) = apply { stateWebView.webMessage[jsObjectName] = allowedOriginRules to listener }
+
+    override fun certificate(
+        certificate: SslCertificate
+    ) = this
+
+    override fun downloadListener(
+        listener: DownloadListener?
+    ) = apply { stateWebView.downloadListener = listener }
+
+    override fun findListener(
+        listener: FindListener?
+    ) = apply { stateWebView.findListener = listener }
+
+    override fun horizontalScrollbarOverlay(
+        overlay: Boolean
+    ) = apply { stateWebView.horizontalScrollbarOverlay = overlay }
+
+    override fun initialScale(
+        @IntRange(from = 0, to = 100) scaleInPercent: Int
+    ) = apply { stateWebView.initialScale = scaleInPercent }
+
+    override fun mapTrackballToArrowKeys(
+        setMap: Boolean
+    ) = this
+
+    override fun pictureListener(
+        listener: PictureListener
+    ) = this
+
+    override fun removeWebMessageListener(
+        jsObjectName: String
+    ) = apply {
+        if (stateWebView.webMessage.contains(jsObjectName)) {
+            stateWebView.webMessage.remove(jsObjectName)
+        } else {
+            stateWebView.webMessage[jsObjectName] = null
+        }
+    }
+
+    override fun scrollBarStyle(
+        @MktScrollBarStyle style: Int
+    ) = apply { stateWebView.scrollBarStyle = style }
+
+    override fun showFindDialog(
+        text: String?,
+        showIme: Boolean
+    ) = this
+
+    override fun verticalScrollbarOverlay(
+        overlay: Boolean
+    ) = apply { stateWebView.verticalScrollbarOverlay = overlay }
+
+    // End overrides [WebViewBuilderContract].
+
+
     // Start overrides [WebViewClientCompatBuilderContract].
 
     override fun doUpdateVisitedHistory(
@@ -509,6 +580,9 @@ class WebViewBuilder : WebChromeClientBuilderContract,
         }
         _stateWebSettings?.also {
             it.into(target.settings)
+        }
+        _stateWebView?.also {
+            it.into(target)
         }
         _stateWebViewClientCompat?.also {
             target.webViewClient = it.create()
