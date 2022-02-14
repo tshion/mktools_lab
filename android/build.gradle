@@ -70,9 +70,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$libraryVersionJetpackLifecycle"
     implementation "androidx.webkit:webkit:$libraryVersionJetpackWebkit"
 
-    // Guava
-    implementation "com.google.guava:guava:$libraryVersionGuava"
-
     // Java 8+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$libraryVersionDesugarJdk"
 
