@@ -575,7 +575,7 @@ class WebViewBuilder : WebChromeClientBuilderContract,
         target: WebView,
         executor: Executor? = null,
         shouldHandleHistory: Boolean = true,
-    ) {
+    ): WebView {
         _stateWebChromeClient?.also {
             target.webChromeClient = it.create()
         }
@@ -600,5 +600,6 @@ class WebViewBuilder : WebChromeClientBuilderContract,
                 WebViewCompat.setWebViewRenderProcessClient(target, it.create())
             }
         }
+        return target
     }
 }
