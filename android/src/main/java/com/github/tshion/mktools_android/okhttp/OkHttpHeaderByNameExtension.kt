@@ -1,6 +1,6 @@
 package com.github.tshion.mktools_android.okhttp
 
-import com.google.common.net.HttpHeaders
+import com.github.tshion.mktools_android.constants.HttpRequestHeader
 import okhttp3.Request
 
 /**
@@ -9,7 +9,7 @@ import okhttp3.Request
  * @param value 設定値
  */
 fun Request.Builder.addAccept(value: String) {
-    addHeader(HttpHeaders.ACCEPT, value)
+    addHeader(HttpRequestHeader.ACCEPT.value, value)
 }
 
 /**
@@ -17,7 +17,7 @@ fun Request.Builder.addAccept(value: String) {
  * @receiver OkHttp のリクエストビルダー
  */
 fun Request.Builder.removeAllAccept() {
-    removeHeader(HttpHeaders.ACCEPT)
+    removeHeader(HttpRequestHeader.ACCEPT.value)
 }
 
 /**
@@ -25,7 +25,7 @@ fun Request.Builder.removeAllAccept() {
  * @receiver OkHttp のリクエストビルダー
  */
 fun Request.Builder.removeUserAgent() {
-    removeHeader(HttpHeaders.USER_AGENT)
+    removeHeader(HttpRequestHeader.USER_AGENT.value)
 }
 
 /**
@@ -34,5 +34,5 @@ fun Request.Builder.removeUserAgent() {
  * @param value 設定値
  */
 fun Request.Builder.setUserAgent(value: String) {
-    header(HttpHeaders.USER_AGENT, value)
+    header(HttpRequestHeader.USER_AGENT.value, value)
 }
