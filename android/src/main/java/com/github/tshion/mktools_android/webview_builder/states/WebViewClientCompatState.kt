@@ -1,6 +1,7 @@
 package com.github.tshion.mktools_android.webview_builder.states
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Message
@@ -10,6 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.webkit.SafeBrowsingResponseCompat
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
+import androidx.webkit.WebViewFeature.SHOULD_OVERRIDE_WITH_REDIRECTS
+import androidx.webkit.WebViewFeature.isFeatureSupported
 import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
@@ -172,6 +175,47 @@ internal class WebViewClientCompatState {
             event: KeyEvent?
         ) = shouldOverrideKeyEvent?.invoke(view!!, event!!)
             ?: super.shouldOverrideKeyEvent(view, event)
+
+        /**
+         * [WebViewClientCompat.shouldOverrideUrlLoading] で取り扱えない場合
+         */
+        @Suppress("deprecation") // for invoking the old shouldOverrideUrlLoading.
+        override fun shouldOverrideUrlLoading(
+            view: WebView,
+            url: String
+        ): Boolean {
+            val action = shouldOverrideUrlLoading
+            return if (!isFeatureSupported(SHOULD_OVERRIDE_WITH_REDIRECTS) && action != null) {
+                action.invoke(
+                    view,
+                    object : WebResourceRequest {
+                        override fun getUrl() = Uri.parse(url)
+
+                        override fun isForMainFrame(): Boolean {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun isRedirect(): Boolean {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun hasGesture(): Boolean {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun getMethod(): String {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun getRequestHeaders(): MutableMap<String, String> {
+                            TODO("Not yet implemented")
+                        }
+                    }
+                )
+            } else {
+                super.shouldOverrideUrlLoading(view, url)
+            }
+        }
 
         override fun shouldOverrideUrlLoading(
             view: WebView,

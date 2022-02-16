@@ -9,6 +9,7 @@ import android.webkit.*
 import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.webkit.WebResourceErrorCompat
+import androidx.webkit.WebViewFeature
 import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
@@ -80,6 +81,11 @@ interface WebViewClientCompatBuilderContract {
     /** @see WebViewClient.shouldOverrideKeyEvent */
     fun shouldOverrideKeyEvent(fx: MktBiPredicate<WebView, KeyEvent>): WebViewClientCompatBuilderContract
 
-    /** @see androidx.webkit.WebViewClientCompat.shouldOverrideUrlLoading */
+    /**
+     * ## Note
+     * If [WebViewFeature.SHOULD_OVERRIDE_WITH_REDIRECTS] is not supported, the [WebResourceRequest] has only [WebResourceRequest.getUrl].
+     *
+     * @see androidx.webkit.WebViewClientCompat.shouldOverrideUrlLoading
+     */
     fun shouldOverrideUrlLoading(@UiThread fx: MktBiPredicate<WebView, WebResourceRequest>): WebViewClientCompatBuilderContract
 }
