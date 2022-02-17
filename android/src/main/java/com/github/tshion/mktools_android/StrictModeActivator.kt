@@ -21,7 +21,6 @@ import android.os.StrictMode.VmPolicy
  *         get() = StrictMode.VmPolicy.Builder()
  *             .detectAll()
  *             .penaltyLog()
- *             .penaltyDeath()
  *             .build()
  *
  *
@@ -59,7 +58,6 @@ interface StrictModeActivator {
     val vmPolicy: VmPolicy
         get() = VmPolicy.Builder()
             .detectAll()
-            .penaltyLog()
             .penaltyDeath()
             .build()
 
