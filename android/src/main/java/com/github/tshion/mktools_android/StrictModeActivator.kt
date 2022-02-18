@@ -58,7 +58,7 @@ interface StrictModeActivator {
     val vmPolicy: VmPolicy
         get() = VmPolicy.Builder()
             .detectAll()
-            .penaltyDeath()
+            .penaltyLog()
             .build()
 
 
