@@ -5,7 +5,7 @@
     public class WebViewBuilder: WKNavigationBuilderContract {
 
         private var _stateWKNavigation: WKNavigationState? = nil
-        private func stateWKNavigation() -> WKNavigationState {
+        private var stateWKNavigation: WKNavigationState {
             if _stateWKNavigation == nil {
                 _stateWKNavigation = WKNavigationState()
             }
@@ -22,7 +22,7 @@
         public func becameDownloadNavigationAction(
             _ handler: @escaping (WKWebView, WKNavigationAction, WKDownload) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().becameDownloadNavigationAction = handler
+            stateWKNavigation.becameDownloadNavigationAction = handler
             return self
         }
 
@@ -31,7 +31,7 @@
         public func becameDownloadNavigationResponse(
             _ handler: @escaping (WKWebView, WKNavigationResponse, WKDownload) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().becameDownloadNavigationResponse = handler
+            stateWKNavigation.becameDownloadNavigationResponse = handler
             return self
         }
 
@@ -40,7 +40,7 @@
             _ handler: @escaping (WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void)
                 -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().decidePolicyForAction = handler
+            stateWKNavigation.decidePolicyForAction = handler
             return self
         }
 
@@ -51,7 +51,7 @@
                 (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
             ) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().decidePolicyForActionWithPreferences = handler
+            stateWKNavigation.decidePolicyForActionWithPreferences = handler
             return self
         }
 
@@ -62,7 +62,7 @@
             ) ->
                 Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().decidePolicyForResponse = handler
+            stateWKNavigation.decidePolicyForResponse = handler
             return self
         }
 
@@ -70,7 +70,7 @@
         public func didCommit(
             _ handler: @escaping (WKWebView, WKNavigation) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didCommit = handler
+            stateWKNavigation.didCommit = handler
             return self
         }
 
@@ -78,7 +78,7 @@
         public func didFail(
             _ handler: @escaping (WKWebView, WKNavigation, Error) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didFail = handler
+            stateWKNavigation.didFail = handler
             return self
         }
 
@@ -86,7 +86,7 @@
         public func didFailProvisionalNavigation(
             _ handler: @escaping (WKWebView, WKNavigation, Error) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didFailProvisionalNavigation = handler
+            stateWKNavigation.didFailProvisionalNavigation = handler
             return self
         }
 
@@ -94,7 +94,7 @@
         public func didFinish(
             _ handler: @escaping (WKWebView, WKNavigation) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didFinish = handler
+            stateWKNavigation.didFinish = handler
             return self
         }
 
@@ -102,14 +102,14 @@
         public func didReceiveServerRedirectForProvisionalNavigation(
             _ handler: @escaping (WKWebView, WKNavigation) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didReceiveServerRedirectForProvisionalNavigation = handler
+            stateWKNavigation.didReceiveServerRedirectForProvisionalNavigation = handler
             return self
         }
 
         public func didStartProvisionalNavigation(
             _ handler: @escaping (WKWebView, WKNavigation) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didStartProvisionalNavigation = handler
+            stateWKNavigation.didStartProvisionalNavigation = handler
             return self
         }
 
@@ -117,7 +117,7 @@
         public func didTerminate(
             _ handler: @escaping (WKWebView) -> Void
         ) -> WKNavigationBuilderContract {
-            stateWKNavigation().didTerminate = handler
+            stateWKNavigation.didTerminate = handler
             return self
         }
 
