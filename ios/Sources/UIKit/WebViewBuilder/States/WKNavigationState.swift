@@ -1,15 +1,18 @@
 #if os(iOS)
     import WebKit
 
-    internal struct WKNavigationState {
 
+@available(iOS 14.5, *)
+internal class WKNavigationState {
         internal var becameDownloadNavigationAction:
             ((WKWebView, WKNavigationAction, WKDownload) -> Void)? = nil
+    
+   
         internal var becameDownloadNavigationResponse:
             ((WKWebView, WKNavigationResponse, WKDownload) -> Void)? = nil
         internal var decidePolicyForAction:
             ((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)? = nil
-        internal var decidePolicyForAction:
+        internal var decidePolicyForActionWithPreferences:
             (
                 (
                     WKWebView, WKNavigationAction, WKWebpagePreferences,
