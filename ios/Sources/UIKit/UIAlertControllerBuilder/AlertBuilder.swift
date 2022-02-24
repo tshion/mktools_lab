@@ -10,7 +10,7 @@
         }
 
 
-        func addTextField(configurationHandler: ((UITextField) -> Void)? = nil) -> AlertBuilder {
+        func addTextField(_ configurationHandler: ((UITextField) -> Void)? = nil) -> AlertBuilder {
             textFields.append(configurationHandler)
             return self
         }
