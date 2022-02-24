@@ -2,12 +2,12 @@
     import WebKit
 
 
-@available(iOS 14.5, *)
-internal class WKNavigationState {
+    @available(iOS 14.5, *)
+    internal class WKNavigationState {
         internal var becameDownloadNavigationAction:
             ((WKWebView, WKNavigationAction, WKDownload) -> Void)? = nil
-    
-   
+
+
         internal var becameDownloadNavigationResponse:
             ((WKWebView, WKNavigationResponse, WKDownload) -> Void)? = nil
         internal var decidePolicyForAction:

@@ -8,7 +8,7 @@
 
         /// https://developer.apple.com/documentation/webkit/wknavigationdelegate/3223382-webview
         @available(iOS 13.0, *)
-         func decidePolicyForAction(
+        func decidePolicyForAction(
             _ handler: @escaping (
                 WKWebView, WKNavigationAction, WKWebpagePreferences,
                 (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
@@ -18,13 +18,16 @@
 
         /// https://developer.apple.com/documentation/webkit/wknavigationdelegate/1455641-webview
         func decidePolicyForAction(
-            _ handler: @escaping (WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void
+            _ handler: @escaping (WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void)
+                -> Void
         ) -> WKNavigationBuilderContract
         //        func webView(WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void)
 
         /// https://developer.apple.com/documentation/webkit/wknavigationdelegate/1455643-webview
         func decidePolicyForResponse(
-            _ handler: @escaping (WKWebView, WKNavigationResponse, (WKNavigationResponsePolicy) -> Void) ->
+            _ handler: @escaping (
+                WKWebView, WKNavigationResponse, (WKNavigationResponsePolicy) -> Void
+            ) ->
                 Void
         ) -> WKNavigationBuilderContract
         //        func webView(WKWebView, decidePolicyFor: WKNavigationResponse, decisionHandler: (WKNavigationResponsePolicy) -> Void)

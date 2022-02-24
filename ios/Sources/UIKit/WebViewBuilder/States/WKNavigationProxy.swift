@@ -1,8 +1,8 @@
 #if os(iOS)
     import WebKit
 
-@available(iOS 14.5, *)
-internal class WKNavigationProxy: NSObject, WKNavigationDelegate {
+    @available(iOS 14.5, *)
+    internal class WKNavigationProxy: NSObject, WKNavigationDelegate {
         private let _state: WKNavigationState
 
 
@@ -19,7 +19,8 @@ internal class WKNavigationProxy: NSObject, WKNavigationDelegate {
             preferences: WKWebpagePreferences,
             decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
         ) {
-            _state.decidePolicyForActionWithPreferences?(webView, navigationAction, preferences, decisionHandler)
+            _state.decidePolicyForActionWithPreferences?(
+                webView, navigationAction, preferences, decisionHandler)
         }
         func webView(
             _ webView: WKWebView,
