@@ -22,7 +22,7 @@ let package = Package(
 )
 ```
 
-XcodeGen を使っている場合は、下記の記述をしてください。
+[XcodeGen](https://github.com/yonaskolb/XcodeGen) を使っている場合は、下記の記述をしてください。
 ``` yaml
 packages:
   mktools_ios:

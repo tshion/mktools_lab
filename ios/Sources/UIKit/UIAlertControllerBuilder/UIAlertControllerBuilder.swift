@@ -13,7 +13,7 @@
         }
 
 
-        public func addAction(action: UIAlertAction) -> UIAlertControllerBuilder {
+        public func addAction(_ action: UIAlertAction) -> UIAlertControllerBuilder {
             actions.append(action)
             return self
         }
@@ -26,12 +26,12 @@
             return target
         }
 
-        public func message(value: String?) -> UIAlertControllerBuilder {
+        public func message(_ value: String?) -> UIAlertControllerBuilder {
             self.message = value
             return self
         }
 
-        public func title(value: String?) -> UIAlertControllerBuilder {
+        public func title(_ value: String?) -> UIAlertControllerBuilder {
             self.title = value
             return self
         }
