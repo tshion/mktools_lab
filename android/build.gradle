@@ -90,7 +90,7 @@ afterEvaluate {
 
                 artifactId = 'mktools_android'
                 groupId = 'com.github.tshion'
-                version = this.version
+                version = appVersionName
             }
         }
     }

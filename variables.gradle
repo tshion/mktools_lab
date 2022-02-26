@@ -12,7 +12,7 @@ ext {
     def appVersionMinor = 0
     def appVersionRevision = 1
     appVersionCode = 10000 * appVersionMajor + 100 * appVersionMinor + appVersionRevision
-    appVersionName = "$appVersionMajor.$appVersionMinor.$appVersionRevision"
+    appVersionName = String.format("%04d.%02d.%02d", appVersionMajor, appVersionMinor, appVersionRevision)
 
     // ライブラリバージョン
     libraryVersionDesugarJdk = '1.1.5'
