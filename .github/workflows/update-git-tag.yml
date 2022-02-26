@@ -1,0 +1,19 @@
+name: Update Git Tag
+
+on:
+  schedule:
+    - cron: '0 19 * * *' # 4am JST
+  workflow_dispatch:
+
+jobs:
+  add_git_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: git setting
+        run: |
+          git config --local user.email "mktools_lab@example.com"
+          git config --local user.name "bot of mktools_lab"
+      - run: sh scripts/git-update-tag.sh
