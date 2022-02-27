@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 現在のブランチの出力
 currentBranch=$(git branch --contains | cut -d " " -f 2)
