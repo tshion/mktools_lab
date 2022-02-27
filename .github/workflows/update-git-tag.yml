@@ -18,4 +18,4 @@ jobs:
           git config --local user.name "bot of mktools_lab"
       - name: do update
         run: sh scripts/git-update-tag.sh
-        working-directory: .
+        working-directory: ./
