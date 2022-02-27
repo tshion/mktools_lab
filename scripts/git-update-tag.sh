@@ -20,7 +20,8 @@ tmpTag="$tmpTagMajor.$tmpTagMinor.$tmpTagRevision"
 echo "Tag candidate: $tmpTag"
 
 # 更新があるかどうかの判定
-if [ "$latestTag" == "$tmpTag" ]; then
+if [ "$latestTag" = "$tmpTag" ]
+then
     echo "None update!"
     exit 0
 fi
