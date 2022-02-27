@@ -17,5 +17,5 @@ jobs:
           git config --local user.email "mktools_lab@example.com"
           git config --local user.name "bot of mktools_lab"
       - name: do update
-        run: sh scripts/git-update-tag.sh
+        run: sh git-update-tag.sh
         working-directory: ./scripts
