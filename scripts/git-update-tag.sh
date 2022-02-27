@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 現在のブランチの出力
 currentBranch=$(git branch --contains | cut -d " " -f 2)
@@ -20,22 +20,26 @@ tmpTag="$tmpTagMajor.$tmpTagMinor.$tmpTagRevision"
 echo "Tag candidate: $tmpTag"
 
 # 更新があるかどうかの判定
-if [ "$latestTag" == "$tmpTag" ]; then
+if [ "$latestTag" = "$tmpTag" ]
+then
     echo "None update!"
     exit 0
 fi
-
-# タグの付与
-git tag $tmpTag
-git push origin $tmpTag
-echo "Add tag!"
 
 # ファイルに記述されているライブラリバージョンの更新
 sed -i -E "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" ../variables.gradle
 sed -i -E "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" ../variables.gradle
 sed -i -E "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" ../variables.gradle
+echo "Update version in files."
 
 # Git 更新
 git add ../variables.gradle
 git commit -m "Update Version" -a
+git pull
 git push origin
+echo "Push files updated version text."
+
+# Git タグの付与
+git tag $tmpTag
+git push origin $tmpTag
+echo "Add tag!"
