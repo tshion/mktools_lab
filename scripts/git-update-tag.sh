@@ -34,7 +34,7 @@ echo "Update version in files."
 
 # Git 更新
 git add ../variables.gradle
-git commit -m "Update Version" -a
+git commit -m "Update Version"
 git pull
 git push origin
 echo "Push files updated version text."
