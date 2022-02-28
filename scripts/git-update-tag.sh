@@ -27,8 +27,8 @@ then
 fi
 
 # ファイルに記述されているライブラリバージョンの更新
-echo "Current location: $(pwd)"
-pathAndroid="$(cd '..' && pwd)/variables.gradle"
+echo "Current location: $PWD"
+pathAndroid="$PWD/variables.gradle"
 echo "Target location: $pathAndroid"
 sed -i '' "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" $pathAndroid
 sed -i '' "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" $pathAndroid
