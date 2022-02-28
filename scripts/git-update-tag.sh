@@ -27,14 +27,16 @@ then
 fi
 
 # ファイルに記述されているライブラリバージョンの更新
-sed -i -E "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" ../variables.gradle
-sed -i -E "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" ../variables.gradle
-sed -i -E "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" ../variables.gradle
+pathAndroid='../variables.gradle'
+sed -i '' "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" $pathAndroid
+sed -i '' "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" $pathAndroid
+sed -i '' "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" $pathAndroid
+
 echo "Update version in files."
 
 # Git 更新
-git add ../variables.gradle
-git commit -m "Update Version" -a
+git add $pathAndroid
+git commit -m "Update Version"
 git pull
 git push origin
 echo "Push files updated version text."
