@@ -30,6 +30,7 @@ fi
 echo "Current location: $PWD"
 pathAndroid="$PWD/variables.gradle"
 echo "Target location: $pathAndroid"
+echo $(cat $pathAndroid)
 sed -i '' "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" $pathAndroid
 sed -i '' "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" $pathAndroid
 sed -i '' "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" $pathAndroid
