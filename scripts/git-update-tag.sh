@@ -27,9 +27,9 @@ then
 fi
 
 # ファイルに記述されているライブラリバージョンの更新
-sed -i -E "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" ../variables.gradle
-sed -i -E "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" ../variables.gradle
-sed -i -E "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" ../variables.gradle
+sed -i '' "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" ../variables.gradle
+sed -i '' "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" ../variables.gradle
+sed -i '' "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" ../variables.gradle
 echo "Update version in files."
 
 # Git 更新
