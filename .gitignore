@@ -20,7 +20,7 @@ output.json
 
 # IntelliJ
 *.iml
-.idea/
+.idea/*
 
 # Keystore files
 *.jks
@@ -612,3 +612,11 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+
+###############
+### Project ###
+###############
+!.idea/fileTemplates/
+!.idea/file.template.settings.xml
