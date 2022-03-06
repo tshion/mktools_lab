@@ -1,7 +1,7 @@
 #if os(iOS)
     import WebKit
 
-    internal class WebViewBuilderNext {
+    public class WebViewBuilderNext {
 
         private var _proxyWKNavigation: WKNavigationProxyNext? = nil
         private var proxyWKNavigation: WKNavigationProxyNext {
