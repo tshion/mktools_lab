@@ -37,7 +37,6 @@ echo "Update version in files."
 # Git 更新
 git add $pathAndroid
 git commit -m "Update Version"
-echo $(git status)
 git push origin
 echo "Push files updated version text."
 
