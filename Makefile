@@ -1,6 +1,6 @@
 # バージョン更新のGit 操作
 git-update-tag:
-	bash scripts/git-update-tag.sh
+	sh scripts/git-update-tag.sh
 
 # ビルド(iOS)
 ios-build:

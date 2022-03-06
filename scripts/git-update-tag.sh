@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # 現在のブランチの出力
 currentBranch=$(git branch --contains | cut -d " " -f 2)
@@ -31,7 +31,6 @@ pathAndroid="$PWD/variables.gradle"
 sed -i -e "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" $pathAndroid
 sed -i -e "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" $pathAndroid
 sed -i -e "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" $pathAndroid
-cat $pathAndroid
 
 echo "Update version in files."
 
