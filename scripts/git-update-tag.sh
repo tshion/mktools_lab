@@ -28,9 +28,9 @@ fi
 
 # ファイルに記述されているライブラリバージョンの更新
 pathAndroid="$PWD/variables.gradle"
-sed -i -E "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" $pathAndroid
-sed -i -E "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" $pathAndroid
-sed -i -E "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" $pathAndroid
+sed -i -e "s/appVersionMajor = [0-9]\{1,\}/appVersionMajor = $tmpTagMajor/" $pathAndroid
+sed -i -e "s/appVersionMinor = [0-9]\{1,\}/appVersionMinor = $tmpTagMinor/" $pathAndroid
+sed -i -e "s/appVersionRevision = [0-9]\{1,\}/appVersionRevision = $tmpTagRevision/" $pathAndroid
 cat $pathAndroid
 
 echo "Update version in files."
