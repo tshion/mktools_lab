@@ -8,9 +8,9 @@ ext {
     gradleVersionAgp = '7.1.1'
 
     // アプリ関連
-    def appVersionMajor = 0
-    def appVersionMinor = 0
-    def appVersionRevision = 1
+    def appVersionMajor = 2022
+    def appVersionMinor = 03
+    def appVersionRevision = 06
     appVersionCode = 10000 * appVersionMajor + 100 * appVersionMinor + appVersionRevision
     appVersionName = String.format("%04d.%02d.%02d", appVersionMajor, appVersionMinor, appVersionRevision)
 
