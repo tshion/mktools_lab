@@ -404,4 +404,50 @@ internal class WebSettingsProxy : WebSettingsBuilderContract {
         }
         useWideViewPort?.also { ws.useWideViewPort = it }
     }
+
+    override fun hasWebSettingsBuilder() = (
+        allowContentAccess
+            ?: allowFileAccess
+            ?: allowFileAccessFromFileURLs
+            ?: allowUniversalAccessFromFileURLs
+            ?: blockNetworkImage
+            ?: blockNetworkLoads
+            ?: builtInZoomControls
+            ?: cacheMode
+            ?: cursiveFontFamily
+            ?: databaseEnabled
+            ?: defaultFixedFontSize
+            ?: defaultFontSize
+            ?: defaultTextEncodingName
+            ?: disabledActionModeMenuItems
+            ?: displayZoomControls
+            ?: domStorageEnabled
+            ?: fantasyFontFamily
+            ?: fixedFontFamily
+            ?: forceDark
+            ?: forceDarkStrategy
+            ?: geolocationDatabasePath
+            ?: geolocationEnabled
+            ?: javaScriptCanOpenWindowsAutomatically
+            ?: javaScriptEnabled
+            ?: layoutAlgorithm
+            ?: loadsImagesAutomatically
+            ?: loadWithOverviewMode
+            ?: mediaPlaybackRequiresUserGesture
+            ?: minimumFontSize
+            ?: minimumLogicalFontSize
+            ?: mixedContentMode
+            ?: needInitialFocus
+            ?: offscreenPreRaster
+            ?: safeBrowsingEnabled
+            ?: sansSerifFontFamily
+            ?: saveFormData
+            ?: serifFontFamily
+            ?: standardFontFamily
+            ?: supportMultipleWindows
+            ?: supportZoom
+            ?: textZoom
+            ?: userAgentString
+            ?: useWideViewPort
+        ).let { it != null }
 }

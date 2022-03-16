@@ -2,7 +2,6 @@ package com.github.tshion.mktools_android.webview_builder2.contracts
 
 import android.webkit.WebSettings
 import android.webkit.WebSettings.*
-import android.webkit.WebView
 import androidx.annotation.IntRange
 import androidx.webkit.WebSettingsCompat.*
 import com.github.tshion.mktools_android.webview_builder.annotations.MktCacheMode
@@ -180,4 +179,6 @@ interface WebSettingsBuilderContract {
 
 
     fun applyWebSettingsBuilder(ws: WebSettings)
+
+    fun hasWebSettingsBuilder(): Boolean
 }

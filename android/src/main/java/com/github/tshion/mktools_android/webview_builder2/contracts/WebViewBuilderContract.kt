@@ -120,4 +120,6 @@ interface WebViewBuilderContract {
 
 
     fun applyWebViewBuilder(target: WebView)
+
+    fun hasWebViewBuilder(): Boolean
 }

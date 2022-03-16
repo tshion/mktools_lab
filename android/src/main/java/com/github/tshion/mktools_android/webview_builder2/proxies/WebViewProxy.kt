@@ -122,4 +122,13 @@ internal class WebViewProxy : WebViewBuilderContract {
             }
         }
     }
+
+    override fun hasWebViewBuilder() = (
+        downloadListener
+            ?: findListener
+            ?: horizontalScrollbarOverlay
+            ?: initialScale
+            ?: scrollBarStyle
+            ?: verticalScrollbarOverlay
+        ).let { it != null || webMessage.isNotEmpty() }
 }
