@@ -12,17 +12,26 @@ import java.util.concurrent.Executor
 /**
  * Builder for WebView.
  */
-class WebViewBuilder(
-    private val webChromeClientProxy: WebChromeClientBuilderContract = WebChromeClientProxy(),
-    private val webSettingsProxy: WebSettingsBuilderContract = WebSettingsProxy(),
-    private val webViewClientCompatProxy: WebViewClientCompatBuilderContract = WebViewClientCompatProxy(),
-    private val webViewProxy: WebViewBuilderContract = WebViewProxy(),
-    private val webViewRenderProcessClientProxy: WebViewRenderProcessClientBuilderContract = WebViewRenderProcessClientProxy(),
+class WebViewBuilder internal constructor(
+    private val webChromeClientProxy: WebChromeClientBuilderContract,
+    private val webSettingsProxy: WebSettingsBuilderContract,
+    private val webViewClientCompatProxy: WebViewClientCompatBuilderContract,
+    private val webViewProxy: WebViewBuilderContract,
+    private val webViewRenderProcessClientProxy: WebViewRenderProcessClientBuilderContract,
 ) : WebChromeClientBuilderContract by webChromeClientProxy,
     WebSettingsBuilderContract by webSettingsProxy,
     WebViewBuilderContract by webViewProxy,
     WebViewClientCompatBuilderContract by webViewClientCompatProxy,
     WebViewRenderProcessClientBuilderContract by webViewRenderProcessClientProxy {
+
+    public constructor() : this(
+        WebChromeClientProxy(),
+        WebSettingsProxy(),
+        WebViewClientCompatProxy(),
+        WebViewProxy(),
+        WebViewRenderProcessClientProxy(),
+    )
+
 
     /**
      * Reflects builder's settings.
