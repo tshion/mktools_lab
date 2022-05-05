@@ -25,6 +25,7 @@ ext {
     libraryVersionJetpackWebkit = '1.4.0'
     libraryVersionJUnit = '4.13.2'
     libraryVersionKotlin = '1.6.10'
+    libraryVersionKotlinCoroutines = '1.6.1'
     libraryVersionOkHttp = '4.9.0'
     libraryVersionRobolectric = '4.7.3'
     libraryVersionTruth = '1.1.3'
