@@ -9,9 +9,9 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
- * Wraps [Call] in suspend.
+ * Executes [Call] asynchronously.
  */
-suspend fun Call.toSuspend() = suspendCancellableCoroutine<Response> { continuation ->
+suspend fun Call.await() = suspendCancellableCoroutine<Response> { continuation ->
     continuation.invokeOnCancellation {
         cancel()
     }
