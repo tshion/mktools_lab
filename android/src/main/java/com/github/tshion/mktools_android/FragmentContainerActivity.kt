@@ -3,17 +3,23 @@ package com.github.tshion.mktools_android
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 
-abstract class HostActivity(
-    packageName: String,
-    idName: String = "container",
-) : AppCompatActivity() {
+/**
+ * Hosts [FragmentContainerView].
+ */
+abstract class FragmentContainerActivity : AppCompatActivity() {
 
-    protected val idContainer = resources.getIdentifier(
-        idName,
+    /**
+     * Id of [FragmentContainerView].
+     */
+    @IdRes
+    protected val idContainer: Int = resources.getIdentifier(
+        "container",
         "id",
         packageName
     )
@@ -22,7 +28,7 @@ abstract class HostActivity(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FragmentContainerView(this@HostActivity).apply {
+        FragmentContainerView(this@FragmentContainerActivity).apply {
             id = idContainer
             layoutParams = LayoutParams(
                 MATCH_PARENT,
@@ -33,6 +39,12 @@ abstract class HostActivity(
     }
 
 
+    /**
+     * Sets [Fragment].
+     *
+     * @param id Id of [FragmentContainerView].
+     * @param fragmentManager [FragmentManager].
+     */
     protected abstract fun setupFragment(
         id: Int,
         fragmentManager: FragmentManager,
