@@ -3,6 +3,7 @@ package com.github.tshion.mktools_android
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -13,32 +14,37 @@ import androidx.fragment.app.FragmentManager
  */
 abstract class FragmentContainerActivity : AppCompatActivity() {
 
-    protected lateinit var fragmentContainerView: FragmentContainerView
+    @IdRes
+    private var _fragmentContainerId: Int? = null
 
-    /**
-     * Id of [FragmentContainerView].
-     */
-    protected val idContainer: Int by lazy {
-        resources.getIdentifier(
-            "mktools_fragment_container_activity_root",
-            "id",
-            packageName
-        )
-    }
+    protected val fragmentContainerId: Int
+        get() = _fragmentContainerId!!
+
+
+    private var _fragmentContainerView: FragmentContainerView? = null
+
+    protected val fragmentContainerView: FragmentContainerView
+        get() = _fragmentContainerView!!
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fragmentContainerView = FragmentContainerView(this@FragmentContainerActivity).apply {
-            id = idContainer
+        _fragmentContainerId = resources.getIdentifier(
+            "fragment_container_activity_root",
+            "id",
+            packageName
+        )
+        _fragmentContainerView = FragmentContainerView(this@FragmentContainerActivity).apply {
+            id = fragmentContainerId
             layoutParams = LayoutParams(
                 MATCH_PARENT,
                 MATCH_PARENT,
             )
         }
+
         setContentView(fragmentContainerView)
-        setupFragment(idContainer, supportFragmentManager)
+        setupFragment(fragmentContainerId, supportFragmentManager)
     }
 
 
