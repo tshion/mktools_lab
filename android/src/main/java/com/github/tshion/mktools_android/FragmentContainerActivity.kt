@@ -14,29 +14,24 @@ import androidx.fragment.app.FragmentManager
  */
 abstract class FragmentContainerActivity : AppCompatActivity() {
 
-    @IdRes
-    private var _fragmentContainerId: Int? = null
-
-    protected val fragmentContainerId: Int
-        get() = _fragmentContainerId!!
-
-
     private var _fragmentContainerView: FragmentContainerView? = null
-
     protected val fragmentContainerView: FragmentContainerView
         get() = _fragmentContainerView!!
+
+    /** Name of [FragmentContainerView]'s id. */
+    protected open val nameId: String = "fragment_container_activity_root"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _fragmentContainerId = resources.getIdentifier(
-            "fragment_container_activity_root",
+        val containerId = resources.getIdentifier(
+            nameId,
             "id",
             packageName
         )
         _fragmentContainerView = FragmentContainerView(this@FragmentContainerActivity).apply {
-            id = fragmentContainerId
+            id = containerId
             layoutParams = LayoutParams(
                 MATCH_PARENT,
                 MATCH_PARENT,
@@ -44,7 +39,7 @@ abstract class FragmentContainerActivity : AppCompatActivity() {
         }
 
         setContentView(fragmentContainerView)
-        setupFragment(fragmentContainerId, supportFragmentManager)
+        setupFragment(containerId, supportFragmentManager)
     }
 
 
@@ -55,7 +50,7 @@ abstract class FragmentContainerActivity : AppCompatActivity() {
      * @param fragmentManager [FragmentManager].
      */
     protected abstract fun setupFragment(
-        id: Int,
+        @IdRes id: Int,
         fragmentManager: FragmentManager,
     )
 }
