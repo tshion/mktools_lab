@@ -66,13 +66,16 @@ dependencies {
     debugImplementation libsTestJetpack
 
     // AndroidX
-    debugImplementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
+    implementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
     implementation "androidx.core:core-ktx:$libraryVersionJetpackCore"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$libraryVersionJetpackLifecycle"
     implementation "androidx.webkit:webkit:$libraryVersionJetpackWebkit"
 
     // Java 8+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$libraryVersionDesugarJdk"
+
+    // Kotlin Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$libraryVersionKotlinCoroutines"
 
     // OkHttp
     implementation platform("com.squareup.okhttp3:okhttp-bom:$libraryVersionOkHttp")

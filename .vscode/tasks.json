@@ -4,6 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Build GitHub Actions like",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "build",
+                "-t",
+                "mktools/like-github-actions:dev",
+                "./scripts/github"
+            ],
+            "group": "build"
+        },
+        {
             "label": "build ios",
             "type": "shell",
             "command": "make ios-build"
@@ -12,6 +24,22 @@
             "label": "launch xcode",
             "type": "shell",
             "command": "make launch-xcode"
+        },
+        {
+            "label": "Run GitHub Actions like",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "run",
+                "--rm",
+                "-it",
+                "-v",
+                "${workspaceFolder}:/home/worker",
+                "mktools/like-github-actions:dev"
+            ],
+            "dependsOn": [
+                "Build GitHub Actions like"
+            ]
         },
         {
             "label": "test ios",

@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: git setting
+      - name: git settings
         run: |
           git config --local user.email "mktools_lab@example.com"
-          git config --local user.name "bot of mktools_lab"
-      - name: do update
+          git config --local user.name "mktools_lab bot"
+      - name: Do update
         run: make git-update-tag
