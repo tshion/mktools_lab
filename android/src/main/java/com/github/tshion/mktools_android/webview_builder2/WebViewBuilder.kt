@@ -12,6 +12,7 @@ import java.util.concurrent.Executor
 /**
  * Builder for WebView.
  */
+@Deprecated("Builder を繋げられないため")
 class WebViewBuilder internal constructor(
     private val webChromeClientProxy: WebChromeClientBuilderContract,
     private val webSettingsProxy: WebSettingsBuilderContract,
