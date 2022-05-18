@@ -6,7 +6,6 @@ import android.view.View
 import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebChromeClient.FileChooserParams
-import androidx.webkit.WebViewClientCompat
 import com.github.tshion.mktools_android.webview_builder.aliases.*
 
 /**
