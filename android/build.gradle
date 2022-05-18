@@ -67,6 +67,7 @@ dependencies {
 
     // AndroidX
     debugImplementation "androidx.appcompat:appcompat:$libraryVersionJetpackAppCompat"
+    implementation "androidx.core:core-ktx:$libraryVersionJetpackCore"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$libraryVersionJetpackLifecycle"
     implementation "androidx.webkit:webkit:$libraryVersionJetpackWebkit"
 

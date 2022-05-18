@@ -17,6 +17,7 @@ ext {
     // ライブラリバージョン
     libraryVersionDesugarJdk = '1.1.5'
     libraryVersionJetpackAppCompat = '1.4.1'
+    libraryVersionJetpackCore = '1.7.0'
     libraryVersionJetpackJunit = '1.1.3'
     libraryVersionJetpackLifecycle = '2.4.1'
     libraryVersionJetpackTestCore = '1.4.0'

@@ -7,6 +7,9 @@ import android.view.View
 import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebChromeClient.FileChooserParams
+import androidx.core.util.Consumer
+import androidx.core.util.Predicate
+import androidx.core.util.Supplier
 import com.github.tshion.mktools_android.webview_builder.aliases.*
 import com.github.tshion.mktools_android.webview_builder2.contracts.WebChromeClientBuilderContract
 
@@ -15,24 +18,24 @@ import com.github.tshion.mktools_android.webview_builder2.contracts.WebChromeCli
  */
 internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
-    private var getDefaultVideoPoster: MktSupplier<Bitmap?>? = null
+    private var getDefaultVideoPoster: Supplier<Bitmap?>? = null
 
-    private var getVideoLoadingProgressView: MktSupplier<View?>? = null
+    private var getVideoLoadingProgressView: Supplier<View?>? = null
 
-    private var getVisitedHistory: MktConsumer<ValueCallback<Array<String>>>? = null
+    private var getVisitedHistory: Consumer<ValueCallback<Array<String>>>? = null
 
-    private var onCloseWindow: MktConsumer<WebView>? = null
+    private var onCloseWindow: Consumer<WebView>? = null
 
-    private var onConsoleMessage: MktPredicate<ConsoleMessage>? = null
+    private var onConsoleMessage: Predicate<ConsoleMessage>? = null
 
     private var onCreateWindow: MktOnCreateWindowPredicate? = null
 
-    private var onGeolocationPermissionsHidePrompt: MktRunnable? = null
+    private var onGeolocationPermissionsHidePrompt: Runnable? = null
 
     private var onGeolocationPermissionsShowPrompt: MktBiConsumer<String, GeolocationPermissions.Callback>? =
         null
 
-    private var onHideCustomView: MktRunnable? = null
+    private var onHideCustomView: Runnable? = null
 
     private var onJsAlert: MktOnJsPredicate? = null
 
@@ -42,9 +45,9 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
     private var onJsPrompt: MktOnJsPromptPredicate? = null
 
-    private var onPermissionRequest: MktConsumer<PermissionRequest>? = null
+    private var onPermissionRequest: Consumer<PermissionRequest>? = null
 
-    private var onPermissionRequestCanceled: MktConsumer<PermissionRequest>? = null
+    private var onPermissionRequestCanceled: Consumer<PermissionRequest>? = null
 
     private var onProgressChanged: MktObjIntConsumer<WebView>? = null
 
@@ -54,7 +57,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
     private var onReceivedTouchIconUrl: MktBiObjBooleanConsumer<WebView, String>? = null
 
-    private var onRequestFocus: MktConsumer<WebView>? = null
+    private var onRequestFocus: Consumer<WebView>? = null
 
     private var onShowCustomView: MktBiConsumer<View, CustomViewCallback>? = null
 
@@ -63,19 +66,19 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
 
     override fun getDefaultVideoPoster(
-        fx: MktSupplier<Bitmap?>
+        fx: Supplier<Bitmap?>
     ) = apply { getDefaultVideoPoster = fx }
 
     override fun getVideoLoadingProgressView(
-        fx: MktSupplier<View?>
+        fx: Supplier<View?>
     ) = apply { getVideoLoadingProgressView = fx }
 
     override fun getVisitedHistory(
-        fx: MktConsumer<ValueCallback<Array<String>>>
+        fx: Consumer<ValueCallback<Array<String>>>
     ) = apply { getVisitedHistory = fx }
 
     override fun onCloseWindow(
-        fx: MktConsumer<WebView>
+        fx: Consumer<WebView>
     ) = apply { onCloseWindow = fx }
 
     override fun onConsoleMessageUntil15(
@@ -83,7 +86,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
     ) = this
 
     override fun onConsoleMessage(
-        fx: MktPredicate<ConsoleMessage>
+        fx: Predicate<ConsoleMessage>
     ) = apply { onConsoleMessage = fx }
 
     override fun onCreateWindow(
@@ -95,7 +98,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
     ) = this
 
     override fun onGeolocationPermissionsHidePrompt(
-        fx: MktRunnable
+        fx: Runnable
     ) = apply { onGeolocationPermissionsHidePrompt = fx }
 
     override fun onGeolocationPermissionsShowPrompt(
@@ -103,7 +106,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
     ) = apply { onGeolocationPermissionsShowPrompt = fx }
 
     override fun onHideCustomView(
-        fx: MktRunnable
+        fx: Runnable
     ) = apply { onHideCustomView = fx }
 
     override fun onJsAlert(
@@ -127,11 +130,11 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
     ) = this
 
     override fun onPermissionRequest(
-        fx: MktConsumer<PermissionRequest>
+        fx: Consumer<PermissionRequest>
     ) = apply { onPermissionRequest = fx }
 
     override fun onPermissionRequestCanceled(
-        fx: MktConsumer<PermissionRequest>
+        fx: Consumer<PermissionRequest>
     ) = apply { onPermissionRequestCanceled = fx }
 
     override fun onProgressChanged(
@@ -151,7 +154,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
     ) = apply { onReceivedTouchIconUrl = fx }
 
     override fun onRequestFocus(
-        fx: MktConsumer<WebView>
+        fx: Consumer<WebView>
     ) = apply { onRequestFocus = fx }
 
     override fun onShowCustomViewUntil18(
@@ -169,26 +172,26 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
     override fun buildWebChromeClientBuilder() = object : WebChromeClient() {
         override fun getDefaultVideoPoster(
-        ) = getDefaultVideoPoster?.invoke()
+        ) = getDefaultVideoPoster?.get()
             ?: super.getDefaultVideoPoster()
 
         override fun getVideoLoadingProgressView(
-        ) = getVideoLoadingProgressView?.invoke()
+        ) = getVideoLoadingProgressView?.get()
             ?: super.getVideoLoadingProgressView()
 
         override fun getVisitedHistory(
             callback: ValueCallback<Array<String>>?
-        ) = getVisitedHistory?.invoke(callback!!)
+        ) = getVisitedHistory?.accept(callback!!)
             ?: super.getVisitedHistory(callback)
 
         override fun onCloseWindow(
             window: WebView?
-        ) = onCloseWindow?.invoke(window!!)
+        ) = onCloseWindow?.accept(window!!)
             ?: super.onCloseWindow(window)
 
         override fun onConsoleMessage(
             consoleMessage: ConsoleMessage?
-        ) = onConsoleMessage?.invoke(consoleMessage!!)
+        ) = onConsoleMessage?.test(consoleMessage!!)
             ?: super.onConsoleMessage(consoleMessage)
 
         override fun onCreateWindow(
@@ -200,7 +203,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
             ?: super.onCreateWindow(view, isDialog, isUserGesture, resultMsg)
 
         override fun onGeolocationPermissionsHidePrompt(
-        ) = onGeolocationPermissionsHidePrompt?.invoke()
+        ) = onGeolocationPermissionsHidePrompt?.run()
             ?: super.onGeolocationPermissionsHidePrompt()
 
         override fun onGeolocationPermissionsShowPrompt(
@@ -210,7 +213,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
             ?: super.onGeolocationPermissionsShowPrompt(origin, callback)
 
         override fun onHideCustomView(
-        ) = onHideCustomView?.invoke()
+        ) = onHideCustomView?.run()
             ?: super.onHideCustomView()
 
         override fun onJsAlert(
@@ -248,12 +251,12 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
         override fun onPermissionRequest(
             request: PermissionRequest?
-        ) = onPermissionRequest?.invoke(request!!)
+        ) = onPermissionRequest?.accept(request!!)
             ?: super.onPermissionRequest(request)
 
         override fun onPermissionRequestCanceled(
             request: PermissionRequest?
-        ) = onPermissionRequestCanceled?.invoke(request!!)
+        ) = onPermissionRequestCanceled?.accept(request!!)
             ?: super.onPermissionRequestCanceled(request)
 
         override fun onProgressChanged(
@@ -283,7 +286,7 @@ internal class WebChromeClientProxy : WebChromeClientBuilderContract {
 
         override fun onRequestFocus(
             view: WebView?
-        ) = onRequestFocus?.invoke(view!!)
+        ) = onRequestFocus?.accept(view!!)
             ?: super.onRequestFocus(view)
 
         override fun onShowCustomView(
