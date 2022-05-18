@@ -10,7 +10,7 @@ ext {
     // アプリ関連
     def appVersionMajor = 2022
     def appVersionMinor = 05
-    def appVersionRevision = 14
+    def appVersionRevision = 18
     appVersionCode = 10000 * appVersionMajor + 100 * appVersionMinor + appVersionRevision
     appVersionName = String.format("%04d.%02d.%02d", appVersionMajor, appVersionMinor, appVersionRevision)
 
