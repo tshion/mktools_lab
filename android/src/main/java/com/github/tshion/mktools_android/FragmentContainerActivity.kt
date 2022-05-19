@@ -5,6 +5,7 @@ import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
@@ -18,18 +19,11 @@ abstract class FragmentContainerActivity : AppCompatActivity() {
     protected val fragmentContainerView: FragmentContainerView
         get() = _fragmentContainerView!!
 
-    /** Name of [FragmentContainerView]'s id. */
-    protected open val nameId: String = "fragment_container_activity_root"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val containerId = resources.getIdentifier(
-            nameId,
-            "id",
-            packageName
-        )
+        val containerId = ViewCompat.generateViewId()
         _fragmentContainerView = FragmentContainerView(this@FragmentContainerActivity).apply {
             id = containerId
             layoutParams = LayoutParams(
