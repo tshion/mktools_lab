@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MkToolsAtomProgressText">
+        <attr name="android:background" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+
+
+    <style name="MkToolsAtomProgressText">
+        <item name="android:background">@android:drawable/screen_background_dark_transparent</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
