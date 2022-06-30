@@ -36,14 +36,14 @@ import android.os.StrictMode.VmPolicy
  *
  * @see [android.os.StrictMode]
  */
-interface StrictModeActivator {
+public interface StrictModeActivator {
 
     /**
      * Configures ThreadPolicy.
      *
      * @see [android.os.StrictMode.ThreadPolicy]
      */
-    val threadPolicy: ThreadPolicy
+    public val threadPolicy: ThreadPolicy
         get() = ThreadPolicy.Builder()
             .detectAll()
             .penaltyLog()
@@ -55,7 +55,7 @@ interface StrictModeActivator {
      *
      * @see [android.os.StrictMode.VmPolicy]
      */
-    val vmPolicy: VmPolicy
+    public val vmPolicy: VmPolicy
         get() = VmPolicy.Builder()
             .detectAll()
             .penaltyLog()
@@ -80,7 +80,7 @@ interface StrictModeActivator {
      * @see [android.os.StrictMode.setThreadPolicy]
      * @see [android.os.StrictMode.setVmPolicy]
      */
-    fun activateStrictMode() {
+    public fun activateStrictMode() {
         StrictMode.setThreadPolicy(threadPolicy)
         StrictMode.setVmPolicy(vmPolicy)
     }

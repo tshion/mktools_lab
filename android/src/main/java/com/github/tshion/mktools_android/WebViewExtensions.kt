@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference
  * @param lifecycleOwner
  * @see [android.webkit.WebViewFragment]
  */
-fun WebView?.handleLifecycleEvents(lifecycleOwner: LifecycleOwner) {
+public fun WebView?.handleLifecycleEvents(lifecycleOwner: LifecycleOwner) {
     val ref = this?.let { WeakReference(it) } ?: return
     lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
         override fun onResume(owner: LifecycleOwner) {
@@ -50,7 +50,7 @@ fun WebView?.handleLifecycleEvents(lifecycleOwner: LifecycleOwner) {
  * @receiver WebView instance.
  * @see [android.webkit.WebViewFragment.onDestroy]
  */
-fun WebView?.throwAway() {
+public fun WebView?.throwAway() {
     this ?: return
     stopLoading()
     (parent as? ViewGroup)?.removeView(this)

@@ -8,7 +8,7 @@ import java.util.function.BiConsumer
  *
  * * [Android アプリのコード品質とビルド設定 - owasp-mstg-ja](https://coky-t.gitbook.io/owasp-mstg-ja/android-tesutogaido/0x05i-testing-code-quality-and-build-settings#notesuto-mstg-code-6-oyobi-mstg-code-7)
  */
-fun Application.setOnDetectUncaughtException(action: BiConsumer<Thread, Throwable>) {
+public fun Application.setOnDetectUncaughtException(action: BiConsumer<Thread, Throwable>) {
     val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
     Thread.setDefaultUncaughtExceptionHandler { t, e ->
         action.accept(t, e)

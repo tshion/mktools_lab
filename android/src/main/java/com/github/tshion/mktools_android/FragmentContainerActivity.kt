@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentManager
 /**
  * Hosts [Fragment].
  */
-abstract class FragmentContainerActivity : AppCompatActivity() {
+public abstract class FragmentContainerActivity : AppCompatActivity() {
 
     private var _fragmentContainerView: FragmentContainerView? = null
     protected val fragmentContainerView: FragmentContainerView

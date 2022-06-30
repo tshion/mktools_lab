@@ -8,7 +8,7 @@ import android.view.MotionEvent
  *
  * @see [android.view.GestureDetector.OnDoubleTapListener.onDoubleTap]
  */
-class IgnoreDoubleTapOnGestureListener : SimpleOnGestureListener() {
+public class IgnoreDoubleTapOnGestureListener : SimpleOnGestureListener() {
     override fun onDoubleTap(e: MotionEvent?): Boolean {
         // Ignore always.
         return true

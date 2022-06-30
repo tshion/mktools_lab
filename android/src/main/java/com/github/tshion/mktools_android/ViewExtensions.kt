@@ -10,7 +10,7 @@ import androidx.core.view.GestureDetectorCompat
  * @receiver View instance.
  */
 @SuppressLint("ClickableViewAccessibility")
-fun View?.setOnSingleTapTouchListener() {
+public fun View?.setOnSingleTapTouchListener() {
     this ?: return
 
     val detector = GestureDetectorCompat(this.context, IgnoreDoubleTapOnGestureListener())
