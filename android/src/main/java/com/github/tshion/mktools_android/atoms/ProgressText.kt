@@ -11,7 +11,7 @@ import androidx.core.content.res.getIntOrThrow
 import androidx.core.content.withStyledAttributes
 import com.github.tshion.mktools_android.R
 
-class ProgressText @JvmOverloads constructor(
+public class ProgressText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes defStyleAttr: Int = 0,
@@ -19,7 +19,7 @@ class ProgressText @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     @IntRange(from = 0, to = 100)
-    var progress: Int = 0
+    public var progress: Int = 0
         set(value) {
             "$value%".also { text = it }
             field = value
