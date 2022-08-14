@@ -11,9 +11,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
+
     // JUnit
-    testImplementation "junit:junit:$libraryVersionJUnit"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
 
     // Truth
     testImplementation "com.google.truth:truth:$libraryVersionTruth"

@@ -1,7 +1,7 @@
 package com.github.tshion.mktools_jvm_sample
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import kotlin.system.measureNanoTime
 
