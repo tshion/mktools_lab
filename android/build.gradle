@@ -46,12 +46,6 @@ android {
             withSourcesJar()
             withJavadocJar()
         }
-
-        multipleVariants {
-            withSourcesJar()
-            withJavadocJar()
-            allVariants()
-        }
     }
     testOptions {
         unitTests {
@@ -90,15 +84,15 @@ dependencies {
 }
 
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
+publishing {
+    publications {
+        release(MavenPublication) {
+            artifactId = 'mktools_android'
+            groupId = 'com.github.tshion'
+            version = appVersionName
 
-                artifactId = 'mktools_android'
-                groupId = 'com.github.tshion'
-                version = appVersionName
+            afterEvaluate {
+                from components.release
             }
         }
     }
