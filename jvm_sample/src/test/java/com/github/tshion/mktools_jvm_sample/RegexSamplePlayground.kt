@@ -9,7 +9,7 @@ import kotlin.system.measureNanoTime
 class RegexSamplePlayground {
 
     private object Sample {
-        private val regex = "[a-z]{2,3}".toRegex()
+        val regex = "[a-z]{2,3}".toRegex()
 
 
         fun isValid1(value: String): Boolean {
@@ -42,5 +42,24 @@ class RegexSamplePlayground {
     @Test
     fun test_benchmark_isValid2() = benchmark("isValid2") {
         Sample.isValid2(it)
+    }
+
+    @Test
+    fun test_huge_input() {
+        val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        val target = List(10_000_000) { charset.random() }
+            .joinToString("")
+
+        measureNanoTime {
+            val length = target.length
+            if (length < 2 || 3 < length) {
+                return@measureNanoTime
+            }
+            Sample.regex.matches(target)
+        }.also { println("huge: $it[ns]") }
+
+        measureNanoTime {
+            Sample.regex.matches(target)
+        }.also { println("huge: $it[ns]") }
     }
 }
