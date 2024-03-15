@@ -8,11 +8,8 @@ ext {
     gradleVersionAgp = '7.1.1'
 
     // アプリ関連
-    def appVersionMajor = 2023
-    def appVersionMinor = 1
-    def appVersionRevision = 22
-    appVersionCode = 10000 * appVersionMajor + 100 * appVersionMinor + appVersionRevision
-    appVersionName = String.format("%04d.%02d.%02d", appVersionMajor, appVersionMinor, appVersionRevision)
+    appVersionCode = 20230122
+    appVersionName = '2023.01.22'
 
     // ライブラリバージョン
     libraryVersionDesugarJdk = '1.1.5'

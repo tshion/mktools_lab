@@ -9,12 +9,38 @@ jobs:
   add_git_tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: git settings
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      # https://github.com/ruby/setup-ruby
+      - uses: ruby/setup-ruby@v1
+
+      - name: Check update
+        id: app-version
         run: |
-          git config --local user.email "mktools_lab@example.com"
-          git config --local user.name "mktools_lab bot"
-      - name: Do update
-        run: make git-update-tag
+          echo "$(ruby scripts/git-check-update.rb)" > TMP_LOG
+          echo "version-name=$(cat TMP_LOG)" >> "$GITHUB_OUTPUT"
+
+      - name: Update app version
+        if: ${{ steps.app-version.outputs.version-name != '' }}
+        run: |
+          ruby scripts/set-version.rb ${{ steps.app-version.outputs.version-name }}
+
+      - name: Setup git settings
+        if: ${{ steps.app-version.outputs.version-name != '' }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+
+      - name: Git push
+        if: ${{ steps.app-version.outputs.version-name != '' }}
+        run: |
+          git add variables.gradle
+          git commit -m "Update Version"
+          git push origin
+
+      - name: Git tag
+        if: ${{ steps.app-version.outputs.version-name != '' }}
+        run: |
+          git tag ${{ steps.app-version.outputs.version-name }}
+          git push origin ${{ steps.app-version.outputs.version-name }}
