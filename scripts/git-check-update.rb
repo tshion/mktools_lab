@@ -24,5 +24,5 @@ TAG_CANDIDATE = LATEST_COMMIT_DATE.strftime("%Y.%m.%d")
 
 # 更新がある場合は、バージョン文字列を出力する
 if latestTag != TAG_CANDIDATE then
-    puts TAG_CANDIDATE
+    puts(TAG_CANDIDATE)
 end
