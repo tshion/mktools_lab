@@ -8,8 +8,8 @@ ext {
     gradleVersionAgp = '7.1.1'
 
     // アプリ関連
-    appVersionCode = 20230122
-    appVersionName = '2023.01.22'
+    appVersionCode = 20240315
+    appVersionName = '2024.03.15'
 
     // ライブラリバージョン
     libraryVersionDesugarJdk = '1.1.5'
