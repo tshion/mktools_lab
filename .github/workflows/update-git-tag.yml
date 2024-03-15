@@ -9,12 +9,13 @@ jobs:
   add_git_tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: git settings
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      - name: Setup git settings
         run: |
-          git config --local user.email "mktools_lab@example.com"
-          git config --local user.name "mktools_lab bot"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+
       - name: Do update
         run: make git-update-tag
