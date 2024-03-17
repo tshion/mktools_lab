@@ -14,7 +14,7 @@ BRANCH_CURRENT = `git branch --contains | cut -d " " -f 2`
 
 # 最新タグの確認
 latestTag = `git describe --tags --abbrev=0`
-latestTag = latestTag.empty? ? "none" : latestTag
+latestTag = (latestTag.empty? ? "none" : latestTag).strip
 # puts "Latest tag: #{latestTag}"
 
 # コミットタグ候補の生成
