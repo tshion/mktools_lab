@@ -28,7 +28,9 @@ jobs:
 
       - name: Set up git settings
         if: ${{ steps.app-version.outputs.version-name != '' }}
-        uses: ./.github/actions/setup-git-with-github-actions-bot
+        uses: tshion/apply-git-user@1.0.0
+        with:
+          user: github-actions
 
       - name: Git push
         if: ${{ steps.app-version.outputs.version-name != '' }}
