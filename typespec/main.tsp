@@ -1,13 +1,11 @@
 import "@typespec/json-schema";
+import "./color.tsp";
 
 using TypeSpec.JsonSchema;
 
 @jsonSchema
 namespace Schemas;
 
-/** Respresent an address */
-model Address {
-    street: string;
-    city: string;
-    country: string;
+model Schema {
+    items: Color[];
 }
