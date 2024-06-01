@@ -3,6 +3,6 @@ emit:
 
 options:
   "@typespec/json-schema":
-    file-type: json
+    file-type: yaml
 
 output-dir: "{project-root}/dist"

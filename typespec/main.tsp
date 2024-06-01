@@ -7,5 +7,6 @@ using TypeSpec.JsonSchema;
 namespace Schemas;
 
 model Schema {
-    items: Color[];
+    /** 色リスト */
+    items: Color[] = [];
 }
