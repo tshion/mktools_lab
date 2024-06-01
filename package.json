@@ -2,6 +2,7 @@
     "name": "mktools_lab",
     "private": true,
     "workspaces": [
-        "typespec"
+        "typespec",
+        "typespec-emitter"
     ]
 }
