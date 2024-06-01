@@ -10,3 +10,8 @@ npx tsp init --template emitter-ts
 cd ...
 npm install
 ```
+
+### TypeSpec からTypeScript へ変換する際の作業対象
+* TypeSpec の基本型の変換
+* 独自定義したScalar の変換
+* TODO
