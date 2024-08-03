@@ -15,5 +15,5 @@ model HttpStatusCode {
     code: uint16;
 
     /** メッセージ */
-    message: string
+    message: string;
 }
