@@ -10,9 +10,14 @@
 </head>
 
 <body>
+    <form class="pure-form">
+        <label for="file">ファイル：</label>
+        <input id="fileSelector" name="file" type="file">
+    </form>
+
     <form name="config" class="pure-form pure-form-stacked">
         <fieldset>
-%%PLACEHOLDER%%
+            %%PLACEHOLDER%%
         </fieldset>
     </form>
 
@@ -20,10 +25,40 @@
 
     <script>
         window.onload = function () {
-            const button = document.getElementById('button_download');
-            button.onclick = () => {
-                const form = document.forms['config'];
-                const elements = Array.from(form['elements'])
+            const $button = document.getElementById('button_download');
+            const $fileSelector = document.getElementById('fileSelector');
+            const $form = document.forms['config'];
+
+            const reader = new FileReader();
+            $fileSelector.addEventListener('change', event => {
+                const input = $fileSelector.files[0];
+                if (input.type === 'application/json') {
+                    reader.readAsText(input, 'UTF-8');
+                }
+            }, false);
+            reader.addEventListener('load', event => {
+                const input = $fileSelector.files[0];
+                switch (input.type) {
+                    case 'application/json':
+                        const elements = Array.from($form['elements'])
+                            .filter(x => x['id']);
+
+                        const data = JSON.parse(reader.result);
+                        for (const [key, value] of Object.entries(data)) {
+                            const input = elements.find(x => x['id'] === key);
+                            if (input) {
+                                input['value'] = value;
+                            }
+                        };
+                        break;
+                    default:
+                        alert(`${input.type} isn't support!`);
+                        break;
+                }
+            }, false);
+
+            $button.onclick = () => {
+                const elements = Array.from($form['elements'])
                     .filter(x => x['id']);
 
                 const data = {};
@@ -32,7 +67,7 @@
                 });
 
                 const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-                button.href = window.URL.createObjectURL(blob);
+                $button.href = window.URL.createObjectURL(blob);
             };
         };
     </script>
