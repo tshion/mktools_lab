@@ -1,0 +1,8 @@
+{
+    "name": "typespec-to-html",
+    "main": "index.js",
+    "private": "true",
+    "devDependencies": {
+        "@types/node": "^20.0.0"
+    }
+}

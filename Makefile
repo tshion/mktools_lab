@@ -15,3 +15,10 @@ ios-tests:
 # Xcode の起動
 launch-xcode:
 	open Package.swift
+
+# TypeSpec をHTML へ変換
+.PHONY: typespec-to-html
+typespec-to-html:
+	npx tsp compile ./typespec
+	node ./typespec-to-html/index.js
+	@echo finish $@.
