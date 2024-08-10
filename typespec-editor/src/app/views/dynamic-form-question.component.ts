@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { QuestionBaseEntity } from '../models/question.base.entity';
 
 @Component({
@@ -8,30 +10,32 @@ import { QuestionBaseEntity } from '../models/question.base.entity';
     selector: 'app-question',
     imports: [
         CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
         ReactiveFormsModule,
     ],
     template: `
-    <div [formGroup]="form">
-        <label [attr.for]="question.key">{{ question.label }}</label>
+    <mat-form-field [formGroup]="form">
+        <mat-label [attr.for]="question.key">{{ question.label }}</mat-label>
 
         <div>
             @switch (question.formType) {
                 @case ('integer') {
-                    <input [formControlName]="question.key" [id]="question.key" type="number" />
+                    <input matInput [formControlName]="question.key" [id]="question.key" type="number" />
                 }
                 @case ('textbox') {
-                    <input [formControlName]="question.key" [id]="question.key" type="text" />
+                    <input matInput [formControlName]="question.key" [id]="question.key" type="text" />
                 }
                 @case ('dropdown') {
-                    <select [id]="question.key" [formControlName]="question.key">
+                    <mat-select [id]="question.key" [formControlName]="question.key">
                     <!-- @for (opt of question.options; track opt) {
                         <option [value]="opt.key">{{ opt.value }}</option>
                     } -->
-                    </select>
+                    </mat-select>
                 }
             }
         </div>
-    </div>`,
+    </mat-form-field>`,
 })
 export class DynamicFormQuestionComponent {
 

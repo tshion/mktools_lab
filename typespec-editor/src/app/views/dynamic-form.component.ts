@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { QuestionControlService } from '../models/question-control.service';
 import { QuestionBaseEntity } from '../models/question.base.entity';
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
-import { QuestionControlService } from '../models/question-control.service';
 
 @Component({
     standalone: true,
@@ -14,6 +15,7 @@ import { QuestionControlService } from '../models/question-control.service';
     imports: [
         CommonModule,
         DynamicFormQuestionComponent,
+        MatButtonModule,
         ReactiveFormsModule,
     ],
     template: `
@@ -25,7 +27,7 @@ import { QuestionControlService } from '../models/question-control.service';
                 </div>
             }
             <div class="form-row">
-                <button type="submit" [disabled]="!form.valid">Save</button>
+                <button mat-flat-button type="submit" [disabled]="!form.valid">Save</button>
             </div>
         </form>
 
