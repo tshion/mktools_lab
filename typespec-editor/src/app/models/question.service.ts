@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { QuestionBaseEntity } from './question.base.entity';
 import { TextboxQuestionEntity } from './question-textbox.entity';
 import { IntegerQuestionEntity } from './question-integer.entity';
+import { RgbQuestionEntity } from './question-rgb.entity';
 
 @Injectable()
 export class QuestionService {
@@ -20,15 +21,21 @@ export class QuestionService {
             //     ],
             //     order: 3,
             // }),
-            new TextboxQuestionEntity(
-                'txt',
-                'text1',
-                '',
-            ),
+
             new IntegerQuestionEntity(
                 'int',
                 'integer1',
                 0,
+            ),
+            new RgbQuestionEntity(
+                'rgb',
+                'rgb1',
+                '',
+            ),
+            new TextboxQuestionEntity(
+                'txt',
+                'text1',
+                '',
             ),
         ];
         return of(questions);

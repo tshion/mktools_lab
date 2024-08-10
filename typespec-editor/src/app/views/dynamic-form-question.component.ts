@@ -23,6 +23,9 @@ import { QuestionBaseEntity } from '../models/question.base.entity';
                 @case ('integer') {
                     <input matInput [formControlName]="question.key" [id]="question.key" type="number" />
                 }
+                @case ('rgb') {
+                    <input matInput [formControlName]="question.key" [id]="question.key" type="color" />
+                }
                 @case ('textbox') {
                     <input matInput [formControlName]="question.key" [id]="question.key" type="text" />
                 }
