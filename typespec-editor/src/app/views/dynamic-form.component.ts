@@ -20,14 +20,15 @@ import { DynamicFormQuestionComponent } from './dynamic-form-question.component'
     ],
     template: `
     <div>
-        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" class="pure-form pure-form-aligned">
             @for (question of questions; track question) {
                 <div class="form-row">
                     <app-question [question]="question" [form]="form"></app-question>
                 </div>
             }
             <div class="form-row">
-                <button mat-flat-button type="submit" [disabled]="!form.valid">Save</button>
+                <!-- <button mat-flat-button type="submit" [disabled]="!form.valid">Save</button> -->
+                <button class="pure-button pure-button-primary" type="submit" [disabled]="!form.valid">Save</button>
             </div>
         </form>
 
@@ -58,6 +59,8 @@ export class DynamicFormComponent implements OnInit {
 
 
     onSubmit() {
+        const a = this.form.getRawValue();
+        const b = a;
         this.payLoad = JSON.stringify(this.form.getRawValue());
     }
 }
