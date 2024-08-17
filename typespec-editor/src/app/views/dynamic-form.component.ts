@@ -59,8 +59,8 @@ export class DynamicFormComponent implements OnInit {
 
 
     onSubmit() {
-        const a = this.form.getRawValue();
-        const b = a;
+        const a = this.form;
+        const b = a.getRawValue();
         this.payLoad = JSON.stringify(this.form.getRawValue());
     }
 }

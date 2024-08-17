@@ -25,9 +25,12 @@ import { QuestionBaseEntity } from '../models/question.base.entity';
                     <input [formControlName]="question.key" [id]="question.key" type="number" />
                 }
                 @case ('rgb') {
+                    <input [formControlName]="question.key" [id]="question.key"
+                        [colorPicker]="this.form.controls[question.key].getRawValue()"
+                        [cpAlphaChannel]="'enabled'"
+                        [cpOutputFormat]="'rgba'"
+                        (colorPickerChange)="this.form.controls[question.key].setValue($event)" />
                     <!-- <input [formControlName]="question.key" [id]="question.key" type="color" /> -->
-                    <!-- <input [formControlName]="question.key" [id]="question.key" [(colorPicker)]="color" [style.background]="color" [cpOutputFormat]="'hex'" [value]="color" /> -->
-                    <input [formControlName]="question.key" [id]="question.key" type="color" />
                 }
                 @case ('textbox') {
                     <input [formControlName]="question.key" [id]="question.key" type="text" />
@@ -69,8 +72,6 @@ import { QuestionBaseEntity } from '../models/question.base.entity';
     </mat-form-field> -->`,
 })
 export class DynamicFormQuestionComponent {
-
-    color: string = '';
 
     @Input() question!: QuestionBaseEntity<unknown>;
 
