@@ -4,6 +4,7 @@ import { QuestionBaseEntity } from './question.base.entity';
 import { TextboxQuestionEntity } from './question-textbox.entity';
 import { IntegerQuestionEntity } from './question-integer.entity';
 import { RgbQuestionEntity } from './question-rgb.entity';
+import { TextArrayQuestionEntity } from './question-text-array.entity';
 
 @Injectable()
 export class QuestionService {
@@ -37,6 +38,11 @@ export class QuestionService {
                 'text1',
                 '',
             ),
+            new TextArrayQuestionEntity(
+                'txtarray',
+                'array1',
+                []
+            )
         ];
         return of(questions);
     }

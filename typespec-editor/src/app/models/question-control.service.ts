@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { QuestionBaseEntity } from './question.base.entity';
 
 @Injectable()
@@ -10,7 +10,11 @@ export class QuestionControlService {
     ) {
         const group: any = {};
         questions.forEach((question) => {
-            group[question.key] = new FormControl(question.value || '');
+            if (question.formType === 'text-array') {
+                group[question.key] = new FormArray([]);
+            } else {
+                group[question.key] = new FormControl(question.value || '');
+            }
         });
         return new FormGroup(group);
     }

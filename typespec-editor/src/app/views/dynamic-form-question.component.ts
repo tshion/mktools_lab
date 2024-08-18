@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -42,6 +42,11 @@ import { QuestionBaseEntity } from '../models/question.base.entity';
                     } -->
                     </select>
                 }
+                @case ('text-array') {
+                    <input [formControlName]="question.key" [id]="question.key" type="text" />
+                    <button (click)="add(question.key)">追加</button>
+                    <button (click)="remove(question.key, 0)">削除</button>
+                }
             }
         </div>
     </div>
@@ -79,5 +84,14 @@ export class DynamicFormQuestionComponent {
 
     get isValid() {
         return this.form.controls[this.question.key].valid;
+    }
+
+
+    public add(key: string) {
+        (this.form.controls[key] as FormArray).push(new FormControl());
+    }
+
+    public remove(key: string, index: number) {
+        (this.form.controls[key] as FormArray).removeAt(index);
     }
 }
