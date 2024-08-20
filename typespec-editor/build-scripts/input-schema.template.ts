@@ -2,7 +2,6 @@
 
 /** 入力形式 */
 export const InputType = {
-    TEXT: 'text',
 } as const;
 
 /** 入力形式の型エイリアス */
