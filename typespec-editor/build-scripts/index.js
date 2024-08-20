@@ -39,12 +39,34 @@ const path = require('path');
 
 
     // 型定義の加工
+    const dic = inputData.flatMap(x => Object.entries(x.schema));
+    const list = [];
+    for (const [key, v] of dic) {
+        const description = v['description'];
+        const valueDefault = v['default'];
+
+        switch (v['type']) {
+            case 'boolean':
+                list.push({
+                    inputType: 'checkbox',
+                    isArray: false,
+                    key: key,
+                    label: description,
+                    value: [valueDefault],
+                });
+                continue;
+        }
+
+        switch (v['$ref']) {
+        }
+    }
+
 
 
     // 出力
     const templatePath = path.join(rootPath, 'typespec-editor', 'build-scripts', 'input-schema.template.ts');
     const template = fs.readFileSync(templatePath).toString()
-        .replace('/** Data */', '// Replaced!');
+        .replace('[/** Data */]', JSON.stringify(list));
     fs.writeFileSync(
         path.join(rootPath, outputDirPath, path.basename(templatePath).replace('.template', '')),
         template,

@@ -2,6 +2,7 @@
 
 /** 入力形式 */
 export const InputType = {
+    CHECKBOX: 'checkbox',
 } as const;
 
 /** 入力形式の型エイリアス */
@@ -28,11 +29,9 @@ export interface InputSchemaDto {
     options?: (number | string)[];
 
     /** (デフォルトの)入力値 */
-    value: (number | string)[];
+    value: (boolean | number | string)[];
 }
 
 
 /** 入力欄の構造データ */
-export const inputSchemas: InputSchemaDto[] = [
-    /** Data */
-];
+export const inputSchemas: InputSchemaDto[] = [/** Data */];
