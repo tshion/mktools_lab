@@ -2,9 +2,9 @@
     "name": "typespec",
     "version": "0.1.0",
     "private": true,
-    "type": "module",
     "scripts": {
-        "build": "npx tsp compile ."
+        "build": "npx tsp compile .",
+        "postbuild": "node postbuild.js"
     },
     "dependencies": {
         "@typespec/compiler": "latest",
