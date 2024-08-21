@@ -1,5 +1,3 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 
@@ -9,12 +7,9 @@ const path = require('path');
 +function (
     /** 入力元のディレクトリーパス @type{string} */
     inputDirPath,
-
-    /** 出力先のディレクトリーパス @type{string} */
-    outputDirPath,
 ) {
     /** プロジェクトルートのパス*/
-    const rootPath = path.join(__dirname, '..', '..');
+    const rootPath = path.join(__dirname, '..');
 
 
     // 対象データの読み込み
@@ -35,7 +30,15 @@ const path = require('path');
             }
         });
         return result;
-    })(path.join(rootPath, inputDirPath));
+    })(path.join(rootPath, inputDirPath, '@typespec', 'json-schema'));
+
+
+    // 配列型のデフォルト値の読み込み
+    const arrayDefaults = (filePath => {
+        const file = fs.readFileSync(filePath).toString();
+        return file ? JSON.parse(file) : {};
+    })(path.join(rootPath, inputDirPath, 'defaults.json'));
+
 
 
     // 型定義の加工
@@ -64,15 +67,14 @@ const path = require('path');
 
 
     // 出力
-    const templatePath = path.join(rootPath, 'typespec-editor', 'build-scripts', 'input-schema.template.ts');
+    const templatePath = path.join(rootPath, 'typespec-editor', 'input-schema.template.ts');
     const template = fs.readFileSync(templatePath).toString()
         .replace('[/** Data */]', JSON.stringify(list));
     fs.writeFileSync(
-        path.join(rootPath, outputDirPath, path.basename(templatePath).replace('.template', '')),
+        path.join(rootPath, 'typespec-editor', 'src', path.basename(templatePath).replace('.template', '')),
         template,
         { encoding: 'utf-8' },
     );
 }(
-    'typespec/dist/@typespec/json-schema',
-    'typespec-editor/src',
+    'typespec/dist',
 );

@@ -8,7 +8,7 @@ const path = require('path');
  */
 +function () {
     /** プロジェクトルートのパス*/
-    const rootPath = path.join(__dirname, '..');
+    const rootPath = path.join(__dirname);
 
 
     // 対象データの抽出
@@ -29,7 +29,7 @@ const path = require('path');
             }
         });
         return result;
-    })(path.join(rootPath, 'typespec', 'dist', '@typespec', 'json-schema'));
+    })(path.join(rootPath, 'dist', '@typespec', 'json-schema'));
 
 
     // 配列型のデフォルト値の抽出
@@ -61,14 +61,14 @@ const path = require('path');
         });
         return result;
     })(
-        path.join(rootPath, 'typespec', 'specs'),
+        path.join(rootPath, 'specs'),
         keyList,
     );
 
 
     // 出力
     fs.writeFileSync(
-        path.join(rootPath, 'typespec', 'dist', 'defaults.json'),
+        path.join(rootPath, 'dist', 'defaults.json'),
         JSON.stringify(data),
         { encoding: 'utf-8' },
     )
