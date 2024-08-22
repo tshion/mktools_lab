@@ -3,6 +3,9 @@
 /** 入力形式 */
 export const InputType = {
     CHECKBOX: 'checkbox',
+    COLOR: 'color',
+    NUMBER: 'number',
+    SELECT: 'select',
     TEXTBOX: 'textbox',
 } as const;
 
@@ -13,6 +16,9 @@ export type InputType = typeof InputType[keyof typeof InputType];
  * 入力欄の構造定義
  */
 export interface InputSchemaDto {
+
+    /** 入力グループ */
+    group: string;
 
     /** 入力形式 */
     inputType: InputType;

@@ -41,54 +41,62 @@ const path = require('path');
 
 
     // 型定義の加工
-    const dic = inputData.flatMap(x => Object.entries(x.schema));
-    const list = [];
     const fxType = (prop) => {
         return prop['type']
             ?? prop['$ref']
-            ?? prop['anyOf']?.[0]?.['type']
-            ?? prop['anyOf']?.[0]?.['$ref'];
+            ?? (prop['anyOf'] ? 'anyOf' : undefined);
     };
-    for (const [k, v] of dic) {
-        const isArray = v['type'] === 'array';
-        const type = isArray ? fxType(v['items']) : fxType(v);
-        // console.log(`${type} ${isArray}`);
+    const list = [];
+    for (const item of inputData) {
+        for (const [k, v] of Object.entries(item.schema)) {
+            const isArray = v['type'] === 'array';
+            const type = isArray ? fxType(v['items']) : fxType(v);
 
-        const obj = {
-            // group: ,
-            isArray: isArray,
-            key: k,
-            label: v['description'],
-            value: isArray ? arrayDefaults[k] : [v['default']],
-        };
-        // console.log(`${type} ${isArray}: ${obj.value}`);
+            // console.log(`${k}: ${type}`);
 
-        switch (type) {
-            case 'argb.json':
-                break;
-            case 'boolean':
-                obj['inputType'] = 'checkbox';
-                break;
-            case 'integer':
-                break;
-            case 'number':
-                break;
-            case 'rgb.json':
-                break;
-            case 'string':
-                obj['inputType'] = 'textbox';
-                // TODO: pattern
-                break;
-            default:
-                // $ref
-                // anyOf
-                break;
-        }
+            const obj = {
+                group: item.name,
+                isArray: isArray,
+                key: k,
+                label: v['description'],
+                value: isArray ? arrayDefaults[k] : [v['default']],
+            };
+            switch (type) {
+                case 'anyOf':
+                    obj['inputType'] = 'select';
+                    obj['options'] = (isArray ? v['items']['anyOf'] : v['anyOf'])
+                        .map(x => x['const']);
+                    break;
+                case 'boolean':
+                    obj['inputType'] = 'checkbox';
+                    break;
+                case 'integer':
+                    obj['inputType'] = 'number';
+                    break;
+                case 'number':
+                    obj['inputType'] = 'textbox';
+                    // TODO: pattern [\d\.?]
+                    break;
+                case 'string':
+                    obj['inputType'] = 'textbox';
+                    // TODO: pattern
+                    break;
+                case 'argb.json':
+                    obj['inputType'] = 'textbox';
+                    // TODO: pattern #[\dA-F]{8}
+                    break;
+                case 'rgb.json':
+                    obj['inputType'] = 'color';
+                    break;
+                default:
+                    break;
+            }
 
-        // TODO: 選択肢
-
-        if (obj.inputType) {
-            list.push(obj);
+            if (obj.inputType) {
+                list.push(obj);
+            } else {
+                throw Error(`${k}: Undefined type!`);
+            }
         }
     }
 
