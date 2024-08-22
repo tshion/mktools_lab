@@ -3,6 +3,7 @@
 /** 入力形式 */
 export const InputType = {
     CHECKBOX: 'checkbox',
+    TEXTBOX: 'textbox',
 } as const;
 
 /** 入力形式の型エイリアス */

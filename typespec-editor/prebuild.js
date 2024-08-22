@@ -40,36 +40,63 @@ const path = require('path');
     })(path.join(rootPath, inputDirPath, 'defaults.json'));
 
 
-
     // 型定義の加工
     const dic = inputData.flatMap(x => Object.entries(x.schema));
     const list = [];
-    for (const [key, v] of dic) {
-        const description = v['description'];
-        const valueDefault = v['default'];
+    const fxType = (prop) => {
+        return prop['type']
+            ?? prop['$ref']
+            ?? prop['anyOf']?.[0]?.['type']
+            ?? prop['anyOf']?.[0]?.['$ref'];
+    };
+    for (const [k, v] of dic) {
+        const isArray = v['type'] === 'array';
+        const type = isArray ? fxType(v['items']) : fxType(v);
+        // console.log(`${type} ${isArray}`);
 
-        switch (v['type']) {
+        const obj = {
+            // group: ,
+            isArray: isArray,
+            key: k,
+            label: v['description'],
+            value: isArray ? arrayDefaults[k] : [v['default']],
+        };
+        // console.log(`${type} ${isArray}: ${obj.value}`);
+
+        switch (type) {
+            case 'argb.json':
+                break;
             case 'boolean':
-                list.push({
-                    inputType: 'checkbox',
-                    isArray: false,
-                    key: key,
-                    label: description,
-                    value: [valueDefault],
-                });
-                continue;
+                obj['inputType'] = 'checkbox';
+                break;
+            case 'integer':
+                break;
+            case 'number':
+                break;
+            case 'rgb.json':
+                break;
+            case 'string':
+                obj['inputType'] = 'textbox';
+                // TODO: pattern
+                break;
+            default:
+                // $ref
+                // anyOf
+                break;
         }
 
-        switch (v['$ref']) {
+        // TODO: 選択肢
+
+        if (obj.inputType) {
+            list.push(obj);
         }
     }
-
 
 
     // 出力
     const templatePath = path.join(rootPath, 'typespec-editor', 'input-schema.template.ts');
     const template = fs.readFileSync(templatePath).toString()
-        .replace('[/** Data */]', JSON.stringify(list));
+        .replace('[/** Data */]', JSON.stringify(list, null, 4));
     fs.writeFileSync(
         path.join(rootPath, 'typespec-editor', 'src', path.basename(templatePath).replace('.template', '')),
         template,
