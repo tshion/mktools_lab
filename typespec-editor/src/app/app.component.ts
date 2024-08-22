@@ -1,10 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Observable } from 'rxjs';
+import { InputSchemaDto, inputSchemas } from '../input-schema';
+import { QuestionBaseEntity } from './models/question.base.entity';
 import { QuestionService } from './models/question.service';
 import { DynamicFormComponent } from './views/dynamic-form.component';
-import { QuestionBaseEntity } from './models/question.base.entity';
-import { Observable } from 'rxjs';
+import { FormComponent } from "./views/form.component";
 
 @Component({
     selector: 'app-root',
@@ -13,6 +15,7 @@ import { Observable } from 'rxjs';
     imports: [
         AsyncPipe,
         DynamicFormComponent,
+        FormComponent,
         RouterOutlet,
     ],
     template: `
@@ -21,12 +24,15 @@ import { Observable } from 'rxjs';
     <!-- <router-outlet /> -->
     <div>
       <h2>Job Application for Heroes</h2>
-      <app-dynamic-form [questions]="questions$ | async"></app-dynamic-form>
+      <!-- <app-dynamic-form [questions]="questions$ | async"></app-dynamic-form> -->
+       <app-form [schemas]="list" />
     </div>
   `,
     styles: [],
 })
 export class AppComponent {
+
+    list: InputSchemaDto[];
 
     questions$: Observable<QuestionBaseEntity<any>[]>;
 
@@ -34,6 +40,7 @@ export class AppComponent {
 
 
     constructor(service: QuestionService) {
+        this.list = inputSchemas;
         this.questions$ = service.getQuestions();
     }
 }
