@@ -12,6 +12,11 @@ import { InputSchemaDto } from '../../input-schema';
     ],
     template: `
     <div>
+        <form class="pure-form">
+            <label for="file">ファイル：</label>
+            <input type="file" id="fileSelector" name="file" (change)="fileChanged($event)">
+        </form>
+
         <form (ngSubmit)="onSubmit()" [formGroup]="form" class="pure-form pure-form-stacked">
             @for (schema of schemas; track schema) {
                 <div [formArrayName]="schema.key">
@@ -96,6 +101,40 @@ export class FormComponent implements OnInit {
         this.form = new FormGroup(group);
     }
 
+
+    fileChanged(event: Event) {
+        const dom = event.target as HTMLInputElement;
+        const file = dom?.['files']?.[0];
+        if (file?.type !== 'application/json') {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener('load', e => {
+            if (file?.type !== 'application/json') {
+                return;
+            }
+
+            const result = reader.result;
+            if (!result) {
+                return;
+            }
+
+            const data: [string, any][] = JSON.parse(result.toString());
+            Object.entries(data).forEach(([k, v]) => {
+                const s = this.schemas?.find(x => x.key === k);
+                if (s) {
+                    this.getControls(s).clear();
+                    if (s.isArray) {
+                        v.forEach(x => this.addControl(s, x));
+                    } else {
+                        this.addControl(s, v);
+                    }
+                }
+            });
+        }, false);
+        reader.readAsText(file, 'UTF-8');
+    }
 
     onSubmit() {
         const rawValue: [string, Array<any>][] = this.form.getRawValue();
