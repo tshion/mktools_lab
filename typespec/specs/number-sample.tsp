@@ -16,14 +16,14 @@ model NumberSample {
     dice: 1 | 2 | 3 | 4 | 5 | 6 = 3;
 
     /** サイコロの目の一覧 */
-    dices: (1 | 2 | 3 | 4 | 5 | 6)[] = #[3];
+    dices: (1 | 2 | 3 | 4 | 5 | 6)[] = #[3, 3];
 
     /** ステータスコード */
     @maxValue(599)
     httpStatusCode: uint16 = 200;
 
     /** ステータスコードの一覧 */
-    httpStatusCodeList: uint16[] = #[200];
+    httpStatusCodeList: uint16[] = #[200, 300];
 
     /** 消費税率 */
     tax: float64 = 0.10;
