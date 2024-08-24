@@ -62,7 +62,10 @@ import { InputSchemaDto } from '../../input-schema';
                 <button class="pure-button" type="button" (click)="resetControls(schema)">リセット</button>
             }
             <div>
-                <button class="pure-button pure-button-primary" type="submit" [disabled]="!form.valid">Save</button>
+                <button class="pure-button pure-button-primary" type="submit" [disabled]="!form.valid">保存</button>
+                @if (dlUrl) {
+                    <a class="pure-button pure-button-primary" download="sample.json" [href]="dlUrl">ファイル保存</a>
+                }
             </div>
         </form>
 
@@ -74,6 +77,8 @@ import { InputSchemaDto } from '../../input-schema';
     </div>`,
 })
 export class FormComponent implements OnInit {
+
+    dlUrl: string | undefined;
 
     form!: FormGroup;
 
@@ -93,9 +98,23 @@ export class FormComponent implements OnInit {
 
 
     onSubmit() {
-        const a = this.form;
-        const b = a.getRawValue();
-        this.payLoad = JSON.stringify(this.form.getRawValue());
+        const rawValue: [string, Array<any>][] = this.form.getRawValue();
+        const saveData: any = {};
+        for (const [k, v] of Object.entries(rawValue)) {
+            const target = this.schemas?.find(x => x.key === k);
+            if (!target) {
+                continue;
+            }
+
+            // FIXME: 無効な値の取り扱い
+            saveData[k] = target.isArray
+                ? v.filter(x => !!x)
+                : v[0];
+        }
+        this.payLoad = JSON.stringify(saveData, null, 4);
+
+        const blob = new Blob([this.payLoad], { type: 'application/json' });
+        this.dlUrl = window.URL.createObjectURL(blob);
     }
 
 
