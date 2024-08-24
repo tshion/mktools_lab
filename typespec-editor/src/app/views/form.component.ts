@@ -158,7 +158,27 @@ export class FormComponent implements OnInit {
 
 
     public addControl(data: InputSchemaDto, value?: any) {
-        this.getControls(data).push(new FormControl(value));
+        let v = value;
+        if (!value) {
+            switch (data.inputType) {
+                case 'checkbox':
+                    v = false;
+                    break;
+                case 'number':
+                    v = 0;
+                    break
+                case 'color':
+                    v = '#FFFFFF'
+                    break;
+                case 'select':
+                    v = data.options?.[0];
+                    break;
+                case 'textbox':
+                    v = '';
+                    break;
+            }
+        }
+        this.getControls(data).push(new FormControl(v));
     }
 
     public getControls(data: InputSchemaDto) {
