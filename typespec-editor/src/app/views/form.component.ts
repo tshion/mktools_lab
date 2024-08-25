@@ -11,37 +11,47 @@ import { InputSchemaDto } from '../../input-schema';
         ReactiveFormsModule,
     ],
     template: `
-    <div>
-        <form class="pure-form">
-            <label for="file">ファイル：</label>
-            <input type="file" id="fileSelector" name="file" (change)="fileChanged($event)">
-        </form>
+    <div class="pure-g">
+        <div class="pure-menu pure-u-1-4" style="background: #333333; color: white; height: 100vh;">
+            <form class="pure-form pure-form-stacked">
+                <label for="file">ファイル</label>
+                <input type="file" id="fileSelector" name="file" (change)="fileChanged($event)">
+            </form>
+            <hr />
+            @if (dlUrl) {
+                <a class="pure-button pure-button-primary" download="sample.json" [href]="dlUrl">ファイル保存</a>
+            }
+        </div>
+        <div class="pure-u-3-4" style="height: 100vh; overflow-y: scroll;">
+            <form (ngSubmit)="onSubmit()" [formGroup]="form" class="pure-form pure-form-aligined">
+                <button class="pure-button pure-button-primary" type="submit" [disabled]="!form.valid">保存</button>
 
-        <form (ngSubmit)="onSubmit()" [formGroup]="form" class="pure-form pure-form-stacked">
-            @for (schema of schemas; track schema) {
-                <div [formArrayName]="schema.key">
-                    <h2>
-                        {{ schema.key }}
-                        @if (hasChange(schema)) {
-                            <span style="color: red;">※変更中</span>
-                        }
-                    </h2>
-                    @if (schema.isArray) {
-                        <button type="button" class="pure-button" (click)="addControl(schema)">追加</button>
-                    }
-                    <ng-container *ngFor="let _ of getControls(schema).controls; let i = index">
-                        @switch (schema.inputType) {
-                            @case ('checkbox') {
-                                <label for="{{ schema.key }}-{{ i }}" class="pure-checkbox">
-                                    <input type="checkbox" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
-                                    <span class="pure-form-message-inline">{{ schema.label }}</span>
-                                </label>
+                @for (schema of schemas; track schema) {
+                    <div [formArrayName]="schema.key">
+                        <hgroup>
+                            <h3 style="display: inline-block;">{{ schema.key }}</h3>
+                            @if (schema.isArray) {
+                                <button type="button" class="pure-button" style="margin: 0 8px;" (click)="addControl(schema)">追加</button>
                             }
-                            @case ('color') {
-                                <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
-                                <input type="color" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
-                                <span class="pure-form-message-inline">{{ getControls(schema).controls[i].getRawValue() }}</span>
+                            <button type="button" class="pure-button" style="margin: 0 8px;" (click)="resetControls(schema)">リセット</button>
+                            @if (hasChange(schema)) {
+                                <span style="color: red;">※変更中</span>
                             }
+                        </hgroup>
+
+                        <div *ngFor="let _ of getControls(schema).controls; let i = index" class="pure-control-group">
+                            @switch (schema.inputType) {
+                                @case ('checkbox') {
+                                    <label for="{{ schema.key }}-{{ i }}" class="pure-checkbox">
+                                        <input type="checkbox" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                        <span class="pure-form-message-inline">{{ schema.label }}</span>
+                                    </label>
+                                }
+                                @case ('color') {
+                                    <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
+                                    <input type="color" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                    <span class="pure-form-message-inline">{{ getControls(schema).controls[i].getRawValue() }}</span>
+                                }
                             @case ('number') {
                                 <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
                                 <input type="number" step="1" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
@@ -60,18 +70,12 @@ import { InputSchemaDto } from '../../input-schema';
                             }
                         }
                         @if (schema.isArray) {
-                            <button type="button" class="pure-button" (click)="removeControl(schema, i)">削除</button>
+                            <button type="button" class="pure-button" style="margin: 0 8px;" (click)="removeControl(schema, i)">削除</button>
                         }
-                    </ng-container>
+                    </div>
                 </div>
-                <button class="pure-button" type="button" (click)="resetControls(schema)">リセット</button>
+
             }
-            <div>
-                <button class="pure-button pure-button-primary" type="submit" [disabled]="!form.valid">保存</button>
-                @if (dlUrl) {
-                    <a class="pure-button pure-button-primary" download="sample.json" [href]="dlUrl">ファイル保存</a>
-                }
-            </div>
         </form>
 
         @if (payLoad) {
@@ -79,6 +83,7 @@ import { InputSchemaDto } from '../../input-schema';
                 <strong>Saved the following values</strong><br>{{ payLoad }}
             </div>
         }
+    </div>
     </div>`,
 })
 export class FormComponent implements OnInit {
