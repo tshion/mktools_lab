@@ -24,9 +24,9 @@ import { InputSchemaDto } from '../../input-schema';
         <div class="pure-u-3-4" style="height: 100vh; overflow-y: scroll;">
             <form [formGroup]="form" class="pure-form pure-form-aligined">
                 @for (schema of schemas; track schema) {
-                    <div [formArrayName]="schema.key">
+                    <div [formArrayName]="schema.key" style="margin: 32px 16px;">
                         <hgroup>
-                            <h3 style="display: inline-block;">{{ schema.key }}</h3>
+                            <h3 style="display: inline-block; margin: 8px 0;">{{ schema.key }}</h3>
                             @if (schema.isArray) {
                                 <button type="button" class="pure-button" style="margin: 0 8px;" (click)="addControl(schema)">追加</button>
                             }
@@ -35,47 +35,48 @@ import { InputSchemaDto } from '../../input-schema';
                                 <button type="button" class="pure-button" (click)="resetControls(schema)">リセット</button>
                                 <span style="color: red;">※変更中</span>
                             }
-                        </hgroup>
 
+                            <p style="margin: 8px 0;">{{ schema.label }}</p>
+                        </hgroup>
                         <div *ngFor="let _ of getControls(schema).controls; let i = index" class="pure-control-group">
                             @switch (schema.inputType) {
                                 @case ('checkbox') {
                                     <label for="{{ schema.key }}-{{ i }}" class="pure-checkbox">
                                         <input type="checkbox" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
-                                        <span class="pure-form-message-inline">{{ schema.label }}</span>
+                                        <!-- <span class="pure-form-message-inline">{{ schema.label }}</span> -->
                                     </label>
                                 }
                                 @case ('color') {
-                                    <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
+                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
                                     <input type="color" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
                                     <span class="pure-form-message-inline">{{ getControls(schema).controls[i].getRawValue() }}</span>
                                 }
-                            @case ('number') {
-                                <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
-                                <input type="number" step="1" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                @case ('number') {
+                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
+                                    <input type="number" step="1" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                }
+                                @case ('select') {
+                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
+                                    <select id="{{ schema.key }}-{{ i }}" [formControlName]="i">
+                                        @for (opt of schema.options; track opt) {
+                                            <option [value]="opt">{{ opt }}</option>
+                                        }
+                                    </select>
+                                }
+                                @case ('textbox') {
+                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
+                                    <input type="text" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                }
                             }
-                            @case ('select') {
-                                <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
-                                <select id="{{ schema.key }}-{{ i }}" [formControlName]="i">
-                                    @for (opt of schema.options; track opt) {
-                                        <option [value]="opt">{{ opt }}</option>
-                                    }
-                                </select>
-                            }
-                            @case ('textbox') {
-                                <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label>
-                                <input type="text" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
-                            }
-                        }
-                        @if (schema.isArray) {
-                            <button type="button" class="pure-button" style="margin: 0 8px;" (click)="removeControl(schema, i)">削除</button>
-                        }
-                    </div>
-                </div>
 
-            }
-        </form>
-    </div>
+                            @if (schema.isArray) {
+                                <button type="button" class="pure-button" style="margin: 0 8px;" (click)="removeControl(schema, i)">削除</button>
+                            }
+                        </div>
+                    </div>
+                }
+            </form>
+        </div>
     </div>`,
 })
 export class FormComponent implements OnInit {
