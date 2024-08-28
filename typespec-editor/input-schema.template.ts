@@ -32,8 +32,17 @@ export interface InputSchemaDto {
     /** 概要 */
     label: string;
 
+    /** 数値入力できる最高値 */
+    max?: number;
+
+    /** 数値入力できる最低値 */
+    min?: number;
+
     /** 選択肢 */
     options?: (number | string)[];
+
+    /** 許可する入力パターンの正規表現 */
+    pattern?: string;
 
     /** (デフォルトの)入力値 */
     value: (boolean | number | string)[];

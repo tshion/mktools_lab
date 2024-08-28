@@ -47,16 +47,13 @@ import { InputSchemaDto } from '../../input-schema';
                                     </label>
                                 }
                                 @case ('color') {
-                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
                                     <input type="color" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
                                     <span class="pure-form-message-inline">{{ getControls(schema).controls[i].getRawValue() }}</span>
                                 }
                                 @case ('number') {
-                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
-                                    <input type="number" step="1" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                    <input type="number" step="1" id="{{ schema.key }}-{{ i }}" [formControlName]="i" [min]="schema.min ?? null" [max]="schema.max ?? null" />
                                 }
                                 @case ('select') {
-                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
                                     <select id="{{ schema.key }}-{{ i }}" [formControlName]="i">
                                         @for (opt of schema.options; track opt) {
                                             <option [value]="opt">{{ opt }}</option>
@@ -64,8 +61,7 @@ import { InputSchemaDto } from '../../input-schema';
                                     </select>
                                 }
                                 @case ('textbox') {
-                                    <!-- <label for="{{ schema.key }}-{{ i }}">{{ schema.label }}</label> -->
-                                    <input type="text" id="{{ schema.key }}-{{ i }}" [formControlName]="i" />
+                                    <input type="text" id="{{ schema.key }}-{{ i }}" [formControlName]="i" [pattern]="schema.pattern ?? ''" />
                                 }
                             }
 

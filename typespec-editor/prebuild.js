@@ -72,18 +72,19 @@ const path = require('path');
                     break;
                 case 'integer':
                     obj['inputType'] = 'number';
+                    obj['min'] = v['minimum'];
+                    obj['max'] = v['maximum'];
                     break;
                 case 'number':
                     obj['inputType'] = 'textbox';
-                    // TODO: pattern [\d\.?]
+                    obj['pattern'] = /^\d+\.\d+$/.source;
                     break;
                 case 'string':
                     obj['inputType'] = 'textbox';
-                    // TODO: pattern
                     break;
                 case 'argb.json':
                     obj['inputType'] = 'textbox';
-                    // TODO: pattern #[\dA-F]{8}
+                    obj['pattern'] = /^#[\dA-F]{8}$/.source;
                     break;
                 case 'rgb.json':
                     obj['inputType'] = 'color';

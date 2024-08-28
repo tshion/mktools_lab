@@ -19,11 +19,12 @@ model NumberSample {
     dices: (1 | 2 | 3 | 4 | 5 | 6)[] = #[3, 3];
 
     /** ステータスコード */
+    @minValue(0)
     @maxValue(599)
-    httpStatusCode: uint16 = 200;
+    httpStatusCode: int32 = 200;
 
     /** ステータスコードの一覧 */
-    httpStatusCodeList: uint16[] = #[200, 300];
+    httpStatusCodeList: int32[] = #[200, 300];
 
     /** 消費税率 */
     tax: float64 = 0.10;
