@@ -1,9 +1,0 @@
-{
-    "name": "mktools_lab",
-    "private": true,
-    "workspaces": [
-        "typespec",
-        "typespec-editor",
-        "typespec-to-html"
-    ]
-}
