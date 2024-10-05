@@ -1,0 +1,17 @@
+/**
+ * HTTP Status Code
+ */
+const HttpStatusCode = {
+{% for item in list %}
+    /**
+     * {{ item.code }} {{ item.name }}
+     *{% for link in item.links %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}
+     */
+    {{ item.key }}: {{ item.code }},
+{% endfor %}} as const;
+
+/**
+ * HTTP Status Code
+ */
+type HttpStatusCode = (typeof HttpStatusCode)[keyof typeof HttpStatusCode];

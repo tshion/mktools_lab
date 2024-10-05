@@ -23,6 +23,15 @@
             ],
         },
         {
+            "label": "Run create-status-code-ts",
+            "type": "process",
+            "command": "node",
+            "args": [
+                "generators/create-status-code-ts.js",
+                "${input:spreadSheetId}",
+            ],
+        },
+        {
             "label": "test ios",
             "type": "shell",
             "command": "make ios-tests"
