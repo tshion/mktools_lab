@@ -1,0 +1,7 @@
+{
+    "name": "mktools_lab",
+    "private": true,
+    "workspaces": [
+        "generators"
+    ]
+}

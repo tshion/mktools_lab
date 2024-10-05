@@ -14,9 +14,25 @@
             "command": "make launch-xcode"
         },
         {
+            "label": "Run create-status-code-csv",
+            "type": "process",
+            "command": "node",
+            "args": [
+                "generators/create-status-code-csv.js",
+                "${input:spreadSheetId}",
+            ],
+        },
+        {
             "label": "test ios",
             "type": "shell",
             "command": "make ios-tests"
         },
-    ]
+    ],
+    "inputs": [
+        {
+            "id": "spreadSheetId",
+            "type": "promptString",
+            "description": "Google Spreadsheet のID"
+        },
+    ],
 }
