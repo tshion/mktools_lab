@@ -10,7 +10,7 @@ concurrency:
 jobs:
   remain:
     runs-on: ubuntu-22.04
-    timeout-minutes: 3
+    timeout-minutes: 1
     steps:
       - run: echo "remain" > sample-remain.txt
 
@@ -21,7 +21,7 @@ jobs:
 
   auto-delete:
     runs-on: ubuntu-22.04
-    timeout-minutes: 3
+    timeout-minutes: 1
     permissions:
       contents: write
     steps:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Delete upload artifact
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_PAT_REPO }}
           ID: ${{ steps.upload.outputs.artifact-id }}
           REPO: ${{ github.repository }}
         run: |
