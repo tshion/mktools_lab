@@ -32,6 +32,15 @@
             ],
         },
         {
+            "label": "Run transfer-status-code",
+            "type": "process",
+            "command": "node",
+            "args": [
+                "generators/transfer-status-code.js",
+                "${input:spreadSheetId}",
+            ],
+        },
+        {
             "label": "test ios",
             "type": "shell",
             "command": "make ios-tests"
