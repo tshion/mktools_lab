@@ -22,8 +22,6 @@ jobs:
   auto-delete:
     runs-on: ubuntu-22.04
     timeout-minutes: 1
-    permissions:
-      contents: write
     steps:
       - run: echo "auto-delete" > sample-delete.txt
 
