@@ -22,42 +22,53 @@ const { argv } = require('node:process');
     }
 
     const sheetApiClient = await getSheetsApi();
-    const fromSheet = await sheetApiClient.spreadsheets.values.get({
+
+    // 「シート1」の取得
+    const sheet1 = await sheetApiClient.spreadsheets.values.get({
         spreadsheetId: sheetId,
-        range: 'シート1',
+        range: 'シート1!A2:H',
     });
-    if ((fromSheet.data.values?.length ?? -1) < 0) {
+    const sheet1Data = sheet1.data.values;
+    if (sheet1Data === undefined || sheet1Data === null) {
         throw Error();
     }
 
-    const toSheet = await sheetApiClient.spreadsheets.values.get({
+    // 「シート2」の取得
+    const sheet2 = await sheetApiClient.spreadsheets.values.get({
         spreadsheetId: sheetId,
-        range: 'シート2',
+        range: 'シート2!A2:H',
     });
+    const sheet2Data = sheet2.data.values;
+    if (sheet2Data === undefined || sheet2Data === null) {
+        throw Error();
+    }
 
 
-    // 「シート2」のセルの全削除
-    const itemCount = Math.max(...toSheet.data.values.map(x => x.length))
-    const deleteResult = await sheetApiClient.spreadsheets.values.update({
+    // 移行データの生成
+    const mergeData = sheet1Data.map(item => {
+        const values = Object.values(item);
+        return 0 < Object.keys(item).length
+            ? values
+            : null;
+    }).filter(list => list !== null);
+
+    const cellCount = Math.max(...mergeData.map(x => x.length));
+    const diffCount = sheet2Data.length - mergeData.length;
+    for (let i = 0; i < diffCount; i++) {
+        mergeData.push([...Array(cellCount)].map(_ => ''));
+    }
+
+
+    // 「シート2」へ書き込み
+    const result = await sheetApiClient.spreadsheets.values.update({
         spreadsheetId: sheetId,
-        range: 'シート2',
-        valueInputOption: 'RAW',
-        requestBody: {
-            values: toSheet.data.values.map(_ => [...Array(itemCount)].map(_ => '')),
-        },
-    });
-    console.log('%d cells deleted.', deleteResult.data.updatedCells);
-
-    // 「シート1」の内容を「シート2」に転記
-    const insertResult = await sheetApiClient.spreadsheets.values.update({
-        spreadsheetId: sheetId,
-        range: 'シート2',
+        range: 'シート2!A2:H',
         valueInputOption: 'USER_ENTERED',
         requestBody: {
-            values: toData(fromSheet.data.values),
+            values: mergeData,
         },
     });
-    console.log('%d cells inserted.', insertResult.data.updatedCells);
+    console.log('%d cells updated.', result.data.updatedCells);
 }(
     argv[2],
 );
@@ -78,70 +89,4 @@ async function getSheetsApi() {
     await jwt.authorize();
 
     return google.sheets({ version: 'v4', auth: jwt });
-}
-
-/**
- * Sheet データを書き込みデータに変換
- *
- * @param {any[][]|null|undefined} values
- */
-function toData(values) {
-    if (!values) { return []; }
-
-    const list = values;
-    const header = list.shift();
-    if (!header) { return; }
-
-    const indexCode = header.findIndex(x => x === 'Code');
-    if (indexCode < 0) { return; }
-
-    const indexName = header.findIndex(x => x === 'Name');
-    if (indexName < 0) { return; }
-
-    const indexOldName = header.findIndex(x => x === 'OldName');
-    if (indexOldName < 0) { return; }
-
-    const indexNote = header.findIndex(x => x === 'Note');
-    if (indexNote < 0) { return; }
-
-    const indexCaution = header.findIndex(x => x === 'Caution');
-    if (indexCaution < 0) { return; }
-
-    const indexHasMDN = header.findIndex(x => x === 'HasMDN');
-    if (indexHasMDN < 0) { return; }
-
-    const indexUrl1 = header.findIndex(x => x === 'Url1');
-    if (indexUrl1 < 0) { return; }
-
-    const indexUrl2 = header.findIndex(x => x === 'Url2');
-    if (indexUrl2 < 0) { return; }
-
-
-    const lines = [
-        [
-            header[indexCode],
-            header[indexName],
-            header[indexOldName],
-            header[indexNote],
-            header[indexCaution],
-            header[indexHasMDN],
-            header[indexUrl1],
-            header[indexUrl2],
-        ],
-    ];
-    list.map(item => [
-        item[indexCode],
-        item[indexName],
-        item[indexOldName],
-        item[indexNote],
-        item[indexCaution],
-        item[indexHasMDN],
-        item[indexUrl1],
-        item[indexUrl2],
-    ]).forEach(arr => {
-        if (!arr.every(x => !x)) {
-            lines.push(arr);
-        }
-    });
-    return lines;
 }
