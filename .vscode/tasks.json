@@ -14,21 +14,17 @@
             "command": "make launch-xcode"
         },
         {
-            "label": "Run create-status-code-csv",
+            "label": "Run generate-http-status-code",
             "type": "process",
             "command": "node",
             "args": [
-                "generators/create-status-code-csv.js",
-                "${input:spreadSheetId}",
+                "generators/compiled/generate-http-status-code/index.js",
+                "${input:gSheetId}",
+                "${input:pathJwtFile}",
+                "${input:pathOutputDir}",
             ],
-        },
-        {
-            "label": "Run create-status-code-ts",
-            "type": "process",
-            "command": "node",
-            "args": [
-                "generators/create-status-code-ts.js",
-                "${input:spreadSheetId}",
+            "dependsOn": [
+                "npm: build:generate-http-status-code - generators",
             ],
         },
         {
@@ -47,6 +43,21 @@
         },
     ],
     "inputs": [
+        {
+            "id": "gSheetId",
+            "type": "promptString",
+            "description": "操作対象のGoogle Spreadsheets ID",
+        },
+        {
+            "id": "pathJwtFile",
+            "type": "promptString",
+            "description": "Google サービスアカウント認証情報(JSON 形式) のファイルパス",
+        },
+        {
+            "id": "pathOutputDir",
+            "type": "promptString",
+            "description": "結果の出力先",
+        },
         {
             "id": "spreadSheetId",
             "type": "promptString",

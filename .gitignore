@@ -723,10 +723,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-
-
-###############
-### Project ###
-###############
-credentials.json

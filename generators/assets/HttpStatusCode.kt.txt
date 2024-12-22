@@ -1,0 +1,29 @@
+package your.package
+
+/**
+ * HTTP Status Code
+ */
+internal enum class HttpStatusCode(val value: Int) {
+{% for item in list %}
+    /**
+     * {{ item.code }} {{ item.description }}
+     *{% for link in item.links %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}
+     */
+    {{ item.variable.snake }}({{ item.code }}),
+{% endfor %}    ;
+
+
+    internal companion object {
+
+        /**
+         * Returns the element matching the given value.
+         */
+        internal fun parse(value: Int) = entries().single { it.value == value }
+
+        /**
+         * Returns the element matching the given value or null.
+         */
+        internal fun parseOrNull(value: Int) = entries().singleOrNull { it.value == value }
+    }
+}

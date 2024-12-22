@@ -2,9 +2,17 @@
     "name": "@mktools_lab/generators",
     "private": true,
     "type": "commonjs",
+    "scripts": {
+        "build:generate-http-status-code": "npx ncc build generate-http-status-code.ts -o compiled/generate-http-status-code"
+    },
     "dependencies": {
-        "@google-cloud/local-auth": "^3.0.1",
         "googleapis": "^144.0.0",
         "nunjucks": "^3.2.4"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "@types/nunjucks": "^3.2.6",
+        "@vercel/ncc": "^0.38.3",
+        "typescript": "^5.7.2"
     }
 }

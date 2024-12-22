@@ -1,0 +1,24 @@
+namespace YourNamespace
+{
+    /// <summary>
+    /// HTTP Status Code
+    /// </summary>
+    internal enum HttpStatusCode
+    {
+        /// <summary>
+        /// This is default value.
+        /// </summary>
+        [Obsolete("Please use another.")]
+        Undefined = 0,
+{% for item in list %}
+        /// <summary>
+        /// {{ item.code }} {{ item.description }}
+        /// <summary>
+        /// <remarks>
+        ///     <list type="bullet">{% for link in item.links %}
+        ///         <item><see href="{{ link.url }}">{{ link.title }}</see></item>{% endfor %}
+        ///     </list>
+        /// </remarks>
+        {{ item.variable.pascal }} = {{ item.code }},
+{% endfor %}    }
+}

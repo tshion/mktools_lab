@@ -1,0 +1,19 @@
+/// HTTP Status Code
+internal enum HttpStatusCode: Int {
+
+    /// Returns the element matching the given value.
+    internal static func parse(value: Int) -> HttpStatusCode {
+        return HttpStatusCode.init(rawValue: value)!
+    }
+
+    /// Returns the element matching the given value or null.
+    internal static func parseOrNull(value: Int) -> HttpStatusCode? {
+        return HttpStatusCode.init(rawValue: value)
+    }
+
+{% for item in list %}
+    /// {{ item.code }} {{ item.description }}
+    ///{% for link in item.links %}
+    /// * [{{ link.title }}]({{ link.url }}){% endfor %}
+    case {{ item.variable.camel }} = {{ item.code }}
+{% endfor %}}

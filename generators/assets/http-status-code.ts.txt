@@ -1,0 +1,17 @@
+/**
+ * HTTP Status Code
+ */
+export const HttpStatusCode = {
+{% for item in list %}
+    /**
+     * {{ item.code }} {{ item.description }}
+     *{% for link in item.links %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}
+     */
+    {{ item.variable.snake }}: {{ item.code }},
+{% endfor %}} as const;
+
+/**
+ * HTTP Status Code
+ */
+export type HttpStatusCode = (typeof HttpStatusCode)[keyof typeof HttpStatusCode];
