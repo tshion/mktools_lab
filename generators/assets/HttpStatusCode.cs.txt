@@ -11,14 +11,15 @@ namespace YourNamespace
         [Obsolete("Please use another.")]
         Undefined = 0,
 {% for item in list %}
-        /// <summary>
-        /// {{ item.code }} {{ item.description }}
-        /// <summary>
+        /// <summary>{% for description in item.descriptions %}
+        /// {{ description }}{% endfor %}
+        /// </summary>
         /// <remarks>
         ///     <list type="bullet">{% for link in item.links %}
         ///         <item><see href="{{ link.url }}">{{ link.title }}</see></item>{% endfor %}
         ///     </list>
-        /// </remarks>
+        /// </remarks>{% if item.warning %}
+        [Obsolete("{{ item.warning }}")]{% endif %}
         {{ item.variable.pascal }} = {{ item.code }},
 {% endfor %}    }
 }

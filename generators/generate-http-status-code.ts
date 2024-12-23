@@ -1,7 +1,8 @@
 import { CodeUtil } from 'models/code.util';
 import { createGSheetsApiClient } from 'models/google-api.util';
 import { HttpStatusCodeGSheetModel } from 'models/http-status-code-gsheet.model';
-import { HttpStatusCodeLinkTemplateDto, HttpStatusCodeTemplateDto } from 'models/http-status-code-template.dto';
+import { HttpStatusCodeTemplateDto } from 'models/http-status-code-template.dto';
+import { WebLinkDto } from 'models/web-link.dto';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -40,7 +41,15 @@ import { render } from 'nunjucks';
     // データの加工
     const regex = /(?<rfc>rfc\d{4,})/;
     const mappedData = gSheetData.map(item => {
-        const links = new Array<HttpStatusCodeLinkTemplateDto>();
+        let descriptions = [`${item.Code} ${item.Name}`];
+        if (!!item.Note) {
+            descriptions[0] = `${descriptions[0]}(${item.Note})`;
+        }
+        if (!!item.OldName) {
+            descriptions.push(`(HTTP 1.0: ${item.OldName})`);
+        }
+
+        const links = new Array<WebLinkDto>();
         if (item.HasMDN) {
             links.push({
                 title: 'MDN Web Docs',
@@ -67,13 +76,14 @@ import { render } from 'nunjucks';
 
         const dto: HttpStatusCodeTemplateDto = {
             code: item.Code,
-            description: item.Name,
+            descriptions: descriptions,
             links: links,
             variable: {
                 camel: CodeUtil.formatCamelCase(variableTokens),
                 pascal: CodeUtil.formatPascalCase(variableTokens),
                 snake: CodeUtil.formatSnakeCase(variableTokens),
             },
+            warning: item.Caution,
         };
         return dto;
     });

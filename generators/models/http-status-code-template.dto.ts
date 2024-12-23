@@ -1,3 +1,5 @@
+import { WebLinkDto } from './web-link.dto';
+
 /**
  * テンプレート向けのHTTP Status Code 情報
  */
@@ -6,10 +8,10 @@ export interface HttpStatusCodeTemplateDto {
     readonly code: string;
 
     /** HTTP Status Code の説明 */
-    readonly description: string;
+    readonly descriptions: string[];
 
     /** 関連リンクの一覧 */
-    readonly links: HttpStatusCodeLinkTemplateDto[];
+    readonly links: WebLinkDto[];
 
     /** 生成コードの変数名 */
     readonly variable: {
@@ -22,15 +24,7 @@ export interface HttpStatusCodeTemplateDto {
         /** スネークケース形式 */
         readonly snake: string;
     };
-}
 
-/**
- * テンプレート向けのHTTP Status Code の関連リンク情報
- */
-export interface HttpStatusCodeLinkTemplateDto {
-    /** リンクタイトル */
-    readonly title: string;
-
-    /** リンク先 */
-    readonly url: string;
+    /** コード警告 */
+    readonly warning: string;
 }

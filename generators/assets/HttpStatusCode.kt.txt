@@ -5,11 +5,12 @@ package your.package
  */
 internal enum class HttpStatusCode(val value: Int) {
 {% for item in list %}
-    /**
-     * {{ item.code }} {{ item.description }}
+    /**{% for description in item.descriptions %}
+     * {{ description }}{% endfor %}
      *{% for link in item.links %}
      * * [{{ link.title }}]({{ link.url }}){% endfor %}
-     */
+     */{% if item.warning %}
+    @Deprecated("{{ item.warning }}"){% endif %}
     {{ item.variable.snake }}({{ item.code }}),
 {% endfor %}    ;
 

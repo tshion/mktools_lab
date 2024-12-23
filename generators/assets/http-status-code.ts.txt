@@ -3,10 +3,12 @@
  */
 export const HttpStatusCode = {
 {% for item in list %}
-    /**
-     * {{ item.code }} {{ item.description }}
+    /**{% for description in item.descriptions %}
+     * {{ description }}{% endfor %}
      *{% for link in item.links %}
-     * * [{{ link.title }}]({{ link.url }}){% endfor %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% if item.warning %}
+     *
+     * @deprecated {{ item.warning }}{% endif %}
      */
     {{ item.variable.snake }}: {{ item.code }},
 {% endfor %}} as const;
