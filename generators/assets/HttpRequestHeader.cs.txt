@@ -1,0 +1,69 @@
+namespace YourNamespace
+{
+    /// <summary>
+    /// HTTP Request Header
+    /// </summary>
+    internal enum HttpRequestHeader
+    {
+        /// <summary>
+        /// This is default value.
+        /// </summary>
+        [Obsolete("Please use another.")]
+        Undefined = 0,
+{% for item in list %}
+        /// <summary>
+        /// {{ item.description }}
+        /// </summary>{% if 0 < item.links.length %}
+        /// <remarks>
+        ///     <list type="bullet">{% for link in item.links %}
+        ///         <item><see href="{{ link.url }}">{{ link.title }}</see></item>{% endfor %}
+        ///     </list>
+        /// </remarks>{% endif %}{% if item.warning %}
+        [Obsolete("{{ item.warning }}")]{% endif %}
+        {{ item.variable.pascal }},
+{% endfor %}    }
+
+
+    internal static class HttpRequestHeaderExtensions
+    {
+        private static readonly Dictionary<string, HttpRequestHeader> _store = new()
+        {{ "{" }}{% for item in list %}
+            ["{{ item.variableValue }}"] = HttpRequestHeader.{{ item.variable.pascal }},{% endfor %}
+        };
+
+
+        /// <summary>
+        /// Converts the string representation of a HttpRequestHeader
+        /// </summary>
+        /// <exception cref="ArgumentException">No such member.</exception>
+        public static HttpRequestHeader Parse(string value)
+        {
+            var isSuccess = TryParse(value, out var result);
+            if (isSuccess)
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException("No such member.");
+            }
+        }
+
+        /// <summary>
+        /// Converts the string representation of a HttpRequestHeader
+        /// </summary>
+        public static bool TryParse(string value, out HttpRequestHeader result)
+        {
+            result = _store
+                .SingleOrDefault(pair => pair.Key.Equals(value, StringComparison.OrdinalIgnoreCase))
+                .Value;
+            return result != default;
+        }
+
+        public static string Value(this HttpRequestHeader receiver) => receiver switch
+        {{ "{" }}{% for item in list %}
+            HttpRequestHeader.{{ item.variable.pascal }} => "{{ item.variableValue }}",{% endfor %}
+            _ => ""
+        };
+    }
+}

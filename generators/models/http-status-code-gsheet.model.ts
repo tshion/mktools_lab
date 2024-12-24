@@ -57,14 +57,14 @@ export class HttpStatusCodeGSheetModel {
 
         return data.filter(item => 0 < Object.keys(item).length).map(item => {
             const dto: HttpStatusCodeGSheetDto = {
-                Code: item[indexCode] ?? '',
-                Name: item[indexName] ?? '',
-                OldName: item[indexOldName] ?? '',
-                Note: item[indexNote] ?? '',
-                Caution: item[indexCaution] ?? '',
-                HasMDN: item[indexHasMDN] ?? '',
-                Url1: item[indexUrl1] ?? '',
-                Url2: item[indexUrl2] ?? '',
+                Code: `${item[indexCode] ?? ''}`.trim(),
+                Name: `${item[indexName] ?? ''}`.trim(),
+                OldName: `${item[indexOldName] ?? ''}`.trim(),
+                Note: `${item[indexNote] ?? ''}`.trim(),
+                Caution: `${item[indexCaution] ?? ''}`.trim(),
+                HasMDN: `${item[indexHasMDN] ?? ''}`.trim(),
+                Url1: `${item[indexUrl1] ?? ''}`.trim(),
+                Url2: `${item[indexUrl2] ?? ''}`.trim(),
             };
             return dto;
         });

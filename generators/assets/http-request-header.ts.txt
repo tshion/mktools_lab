@@ -1,0 +1,19 @@
+/**
+ * HTTP Request Header
+ */
+export const HttpRequestHeader = {
+{% for item in list %}
+    /**
+     * {{ item.description }}{% if 0 < item.links.length %}
+     *{% for link in item.links %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% endif %}{% if item.warning %}
+     *
+     * @deprecated {{ item.warning }}{% endif %}
+     */
+    {{ item.variable.snake }}: '{{ item.variableValue }}',
+{% endfor %}} as const;
+
+/**
+ * HTTP Request Header
+ */
+export type HttpRequestHeader = (typeof HttpRequestHeader)[keyof typeof HttpRequestHeader];

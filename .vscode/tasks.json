@@ -14,6 +14,20 @@
             "command": "make launch-xcode"
         },
         {
+            "label": "Run generate-http-request-header",
+            "type": "process",
+            "command": "node",
+            "args": [
+                "generators/compiled/generate-http-request-header/index.js",
+                "${input:gSheetId}",
+                "${input:pathJwtFile}",
+                "${input:pathOutputDir}",
+            ],
+            "dependsOn": [
+                "npm: build:generate-http-request-header - generators",
+            ],
+        },
+        {
             "label": "Run generate-http-status-code",
             "type": "process",
             "command": "node",

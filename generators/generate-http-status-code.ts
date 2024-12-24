@@ -50,7 +50,7 @@ import { render } from 'nunjucks';
         }
 
         const links = new Array<WebLinkDto>();
-        if (item.HasMDN) {
+        if (item.HasMDN.toLowerCase() === 'true') {
             links.push({
                 title: 'MDN Web Docs',
                 url: `https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/${item.Code}`,
