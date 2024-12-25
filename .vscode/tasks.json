@@ -28,6 +28,20 @@
             ],
         },
         {
+            "label": "Run generate-http-response-header",
+            "type": "process",
+            "command": "node",
+            "args": [
+                "generators/compiled/generate-http-response-header/index.js",
+                "${input:gSheetId}",
+                "${input:pathJwtFile}",
+                "${input:pathOutputDir}",
+            ],
+            "dependsOn": [
+                "npm: build:generate-http-response-header - generators",
+            ],
+        },
+        {
             "label": "Run generate-http-status-code",
             "type": "process",
             "command": "node",
