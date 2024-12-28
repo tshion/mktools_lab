@@ -30,8 +30,17 @@ const { argv } = require('node:process');
     });
     const sheet1Data = sheet1.data.values;
     if (sheet1Data === undefined || sheet1Data === null) {
-        throw Error();
+        throw Error('転送元にデータがありません');
     }
+
+    // 更新データの候補生成
+    const updateData = sheet1Data.map(item => {
+        const values = Object.values(item);
+        return 0 < Object.keys(item).length
+            ? values
+            : null;
+    }).filter(list => list !== null);
+
 
     // 「シート2」の取得
     const sheet2 = await sheetApiClient.spreadsheets.values.get({
@@ -39,23 +48,30 @@ const { argv } = require('node:process');
         range: 'シート2!A2:H',
     });
     const sheet2Data = sheet2.data.values;
-    if (sheet2Data === undefined || sheet2Data === null) {
-        throw Error();
-    }
 
+    // (差分を考慮した) 更新データの生成
+    const maxRowCount = Math.max(
+        updateData.length,
+        sheet2Data?.length ?? 0,
+    );
 
-    // 移行データの生成
-    const mergeData = sheet1Data.map(item => {
-        const values = Object.values(item);
-        return 0 < Object.keys(item).length
-            ? values
-            : null;
-    }).filter(list => list !== null);
-
-    const cellCount = Math.max(...mergeData.map(x => x.length));
-    const diffCount = sheet2Data.length - mergeData.length;
-    for (let i = 0; i < diffCount; i++) {
-        mergeData.push([...Array(cellCount)].map(_ => ''));
+    const mergedData = [];
+    for (let rowIndex = 0; rowIndex < maxRowCount; rowIndex++) {
+        const rowDataFrom = updateData.at(rowIndex);
+        const rowDataTo = sheet2Data?.at(rowIndex);
+        if (!rowDataFrom) {
+            const cellCount = Object.keys(rowDataTo ?? {}).length;
+            mergedData.push([...Array(cellCount)].map(_ => ''));
+        } else if (!rowDataTo) {
+            mergedData.push(rowDataFrom);
+        } else {
+            const maxColumnCount = Math.max(rowDataFrom.length, rowDataTo.length);
+            const rowData = [...Array(maxColumnCount)].map(_ => '');
+            rowDataFrom.forEach((from, i) => {
+                rowData[i] = from !== rowDataTo[i] ? from : null;
+            });
+            mergedData.push(rowData);
+        }
     }
 
 
@@ -65,10 +81,10 @@ const { argv } = require('node:process');
         range: 'シート2!A2:H',
         valueInputOption: 'USER_ENTERED',
         requestBody: {
-            values: mergeData,
+            values: mergedData,
         },
     });
-    console.log('%d cells updated.', result.data.updatedCells);
+    console.log('%d cells updated.', result.data.updatedCells ?? 0);
 }(
     argv[2],
 );
