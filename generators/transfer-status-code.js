@@ -56,22 +56,12 @@ const { argv } = require('node:process');
     );
 
     const mergedData = [];
-    for (let rowIndex = 0; rowIndex < maxRowCount; rowIndex++) {
-        const rowDataFrom = updateData.at(rowIndex);
-        const rowDataTo = sheet2Data?.at(rowIndex);
-        if (!rowDataFrom) {
-            const cellCount = Object.keys(rowDataTo ?? {}).length;
-            mergedData.push([...Array(cellCount)].map(_ => ''));
-        } else if (!rowDataTo) {
-            mergedData.push(rowDataFrom);
-        } else {
-            const maxColumnCount = Math.max(rowDataFrom.length, rowDataTo.length);
-            const rowData = [...Array(maxColumnCount)].map(_ => '');
-            rowDataFrom.forEach((from, i) => {
-                rowData[i] = from !== rowDataTo[i] ? from : null;
-            });
-            mergedData.push(rowData);
-        }
+    for (let i = 0; i < maxRowCount; i++) {
+        const diff = makeDiffRowValues(
+            sheet2Data?.at(i),
+            updateData.at(i),
+        );
+        mergedData.push(diff);
     }
 
 
@@ -105,4 +95,32 @@ async function getSheetsApi() {
     await jwt.authorize();
 
     return google.sheets({ version: 'v4', auth: jwt });
+}
+
+/**
+ * 行の差分データ生成
+ *
+ * @param {unknown[]|undefined} baseValues 元データ
+ * @param {unknown[]|undefined} overrideValues 上書きデータ
+ * @returns {unknown[]} 行の差分データ
+ */
+function makeDiffRowValues(
+    baseValues,
+    overrideValues,
+) {
+    if (!overrideValues) {
+        const cellCount = baseValues?.length ?? 0;
+        return [...Array(cellCount)].map(_ => '');
+    }
+
+    if (!baseValues) {
+        return overrideValues;
+    }
+
+    const maxValueCount = Math.max(baseValues.length, overrideValues.length);
+    const newValues = [...Array(maxValueCount)].map(_ => '');
+    overrideValues.forEach((value, i) => {
+        newValues[i] = value !== baseValues[i] ? value : null;
+    });
+    return newValues;
 }
