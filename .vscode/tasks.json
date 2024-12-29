@@ -60,8 +60,12 @@
             "type": "process",
             "command": "node",
             "args": [
-                "generators/transfer-status-code.js",
-                "${input:spreadSheetId}",
+                "generators/compiled/transfer-status-code/index.js",
+                "${input:gSheetId}",
+                "${input:pathJwtFile}",
+            ],
+            "dependsOn": [
+                "npm: build:transfer-status-code - generators",
             ],
         },
         {
@@ -85,11 +89,6 @@
             "id": "pathOutputDir",
             "type": "promptString",
             "description": "結果の出力先",
-        },
-        {
-            "id": "spreadSheetId",
-            "type": "promptString",
-            "description": "Google Spreadsheet のID"
         },
     ],
 }

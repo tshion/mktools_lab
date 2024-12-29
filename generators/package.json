@@ -5,7 +5,8 @@
     "scripts": {
         "build:generate-http-request-header": "npx ncc build generate-http-request-header.ts -o compiled/generate-http-request-header",
         "build:generate-http-response-header": "npx ncc build generate-http-response-header.ts -o compiled/generate-http-response-header",
-        "build:generate-http-status-code": "npx ncc build generate-http-status-code.ts -o compiled/generate-http-status-code"
+        "build:generate-http-status-code": "npx ncc build generate-http-status-code.ts -o compiled/generate-http-status-code",
+        "build:transfer-status-code": "npx ncc build transfer-status-code.ts -o compiled/transfer-status-code"
     },
     "dependencies": {
         "googleapis": "^144.0.0",

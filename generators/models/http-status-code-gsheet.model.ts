@@ -23,7 +23,7 @@ export class HttpStatusCodeGSheetModel {
             range: sheetName,
         }).then(sheet => sheet.data.values);
         if (!data) {
-            throw Error(`ID: ${gSheetId} のシート「${sheetName}」を取得できません`);
+            throw Error(`ID: ${gSheetId} のシート「${sheetName}」にデータがありません`);
         }
 
 
