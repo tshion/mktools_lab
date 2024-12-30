@@ -1,25 +1,25 @@
 namespace YourNamespace
 {
-    /// <summary>
-    /// HTTP Status Code
+    /// <summary>{% for description in model.documentComment.descriptions %}
+    /// {{ description }}{% endfor %}
     /// </summary>
-    internal enum HttpStatusCode
+    internal enum {{ model.name }}
     {
         /// <summary>
         /// This is default value.
         /// </summary>
         [Obsolete("Please use another.")]
         Undefined = 0,
-{% for item in list %}
-        /// <summary>{% for description in item.descriptions %}
+{% for property in model.properties %}
+        /// <summary>{% for description in property.documentComment.descriptions %}
         /// {{ description }}{% endfor %}
         /// </summary>
         /// <remarks>
-        ///     <list type="bullet">{% for link in item.links %}
+        ///     <list type="bullet">{% for link in property.documentComment.links %}
         ///         <item><see href="{{ link.url }}">{{ link.title }}</see></item>{% endfor %}
         ///     </list>
-        /// </remarks>{% if item.warning %}
-        [Obsolete("{{ item.warning }}")]{% endif %}
-        {{ item.variable.pascal }} = {{ item.code }},
+        /// </remarks>{% if property.decorators.deprecated %}
+        [Obsolete("{{ property.decorators.deprecated }}")]{% endif %}
+        {{ property.name.pascal }} = {{ property.value }},
 {% endfor %}    }
 }

@@ -1,19 +1,19 @@
-/**
- * HTTP Status Code
+/**{% for description in model.documentComment.descriptions %}
+ * {{ description }}{% endfor %}
  */
-export const HttpStatusCode = {
-{% for item in list %}
-    /**{% for description in item.descriptions %}
+export const {{ model.name }} = {
+{% for property in model.properties %}
+    /**{% for description in property.documentComment.descriptions %}
      * {{ description }}{% endfor %}
-     *{% for link in item.links %}
-     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% if item.warning %}
+     *{% for link in property.documentComment.links %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% if property.decorators.deprecated %}
      *
-     * @deprecated {{ item.warning }}{% endif %}
+     * @deprecated {{ property.decorators.deprecated }}{% endif %}
      */
-    {{ item.variable.snake }}: {{ item.code }},
+     {{ property.name.snake }}: {{ property.value }},
 {% endfor %}} as const;
 
-/**
- * HTTP Status Code
+/**{% for description in model.documentComment.descriptions %}
+ * {{ description }}{% endfor %}
  */
-export type HttpStatusCode = (typeof HttpStatusCode)[keyof typeof HttpStatusCode];
+export type {{ model.name }} = (typeof {{ model.name }})[keyof typeof {{ model.name }}];

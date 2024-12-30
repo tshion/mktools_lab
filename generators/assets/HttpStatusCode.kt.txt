@@ -1,17 +1,17 @@
 package your.package
 
-/**
- * HTTP Status Code
+/**{% for description in model.documentComment.descriptions %}
+ * {{ description }}{% endfor %}
  */
-internal enum class HttpStatusCode(val value: Int) {
-{% for item in list %}
-    /**{% for description in item.descriptions %}
+internal enum class {{ model.name }}(val value: {{ model.extends }}) {
+{% for property in model.properties %}
+    /**{% for description in property.documentComment.descriptions %}
      * {{ description }}{% endfor %}
-     *{% for link in item.links %}
+     *{% for link in property.documentComment.links %}
      * * [{{ link.title }}]({{ link.url }}){% endfor %}
-     */{% if item.warning %}
-    @Deprecated("{{ item.warning }}"){% endif %}
-    {{ item.variable.snake }}({{ item.code }}),
+     */{% if property.decorators.deprecated %}
+    @Deprecated("{{ property.decorators.deprecated }}"){% endif %}
+    {{ property.name.snake }}({{ property.value }}),
 {% endfor %}    ;
 
 
@@ -20,11 +20,11 @@ internal enum class HttpStatusCode(val value: Int) {
         /**
          * Returns the element matching the given value.
          */
-        internal fun parse(value: Int) = entries().single { it.value == value }
+        internal fun parse(value: {{ model.extends }}) = entries().single { it.value == value }
 
         /**
          * Returns the element matching the given value or null.
          */
-        internal fun parseOrNull(value: Int) = entries().singleOrNull { it.value == value }
+        internal fun parseOrNull(value: {{ model.extends }}) = entries().singleOrNull { it.value == value }
     }
 }
