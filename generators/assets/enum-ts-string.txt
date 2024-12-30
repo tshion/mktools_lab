@@ -4,13 +4,13 @@
 export const {{ model.name }} = {
 {% for property in model.properties %}
     /**{% for description in property.documentComment.descriptions %}
-     * {{ description }}{% endfor %}
+     * {{ description }}{% endfor %}{% if 0 < property.documentComment.links.length %}
      *{% for link in property.documentComment.links %}
-     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% if property.decorators.deprecated %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% endif %}{% if property.decorators.deprecated %}
      *
      * @deprecated {{ property.decorators.deprecated }}{% endif %}
      */
-     {{ property.name.snake }}: {{ property.value }},
+     {{ property.name.snake }}: "{{ property.value }}",
 {% endfor %}} as const;
 
 /**{% for description in model.documentComment.descriptions %}

@@ -13,12 +13,12 @@ namespace YourNamespace
 {% for property in model.properties %}
         /// <summary>{% for description in property.documentComment.descriptions %}
         /// {{ description }}{% endfor %}
-        /// </summary>
+        /// </summary>{% if 0 < property.documentComment.links.length %}
         /// <remarks>
         ///     <list type="bullet">{% for link in property.documentComment.links %}
         ///         <item><see href="{{ link.url }}">{{ link.title }}</see></item>{% endfor %}
         ///     </list>
-        /// </remarks>{% if property.decorators.deprecated %}
+        /// </remarks>{% endif %}{% if property.decorators.deprecated %}
         [Obsolete("{{ property.decorators.deprecated }}")]{% endif %}
         {{ property.name.pascal }} = {{ property.value }},
 {% endfor %}    }

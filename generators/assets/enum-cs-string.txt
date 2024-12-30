@@ -1,0 +1,69 @@
+namespace YourNamespace
+{
+    /// <summary>{% for description in model.documentComment.descriptions %}
+    /// {{ description }}{% endfor %}
+    /// </summary>
+    internal enum {{ model.name }}
+    {
+        /// <summary>
+        /// This is default value.
+        /// </summary>
+        [Obsolete("Please use another.")]
+        Undefined = 0,
+{% for property in model.properties %}
+        /// <summary>{% for description in property.documentComment.descriptions %}
+        /// {{ description }}{% endfor %}
+        /// </summary>{% if 0 < property.documentComment.links.length %}
+        /// <remarks>
+        ///     <list type="bullet">{% for link in property.documentComment.links %}
+        ///         <item><see href="{{ link.url }}">{{ link.title }}</see></item>{% endfor %}
+        ///     </list>
+        /// </remarks>{% endif %}{% if property.decorators.deprecated %}
+        [Obsolete("{{ property.decorators.deprecated }}")]{% endif %}
+        {{ property.name.pascal }},
+{% endfor %}    }
+
+
+    internal static class {{ model.name }}Extensions
+    {
+        private static readonly Dictionary<string, {{ model.name }}> _store = new()
+        {{ "{" }}{% for property in model.properties %}
+            ["{{ property.value }}"] = {{ model.name }}.{{ property.name.pascal }},{% endfor %}
+        };
+
+
+        /// <summary>
+        /// Converts the string representation of a {{ model.name }}
+        /// </summary>
+        /// <exception cref="ArgumentException">No such member.</exception>
+        public static {{ model.name }} Parse(string value)
+        {
+            var isSuccess = TryParse(value, out var result);
+            if (isSuccess)
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException("No such member.");
+            }
+        }
+
+        /// <summary>
+        /// Converts the string representation of a {{ model.name }}
+        /// </summary>
+        public static bool TryParse(string value, out {{ model.name }} result)
+        {
+            result = _store
+                .SingleOrDefault(pair => pair.Key.Equals(value, StringComparison.OrdinalIgnoreCase))
+                .Value;
+            return result != default;
+        }
+
+        public static string Value(this {{ model.name }} receiver) => receiver switch
+        {{ "{" }}{% for property in model.properties %}
+            {{ model.name }}.{{ property.name.pascal }} => "{{ property.value }}",{% endfor %}
+            _ => ""
+        };
+    }
+}

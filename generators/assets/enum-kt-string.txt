@@ -3,15 +3,15 @@ package your.package
 /**{% for description in model.documentComment.descriptions %}
  * {{ description }}{% endfor %}
  */
-internal enum class {{ model.name }}(val value: {{ model.extends }}) {
+internal enum class {{ model.name }}(val value: String) {
 {% for property in model.properties %}
     /**{% for description in property.documentComment.descriptions %}
-     * {{ description }}{% endfor %}
+     * {{ description }}{% endfor %}{% if 0 < property.documentComment.links.length %}
      *{% for link in property.documentComment.links %}
-     * * [{{ link.title }}]({{ link.url }}){% endfor %}
+     * * [{{ link.title }}]({{ link.url }}){% endfor %}{% endif %}
      */{% if property.decorators.deprecated %}
     @Deprecated("{{ property.decorators.deprecated }}"){% endif %}
-    {{ property.name.snake }}({{ property.value }}),
+    {{ property.name.snake }}("{{ property.value }}"),
 {% endfor %}    ;
 
 
@@ -20,11 +20,11 @@ internal enum class {{ model.name }}(val value: {{ model.extends }}) {
         /**
          * Returns the element matching the given value.
          */
-        internal fun parse(value: {{ model.extends }}) = entries().single { it.value == value }
+        internal fun parse(value: String) = entries().single { it.value == value }
 
         /**
          * Returns the element matching the given value or null.
          */
-        internal fun parseOrNull(value: {{ model.extends }}) = entries().singleOrNull { it.value == value }
+        internal fun parseOrNull(value: String) = entries().singleOrNull { it.value == value }
     }
 }

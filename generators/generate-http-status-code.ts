@@ -96,7 +96,6 @@ import { render } from 'nunjucks';
             descriptions: ['HTTP Status Code'],
             links: [],
         },
-        extends: 'Int',
         name: 'HttpStatusCode',
         properties: codeProperties,
     };
@@ -106,14 +105,15 @@ import { render } from 'nunjucks';
         await mkdir(pathOutputDir, { recursive: true });
     }
     const tasks = [
-        'HttpStatusCode.cs',
-        'HttpStatusCode.kt',
-        'HttpStatusCode.swift',
-        'http-status-code.ts',
-    ].map(async fileName => writeFile(
+        { fileName: 'HttpStatusCode.cs', templateName: 'enum-cs-int.txt' },
+        { fileName: 'HttpStatusCode.kt', templateName: 'enum-kt-int.txt' },
+        { fileName: 'HttpStatusCode.swift', templateName: 'enum-swift-int.txt' },
+        { fileName: 'http-status-code.ts', templateName: 'enum-ts-number.txt' },
+
+    ].map(async ({ fileName, templateName }) => writeFile(
         join(pathOutputDir, fileName),
         render(
-            join(__dirname, '..', '..', 'assets', `${fileName}.txt`),
+            join(__dirname, '..', '..', 'assets', templateName),
             { model: codeModel },
         ),
         { encoding: 'utf-8' },

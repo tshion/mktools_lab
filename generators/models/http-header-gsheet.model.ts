@@ -1,8 +1,8 @@
 import { sheets_v4 } from 'googleapis';
+import { CodePropertyTemplateDto } from './code-template.dto';
 import { CodeUtil } from './code.util';
 import { HttpHeaderGSheetDto, HttpHeaderGSheetKey } from './http-header-gsheet.dto';
 import { HttpHeaderGSheet } from './http-header-gsheet.type';
-import { HttpHeaderTemplateDto } from './http-header-template.dto';
 import { WebLinkDto } from './web-link.dto';
 
 /**
@@ -109,16 +109,20 @@ export class HttpHeaderGSheetModel {
                 .split(' ')
                 .flatMap(x => x.split('-'));
 
-            const dto: HttpHeaderTemplateDto = {
-                description: item.Name,
-                links: links,
-                variable: {
+            const dto: CodePropertyTemplateDto = {
+                decorators: {
+                    deprecated: item.Caution,
+                },
+                documentComment: {
+                    descriptions: [item.Name],
+                    links: links,
+                },
+                name: {
                     camel: CodeUtil.formatCamelCase(variableTokens),
                     pascal: CodeUtil.formatPascalCase(variableTokens),
                     snake: CodeUtil.formatSnakeCase(variableTokens),
                 },
-                variableValue: item.Name,
-                warning: item.Caution,
+                value: item.Name,
             };
             return dto;
         });

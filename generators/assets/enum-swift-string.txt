@@ -1,0 +1,29 @@
+{% for description in model.documentComment.descriptions -%}
+/// {{ description }}
+{% endfor -%}
+internal enum {{ model.name }}: String {
+
+    /// Returns the element matching the given value.
+    internal static func parse(value: String) -> {{ model.name }} {
+        return {{ model.name }}.init(rawValue: value)!
+    }
+
+    /// Returns the element matching the given value or null.
+    internal static func parseOrNull(value: String) -> {{ model.name }}? {
+        return {{ model.name }}.init(rawValue: value)
+    }
+
+{% for property in model.properties -%}
+    {%- for description in property.documentComment.descriptions %}
+    /// {{ description }}
+    {%- endfor %}
+    {%- if 0 < property.documentComment.links.length %}
+    ///{% for link in property.documentComment.links %}
+    /// * [{{ link.title }}]({{ link.url }}){% endfor %}
+    {%- endif -%}
+    {%- if property.decorators.deprecated %}
+    ///
+    /// - Warning: {{ property.decorators.deprecated }}
+    {%- endif %}
+    case {{ property.name.camel }} = "{{ property.value }}"
+{% endfor %}}

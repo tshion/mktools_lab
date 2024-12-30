@@ -1,3 +1,4 @@
+import { CodeTemplateDto } from 'models/code-template.dto';
 import { createGSheetsApiClient } from 'models/google-api.util';
 import { HttpHeaderGSheetModel } from 'models/http-header-gsheet.model';
 import { existsSync } from 'node:fs';
@@ -36,22 +37,29 @@ import { render } from 'nunjucks';
     const gSheetData = await HttpHeaderGSheetModel.load(gSheetId, gSheetsApiClient, 'Request');
 
     // データの加工
-    const mappedData = HttpHeaderGSheetModel.mapToTemplate(gSheetData);
+    const codeModel: CodeTemplateDto = {
+        documentComment: {
+            descriptions: ['HTTP Request Header'],
+            links: [],
+        },
+        name: 'HttpRequestHeader',
+        properties: HttpHeaderGSheetModel.mapToTemplate(gSheetData),
+    };
 
     // 書き出し
     if (!existsSync(pathOutputDir)) {
         await mkdir(pathOutputDir, { recursive: true });
     }
     const tasks = [
-        'HttpRequestHeader.cs',
-        'HttpRequestHeader.kt',
-        'HttpRequestHeader.swift',
-        'http-request-header.ts',
-    ].map(async fileName => writeFile(
+        { fileName: 'HttpRequestHeader.cs', templateName: 'enum-cs-string.txt' },
+        { fileName: 'HttpRequestHeader.kt', templateName: 'enum-kt-string.txt' },
+        { fileName: 'HttpRequestHeader.swift', templateName: 'enum-swift-string.txt' },
+        { fileName: 'http-request-header.ts', templateName: 'enum-ts-string.txt' },
+    ].map(async ({ fileName, templateName }) => writeFile(
         join(pathOutputDir, fileName),
         render(
-            join(__dirname, '..', '..', 'assets', `${fileName}.txt`),
-            { list: mappedData },
+            join(__dirname, '..', '..', 'assets', templateName),
+            { model: codeModel },
         ),
         { encoding: 'utf-8' },
     ));
