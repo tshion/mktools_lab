@@ -15,9 +15,6 @@
 ### Android
 Android Studio Bumblebee 以降を利用して開発してください。
 
-### C#(generators)
-Visual Studio 2022 以降を利用して開発してください。
-
 ### iOS
 下記が使える状態で```make ios-init``` を実行してください。
 

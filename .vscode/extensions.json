@@ -1,8 +1,6 @@
 {
     "recommendations": [
         "editorconfig.editorconfig",
-        "github.vscode-pull-request-github",
-        "ms-dotnettools.csharp",
         "redhat.vscode-yaml",
         "sswg.swift-lang",
         "visualstudioexptteam.vscodeintellicode"
