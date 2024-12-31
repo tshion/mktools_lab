@@ -1,0 +1,42 @@
+package your.package
+
+/**
+{%- for description in model.documentComment.descriptions %}
+ * {{ description }}
+{%- endfor %}
+ */
+internal enum class {{ model.name }}(val value: {{ model.extends }}) {
+    {%- for property in model.properties %}
+
+    /**
+    {%- for description in property.documentComment.descriptions %}
+     * {{ description }}
+    {%- endfor -%}
+    {%- if 0 < property.documentComment.links.length %}
+     *
+    {%- for link in property.documentComment.links %}
+     * * [{{ link.title }}]({{ link.url }})
+    {%- endfor %}
+    {%- endif %}
+     */
+    {%- if property.decorators.deprecated %}
+    @Deprecated("{{ property.decorators.deprecated }}")
+    {%- endif %}
+    {{ property.name.snake }}({{ ('"' | safe) if model.extends === "String" }}{{ property.value }}{{ ('"' | safe) if model.extends === "String" }}),
+    {%- endfor %}
+    ;
+
+
+    internal companion object {
+
+        /**
+         * Returns the element matching the given value.
+         */
+        internal fun parse(value: {{ model.extends }}) = entries().single { it.value == value }
+
+        /**
+         * Returns the element matching the given value or null.
+         */
+        internal fun parseOrNull(value: {{ model.extends }}) = entries().singleOrNull { it.value == value }
+    }
+}

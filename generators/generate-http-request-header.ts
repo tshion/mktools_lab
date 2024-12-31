@@ -42,6 +42,7 @@ import { render } from 'nunjucks';
             descriptions: ['HTTP Request Header'],
             links: [],
         },
+        extends: 'String',
         name: 'HttpRequestHeader',
         properties: HttpHeaderGSheetModel.mapToTemplate(gSheetData),
     };
@@ -51,10 +52,10 @@ import { render } from 'nunjucks';
         await mkdir(pathOutputDir, { recursive: true });
     }
     const tasks = [
-        { fileName: 'HttpRequestHeader.cs', templateName: 'enum-cs-string.txt' },
-        { fileName: 'HttpRequestHeader.kt', templateName: 'enum-kt-string.txt' },
-        { fileName: 'HttpRequestHeader.swift', templateName: 'enum-swift-string.txt' },
-        { fileName: 'http-request-header.ts', templateName: 'enum-ts-string.txt' },
+        { fileName: 'HttpRequestHeader.cs', templateName: 'enum.cs.njk' },
+        { fileName: 'HttpRequestHeader.kt', templateName: 'enum.kt.njk' },
+        { fileName: 'HttpRequestHeader.swift', templateName: 'enum.swift.njk' },
+        { fileName: 'http-request-header.ts', templateName: 'enum.ts.njk' },
     ].map(async ({ fileName, templateName }) => writeFile(
         join(pathOutputDir, fileName),
         render(
