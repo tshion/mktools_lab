@@ -9,7 +9,7 @@
         "build:transfer-status-code": "npx ncc build transfer-status-code.ts -o compiled/transfer-status-code"
     },
     "dependencies": {
-        "googleapis": "^144.0.0",
+        "googleapis": "^171.4.0",
         "nunjucks": "^3.2.4"
     },
     "devDependencies": {
